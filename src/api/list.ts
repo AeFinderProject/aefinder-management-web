@@ -31,9 +31,11 @@ export const AuthList = {
 
 export const AppList = {
   getOrganizationsList: `${AeFinderHost}/api/manage/organizations`,
-  getAppsList: `${AeFinderHost}/api/manage/apps`,
-  getLimitsList: `${AeFinderHost}/api/manage/apps-limits`,
-  getAppDetail: `${AeFinderHost}/api/manage/apps`,
+  getAppsList: `${AeFinderHost}/api/management/apps`,
+  getAppDetail: `${AeFinderHost}/api/management/apps`,
+  getManifest: `${AeFinderHost}/api/subscriptions/manifest`,
+  getResources: `${AeFinderHost}/api/apps/resources`,
+  getLimitsList: `${AeFinderHost}/api/apps/resource-limits`,
   setAppLimit: {
     target: `${AeFinderHost}/api/apps/set-limit`,
     baseConfig: { method: 'PUT' },
@@ -63,23 +65,23 @@ export const AppList = {
     baseConfig: { method: 'POST' },
   },
   batchSetApp: {
-    target: `${AeFinderHost}/api/apps/set-limit/batch`,
+    target: `${AeFinderHost}/api/apps/resource-limits`,
     baseConfig: { method: 'PUT' },
   },
   batchDestroyApp: {
-    target: `${AeFinderHost}/api/app-deploy/destroy/batch`,
+    target: `${AeFinderHost} /api/app-deploy/batch-destroy`,
     baseConfig: { method: 'POST' },
   },
   batchDeployApp: {
-    target: `${AeFinderHost}/api/app-deploy/deploy/batch`,
+    target: `${AeFinderHost} /api/app-deploy/batch-deploy`,
     baseConfig: { method: 'POST' },
   },
   batchRestartApp: {
-    target: `${AeFinderHost}/api/app-deploy/restart/batch`,
+    target: `${AeFinderHost} /api/app-deploy/batch-restart`,
     baseConfig: { method: 'POST' },
   },
   batchPauseApp: {
-    target: `${AeFinderHost}/api/block-scan/pause/batch`,
+    target: `${AeFinderHost}/api/block-scan/batch-pause`,
     baseConfig: { method: 'POST' },
   },
 };

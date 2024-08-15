@@ -7,7 +7,6 @@ import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import PrimaryLink from '@/components/links/PrimaryLink';
-import UnstyledLink from '@/components/links/UnstyledLink';
 
 import { useAppSelector } from '@/store/hooks';
 
@@ -35,39 +34,23 @@ export default function Header() {
     router.push('/login');
   }, [router]);
 
-  const handleResetPassword = useCallback(() => {
-    router.push('/reset-password');
-  }, [router]);
-
-  const handleLinkToHome = useCallback(() => {
-    router.replace('/');
-    setTimeout(() => {
-      router.reload();
-    }, 100);
-  }, [router]);
-
   return (
     <header className='border-gray-E0 flex h-[72px] w-full items-center justify-between border-b px-[16px] py-[24px] sm:px-[40px]'>
-      <Image
-        src='/assets/svg/aefinder-logo.svg'
-        alt='logo'
-        width={150}
-        height={24}
-        onClick={handleLinkToHome}
-        className='cursor-pointer'
-        style={{ width: '150px', height: '24px' }}
-      />
+      <div className='flex'>
+        <Image
+          src='/assets/svg/aefinder-logo.svg'
+          alt='logo'
+          width={150}
+          height={24}
+          className='cursor-pointer'
+          style={{ width: '150px', height: '24px' }}
+        />
+        <span className='text-dark-normal ml-[8px] text-2xl font-medium'>
+          Manager
+        </span>
+      </div>
       {pathname !== '/login' && pathname !== '/' && (
         <div>
-          <PrimaryLink href='/dashboard' className='hidden sm:inline-block'>
-            My Dashboard
-          </PrimaryLink>
-          <UnstyledLink
-            href='https://docs.aefinder.io'
-            className='mx-[40px] hidden sm:inline-block'
-          >
-            Docs
-          </UnstyledLink>
           <div
             className='border-gray-E0 m-w-[150px] relative inline-block min-h-10 cursor-pointer rounded border pl-[20px] pr-[30px] text-center leading-[40px]'
             onClick={() => {
@@ -98,32 +81,21 @@ export default function Header() {
             >
               <UpOutlined className='border-b-none text-gray-E0 absolute hidden bg-white text-xs sm:right-[58px] sm:top-[-12px] sm:block' />
               <PrimaryLink
-                href='/dashboard'
+                href='/dapp'
                 className='hover:bg-gray-F5 w-full border-none px-[16px] sm:hidden'
               >
-                My Dashboard
+                Dapp
               </PrimaryLink>
               <div className='hover:bg-gray-F5 border-gray-F0 w-full border-b border-t px-[16px] text-left sm:hidden'>
-                <UnstyledLink
-                  href='https://docs.aefinder.io'
-                  className='test-left block w-full'
-                >
-                  Docs
-                </UnstyledLink>
+                <PrimaryLink href='/limit' className='test-left block w-full'>
+                  Limit
+                </PrimaryLink>
               </div>
-              <div>
-                <div
-                  className='hover:bg-gray-F5 text-nowrap border-none pl-[10px] pr-[16px] text-left sm:text-center'
-                  onClick={() => handleResetPassword()}
-                >
-                  Reset password
-                </div>
-                <div
-                  className='hover:bg-gray-F5 border-none px-[16px] text-left sm:text-center'
-                  onClick={() => handleLogout()}
-                >
-                  Logout
-                </div>
+              <div
+                className='hover:bg-gray-F5 border-none px-[16px] text-left sm:text-center'
+                onClick={() => handleLogout()}
+              >
+                Logout
               </div>
             </div>
           </div>

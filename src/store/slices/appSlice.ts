@@ -1,13 +1,18 @@
 import { createAppSlice } from '@/store/createAppSlice';
 
-import { GetAppResponseType } from '@/types/appType';
+import {
+  GetAppResourceLimitItemType,
+  GetAppResponseItem,
+} from '@/types/appType';
 
 export interface AppSliceState {
-  appList: GetAppResponseType[];
+  appList: GetAppResponseItem[];
+  appLimitList: GetAppResourceLimitItemType[];
 }
 
 const initialState: AppSliceState = {
   appList: [],
+  appLimitList: [],
 };
 
 export const appSlice = createAppSlice({
@@ -17,9 +22,10 @@ export const appSlice = createAppSlice({
     setAppList: (state, action) => {
       state.appList = action.payload;
     },
+    setAppLimitList: (state, action) => {
+      state.appLimitList = action.payload;
+    },
   },
 });
 
-export const {
-  setAppList,
-} = appSlice.actions;
+export const { setAppList, setAppLimitList } = appSlice.actions;

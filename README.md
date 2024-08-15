@@ -1,4 +1,4 @@
-# AeFinder
+# AeFinder Management Web Application
 
 In the project directory, you can run:
 

@@ -1,100 +1,33 @@
 import {
   ControlOutlined,
   DownOutlined,
+  FileSearchOutlined,
   SearchOutlined,
+  SmallDashOutlined,
   UpOutlined,
 } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
 import { Button, Input, Table } from 'antd';
 import clsx from 'clsx';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
 import { useDebounceCallback } from '@/lib/utils';
 
+import ActionMenu from '@/components/dapp/ActionMenu';
+import ConfirmModal from '@/components/dapp/ConfirmModal';
+import DeployDrawer from '@/components/dapp/DeployDrawer';
 import UpdateSettingDrawer from '@/components/dapp/UpdateSettingsDrawer';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setAppLimitList } from '@/store/slices/appSlice';
+import { setAppList } from '@/store/slices/appSlice';
 
 import { queryAuthToken } from '@/api/apiUtils';
-import { getAppLimitList } from '@/api/requestApp';
+import { getAppList } from '@/api/requestApp';
 
-import { GetAppResourceLimitItemType } from '@/types/appType';
+import { ConfirmActionType, GetAppResponseItem } from '@/types/appType';
 
-const columns: TableColumnsType<GetAppResourceLimitItemType> = [
-  { title: 'AppId', dataIndex: 'appId', key: 'appId' },
-  { title: 'AppName', dataIndex: 'appName', key: 'appName' },
-  {
-    title: 'OrganizationName',
-    dataIndex: 'organizationName',
-    key: 'organizationName',
-  },
-  {
-    title: 'OrganizationId',
-    dataIndex: 'organizationId',
-    key: 'organizationId',
-  },
-  {
-    title: 'FullPodRequestCpuCore/Memory',
-    dataIndex: '',
-    key: 'appFullPodRequestCpuCore',
-    render: (record) => (
-      <div>
-        {record?.resourceLimit?.appFullPodRequestCpuCore}/
-        {record?.resourceLimit?.appFullPodRequestMemory}
-      </div>
-    ),
-  },
-  {
-    title: 'QueryPodRequestCpuCore/Memory',
-    dataIndex: '',
-    key: 'appFullPodRequestCpuCore',
-    render: (record) => (
-      <div>
-        {record?.resourceLimit?.appQueryPodRequestCpuCore}/
-        {record?.resourceLimit?.appQueryPodRequestMemoryp}
-      </div>
-    ),
-  },
-  {
-    title: 'AppPodReplicas',
-    dataIndex: '',
-    key: 'appPodReplicas',
-    render: (record) => <div>{record?.resourceLimit?.appPodReplicas}</div>,
-  },
-  {
-    title: 'MaxEntityCallCount/Size',
-    dataIndex: '',
-    key: 'maxEntityCallCount',
-    render: (record) => (
-      <div>
-        {record?.operationLimit?.maxEntityCallCount}/
-        {record?.operationLimit?.maxEntitySize}
-      </div>
-    ),
-  },
-  {
-    title: 'MaxLogCallCount/Size',
-    dataIndex: '',
-    key: 'maxLogCallCount',
-    render: (record) => (
-      <div>
-        {record?.operationLimit?.maxLogCallCount}/
-        {record?.operationLimit?.maxLogSize}
-      </div>
-    ),
-  },
-  {
-    title: 'MaxContractCallCount',
-    dataIndex: '',
-    key: 'maxContractCallCount',
-    render: (record) => (
-      <div>{record?.operationLimit?.maxContractCallCount}</div>
-    ),
-  },
-];
-
-export default function Limit() {
+export default function List() {
   const dispatch = useAppDispatch();
   const [organizationId, setOrganizationId] = useState('');
   const [appId, setAppId] = useState('');
@@ -104,29 +37,89 @@ export default function Limit() {
   const [isShowFilterBox, setIsShowFilterBox] = useState(false);
   const [tempOrganizationId, setTempOrganizationId] = useState('');
   const [isShowBatchBox, setIsShowBatchBox] = useState(false);
-  const [rowSelection, setRowSelection] = useState<
-    GetAppResourceLimitItemType[]
-  >([]);
+  const [isShowAppIdActionBox, setIsShowAppIdActionBox] = useState('');
+  const [actionType, setActionType] = useState<ConfirmActionType>('Stop DApp');
+  const [sureConfirmAction, setSureConfirmAction] = useState(false);
+  const [isShowConfirmModal, setIsShowConfirmModal] = useState(false);
+  const [rowSelection, setRowSelection] = useState<GetAppResponseItem[]>([]);
   const [totalCountItems, setTotalCountItems] = useState(0);
+  const [isShowDeployDrawer, setIsShowDeployDrawer] = useState(false);
   const [isShowUpdateDrawer, setIsShowUpdateDrawer] = useState(false);
-  const appLimitList = useAppSelector((state) => state.app.appLimitList);
+  const router = useRouter();
+  const appList = useAppSelector((state) => state.app.appList);
 
-  const getAppLimitListTemp = useDebounceCallback(async () => {
+  const columns: TableColumnsType<GetAppResponseItem> = [
+    { title: 'AppId', dataIndex: 'appId', key: 'appId' },
+    { title: 'AppName', dataIndex: 'appName', key: 'appName' },
+    {
+      title: 'OrganizationName',
+      dataIndex: 'organizationName',
+      key: 'organizationName',
+    },
+    { title: 'DeployKey', dataIndex: 'deployKey', key: 'deployKey' },
+    { title: 'Status', dataIndex: 'status', key: 'status' },
+    { title: 'CreateTime', dataIndex: 'createTime', key: 'createTime' },
+    { title: 'UpdateTime', dataIndex: 'updateTime', key: 'updateTime' },
+    {
+      title: 'CurrentVersion',
+      dataIndex: 'versions?.currentVersion',
+      key: 'versions?.currentVersion',
+    },
+    {
+      title: 'PendingVersion',
+      dataIndex: 'versions?.pendingVersion',
+      key: 'versions?.pendingVersion',
+    },
+    { title: 'Description', dataIndex: 'description', key: 'description' },
+    {
+      title: 'Action',
+      dataIndex: '',
+      key: 'x',
+      // fixed: 'right',
+      render: (record) => (
+        <div className='relative z-10'>
+          <FileSearchOutlined
+            className='text-blue-link mr-[8px] cursor-pointer text-[16px]'
+            onClick={() => {
+              localStorage.setItem('appId', record.appId);
+              router.push(`/dapp/detail`);
+            }}
+          />
+          <SmallDashOutlined
+            onClick={() =>
+              setIsShowAppIdActionBox(isShowAppIdActionBox ? '' : record.appId)
+            }
+            className='text-blue-link cursor-pointer text-[16px]'
+          />
+          <ActionMenu
+            className='z-100 absolute right-[0] top-[34px] bg-white opacity-100'
+            isShowBatchBox={isShowAppIdActionBox === record.appId}
+            setActionType={setActionType}
+            setIsShowConfirmModal={setIsShowConfirmModal}
+            setIsShowDeployDrawer={setIsShowDeployDrawer}
+            setIsShowUpdateDrawer={setIsShowUpdateDrawer}
+          />
+        </div>
+      ),
+    },
+  ];
+
+  const getAppListTemp = useDebounceCallback(async () => {
     await queryAuthToken();
     setLoading(true);
-    const { items = [], totalCount = 0 } = await getAppLimitList({
+    const { items = [], totalCount = 0 } = await getAppList({
       organizationId,
       appId,
       skipCount: (skipCount - 1) * maxResultCount,
       maxResultCount,
     });
     setLoading(false);
-    dispatch(setAppLimitList(items));
+    dispatch(setAppList(items));
     setTotalCountItems(totalCount);
   }, [organizationId, appId, skipCount, maxResultCount]);
 
   useEffect(() => {
-    getAppLimitListTemp();
+    getAppListTemp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -159,6 +152,19 @@ export default function Limit() {
     },
     [skipCount, maxResultCount]
   );
+
+  const handleBatchAction = useCallback(async () => {
+    setSureConfirmAction(false);
+  }, []);
+
+  useEffect(() => {
+    if (!sureConfirmAction) {
+      return;
+    }
+
+    handleBatchAction();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sureConfirmAction]);
 
   return (
     <div className='px-[16px] pb-[28px] pt-[48px]'>
@@ -236,12 +242,20 @@ export default function Limit() {
           >
             Batch Actions
           </Button>
+          <ActionMenu
+            className='absolute right-[0] top-[40px]'
+            isShowBatchBox={isShowBatchBox}
+            setActionType={setActionType}
+            setIsShowConfirmModal={setIsShowConfirmModal}
+            setIsShowDeployDrawer={setIsShowDeployDrawer}
+            setIsShowUpdateDrawer={setIsShowUpdateDrawer}
+          />
         </div>
       </div>
       <Table
         rowKey={(record) => record.appId}
         columns={columns}
-        dataSource={appLimitList}
+        dataSource={appList}
         loading={loading}
         scroll={{ x: 1700 }}
         className='w-full'
@@ -264,6 +278,16 @@ export default function Limit() {
           showTitle: true,
           pageSizeOptions: ['10', '20', '50', '100'],
         }}
+      />
+      <ConfirmModal
+        isShowConfirmModal={isShowConfirmModal}
+        setIsShowConfirmModal={setIsShowConfirmModal}
+        actionType={actionType}
+        setSureConfirmAction={setSureConfirmAction}
+      />
+      <DeployDrawer
+        isShowDeployDrawer={isShowDeployDrawer}
+        setIsShowDeployDrawer={setIsShowDeployDrawer}
       />
       <UpdateSettingDrawer
         isShowUpdateDrawer={isShowUpdateDrawer}

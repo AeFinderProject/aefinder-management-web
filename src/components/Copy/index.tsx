@@ -11,6 +11,7 @@ type CopyProps = {
   readonly isShowCopy?: boolean;
   readonly className?: string;
   readonly showLittle?: boolean;
+  readonly vertical?: boolean;
 };
 
 message.config({
@@ -25,6 +26,7 @@ export default function Copy({
   isShowCopy = false,
   className,
   showLittle,
+  vertical = true,
 }: CopyProps) {
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -38,7 +40,14 @@ export default function Copy({
   return (
     <div className={clsx('inline-block', className)}>
       {contextHolder}
-      <div className='text-gray-80 mb-[10px] text-xs'>{label}</div>
+      <div
+        className={clsx(
+          'text-gray-80 text-xs',
+          vertical ? 'mb-[10px]' : 'mr-[8px]'
+        )}
+      >
+        {label}
+      </div>
       <div className='text-block text-base font-medium'>
         <span className='mr-2 max-w-[80%] overflow-hidden whitespace-pre-wrap break-words'>
           {showLittle ? formatStr2Ellipsis(String(content), [8, 9]) : content}
