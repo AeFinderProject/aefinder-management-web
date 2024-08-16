@@ -45,6 +45,10 @@ export default {
           AD: '#ADADAD',
           F7: '#f7f9fd',
         },
+        white: {
+          normal: '#FFFFFF',
+          light: '#F7F9FD',
+        },
         success: {
           normal: '#00B73E',
           bg: '#E0F6E8',

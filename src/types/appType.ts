@@ -5,6 +5,10 @@ export type GetAppRequestType = {
   maxResultCount?: number;
 };
 
+export type GetAppDetailRequestType = {
+  appId: string;
+};
+
 // Initialized = 0, Started = 1, Paused = 2
 export enum SubscriptionStatusType {
   Initialized = 0,
@@ -77,8 +81,6 @@ export type resourcesType = {
 
 export type GetResourcesResponse = resourcesType[];
 
-export type GetAppResourceLimitRequestType = GetAppRequestType;
-
 export type GetAppResourceLimitItemType = {
   organizationName: string;
   organizationId: string;
@@ -100,25 +102,27 @@ export type GetAppResourceLimitItemType = {
   };
 };
 
-export type GetAppLimitRequest = GetAppRequestType;
-
 export type GetAppResourceLimitResponse = {
   items: GetAppResourceLimitItemType[];
   totalCount: number;
 };
 
 export type LimitItemType = {
-  maxEntityCallCount: number;
-  maxEntitySize: number;
-  maxLogCallCount: number;
-  maxLogSize: number;
-  maxContractCallCount: number;
-  appFullPodRequestCpuCore: string;
-  appFullPodRequestMemory: string;
-  appQueryPodRequestCpuCore: string;
-  appQueryPodRequestMemoryp: string;
-  appPodReplicas: number;
+  maxEntityCallCount?: number;
+  maxEntitySize?: number;
+  maxLogCallCount?: number;
+  maxLogSize?: number;
+  maxContractCallCount?: number;
+  appFullPodRequestCpuCore?: string;
+  appFullPodRequestMemory?: string;
+  appQueryPodRequestCpuCore?: string;
+  appQueryPodRequestMemoryp?: string;
+  appPodReplicas?: number;
 };
+
+export type SetAppLimitRequestType = {
+  appId: string;
+} & LimitItemType;
 
 export type ActionAppRequestType = {
   appId: string;
@@ -132,7 +136,8 @@ export type DeployAppRequestType = {
 };
 
 export type BatchLimitItemRequestType = {
-  appIds: string[];
+  appId?: string;
+  appIds?: string[];
 } & LimitItemType;
 
 export type BatchActionRequestType = {

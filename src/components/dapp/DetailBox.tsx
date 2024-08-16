@@ -6,7 +6,7 @@ import Copy from '@/components/Copy';
 import { GetAppResponseItem } from '@/types/appType';
 
 type DetailBoxProps = {
-  readonly currentAppDetail: GetAppResponseItem;
+  readonly currentAppDetail?: GetAppResponseItem;
 };
 
 export default function DetailBox({ currentAppDetail }: DetailBoxProps) {
@@ -43,7 +43,7 @@ export default function DetailBox({ currentAppDetail }: DetailBoxProps) {
         <Col sm={24} md={12} className='flex flex-col'>
           <Copy
             label='AppID'
-            content={currentAppDetail?.appId}
+            content={currentAppDetail?.appId ?? ''}
             isShowCopy={true}
           />
           <Copy

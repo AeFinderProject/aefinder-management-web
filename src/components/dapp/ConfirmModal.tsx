@@ -1,31 +1,69 @@
-import { Button, Modal } from 'antd';
+import { Button, message, Modal } from 'antd';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useCallback } from 'react';
 
+import {
+  batchDestroyApp,
+  batchPauseApp,
+  batchRestartApp,
+  destroyApp,
+  restartApp,
+  stopApp,
+} from '@/api/requestApp';
+
 import { ConfirmActionType } from '@/types/appType';
 
 type ConfirmModalProps = {
-  isShowConfirmModal: boolean;
-  setIsShowConfirmModal: (params: boolean) => void;
-  actionType: ConfirmActionType;
-  setSureConfirmAction: (params: boolean) => void;
+  readonly updateType: 'batch' | 'single';
+  readonly appId?: string;
+  readonly version?: string;
+  readonly appIds?: string[];
+  readonly actionType: ConfirmActionType;
+  readonly isShowConfirmModal: boolean;
+  readonly setIsShowConfirmModal: (params: boolean) => void;
 };
 
 export default function ConfirmModal({
+  updateType,
+  appId,
+  version,
+  appIds,
+  actionType,
   isShowConfirmModal,
   setIsShowConfirmModal,
-  actionType,
-  setSureConfirmAction,
 }: ConfirmModalProps) {
   const handleCancel = useCallback(() => {
     setIsShowConfirmModal(false);
   }, [setIsShowConfirmModal]);
 
-  const handleOk = useCallback(() => {
+  const handleAction = useCallback(async () => {
+    let res = null;
+    if (updateType === 'batch' && appIds) {
+      if (actionType === 'Destroy Services') {
+        res = await batchDestroyApp({ appIds: appIds });
+      } else if (actionType === 'Restart DApp') {
+        res = await batchRestartApp({ appIds: appIds });
+      } else if (actionType === 'Stop DApp') {
+        res = await batchPauseApp({ appIds: appIds });
+      }
+    }
+    if (updateType === 'single' && appId && version) {
+      if (actionType === 'Destroy Services') {
+        res = await destroyApp({ appId, version });
+      } else if (actionType === 'Restart DApp') {
+        res = await restartApp({ appId, version });
+      } else if (actionType === 'Stop DApp') {
+        res = await stopApp({ appId, version });
+      }
+    }
+    console.log(res);
+    if (res) {
+      message?.success(`${actionType} successfully`);
+    }
+
     setIsShowConfirmModal(false);
-    setSureConfirmAction(true);
-  }, [setIsShowConfirmModal, setSureConfirmAction]);
+  }, [setIsShowConfirmModal, updateType, appId, version, appIds, actionType]);
 
   return (
     <Modal
@@ -50,7 +88,7 @@ export default function ConfirmModal({
               actionType === 'Stop DApp' &&
                 'bg-danger-normal border-danger-normal border border-solid text-white'
             )}
-            onClick={() => handleOk()}
+            onClick={() => handleAction()}
           >
             {actionType}
           </Button>

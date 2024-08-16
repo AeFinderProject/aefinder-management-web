@@ -30,7 +30,6 @@ export const AuthList = {
 };
 
 export const AppList = {
-  getOrganizationsList: `${AeFinderHost}/api/manage/organizations`,
   getAppsList: `${AeFinderHost}/api/management/apps`,
   getAppDetail: `${AeFinderHost}/api/management/apps`,
   getManifest: `${AeFinderHost}/api/subscriptions/manifest`,
@@ -64,7 +63,7 @@ export const AppList = {
     target: `${AeFinderHost}/api/block-scan/stop`,
     baseConfig: { method: 'POST' },
   },
-  batchSetApp: {
+  batchSetAppLimit: {
     target: `${AeFinderHost}/api/apps/resource-limits`,
     baseConfig: { method: 'PUT' },
   },

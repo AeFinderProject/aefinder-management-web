@@ -10,9 +10,9 @@ const ReactJson = dynamic(
 );
 
 type ManifestProps = {
-  manifestJson: object;
+  readonly manifestJson?: object;
 };
-export default function Manifest({ manifestJson }: ManifestProps) {
+export default function Manifest({ manifestJson = {} }: ManifestProps) {
   return (
     <div className='mb-[24px] w-full'>
       <ReactJson src={manifestJson}></ReactJson>
