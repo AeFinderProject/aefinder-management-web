@@ -4,8 +4,10 @@ import { useCallback, useState } from 'react';
 
 import { batchDeployApp, deployApp } from '@/api/requestApp';
 
+import { UpdateType } from '@/types/appType';
+
 type DeployDrawerProps = {
-  readonly updateType: 'batch' | 'single';
+  readonly updateType: UpdateType;
   readonly appId?: string;
   readonly version?: string;
   readonly appIds?: string[];

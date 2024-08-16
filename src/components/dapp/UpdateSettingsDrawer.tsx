@@ -6,10 +6,11 @@ import { batchSetAppLimit, setAppLimit } from '@/api/requestApp';
 import {
   BatchLimitItemRequestType,
   SetAppLimitRequestType,
+  UpdateType,
 } from '@/types/appType';
 
 type UpdateSettingDrawerProps = {
-  readonly updateType: 'batch' | 'single';
+  readonly updateType: UpdateType;
   readonly appId?: string;
   readonly appIds?: string[];
   readonly isShowUpdateDrawer: boolean;

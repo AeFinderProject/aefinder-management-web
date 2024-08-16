@@ -44,6 +44,8 @@ export type ConfirmActionType =
   | 'Restart DApp'
   | 'Stop DApp';
 
+export type UpdateType = 'batch' | 'single';
+
 export type ChainIdType = 'tDVV' | 'tDVW' | 'AELF' | '';
 
 export type SubscriptionItem = {

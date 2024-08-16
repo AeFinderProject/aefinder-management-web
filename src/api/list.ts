@@ -32,7 +32,7 @@ export const AuthList = {
 export const AppList = {
   getAppsList: `${AeFinderHost}/api/management/apps`,
   getAppDetail: `${AeFinderHost}/api/management/apps`,
-  getManifest: `${AeFinderHost}/api/subscriptions/manifest`,
+  getManifest: `${AeFinderHost}/api/apps/subscriptions/manifest`,
   getResources: `${AeFinderHost}/api/apps/resources`,
   getLimitsList: `${AeFinderHost}/api/apps/resource-limits`,
   setAppLimit: {

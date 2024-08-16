@@ -1,9 +1,9 @@
-// import { useState } from 'react';
 import { AppstoreOutlined, DashboardOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
+import { useCallback, useEffect, useState } from 'react';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -13,11 +13,17 @@ const items: MenuItem[] = [
 ];
 
 export default function MyMenu() {
+  const [currentRoute, setCurrentRoute] = useState('dapp');
   const router = useRouter();
   const { pathname } = router;
-  const handleRouterChange = (key: string) => {
+
+  const handleRouterChange = useCallback((key: string) => {
     router.push(`/${key}`);
-  };
+  }, []);
+
+  useEffect(() => {
+    setCurrentRoute(pathname.split('/')[1]);
+  }, [pathname]);
 
   return (
     <Menu
@@ -26,7 +32,7 @@ export default function MyMenu() {
           ? 'm-w-[150px] hidden w-[150px] border-none pt-[48px] font-medium sm:block'
           : 'hidden'
       )}
-      defaultSelectedKeys={[`${pathname.replace(/^\/+/, '')}`]}
+      selectedKeys={[currentRoute]}
       mode='inline'
       theme='light'
       onClick={({ key }) => handleRouterChange(key)}
