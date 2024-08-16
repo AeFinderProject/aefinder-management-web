@@ -98,8 +98,6 @@ export default function UpdateSettingDrawer({
     }
     if (res === 'success') {
       message.success('Update Success');
-    } else {
-      message.error('Update Failed');
     }
     handleCancel();
   }, [
@@ -113,6 +111,10 @@ export default function UpdateSettingDrawer({
     appQueryPodRequestCpuCore,
     appQueryPodRequestMemoryp,
     appPodReplicas,
+    updateType,
+    appId,
+    appIds,
+    handleCancel,
   ]);
 
   return (

@@ -63,7 +63,7 @@ export default function ConfirmModal({
     }
 
     setIsShowConfirmModal(false);
-  }, [setIsShowConfirmModal]);
+  }, [setIsShowConfirmModal, updateType, appId, version, appIds, actionType]);
 
   return (
     <Modal

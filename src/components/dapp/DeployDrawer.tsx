@@ -65,7 +65,15 @@ export default function DeployDrawer({
     return () => {
       setDockerImage('');
     };
-  }, [dockerImage, setIsShowDeployDrawer]);
+  }, [
+    dockerImage,
+    setIsShowDeployDrawer,
+    updateType,
+    appId,
+    version,
+    appIds,
+    messageApi,
+  ]);
 
   return (
     <Drawer

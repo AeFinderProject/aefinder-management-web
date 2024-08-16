@@ -1,8 +1,6 @@
 import { Divider, message, Tooltip } from 'antd';
 import Image from 'next/image';
-import { useCallback, useEffect, useState } from 'react';
-
-import { deployApp } from '@/api/requestApp';
+import { useCallback, useState } from 'react';
 
 import ConfirmModal from './ConfirmModal';
 import DeployDrawer from './DeployDrawer';
@@ -26,50 +24,17 @@ export default function ActionMenuItem({
   version,
 }: ActionMenuItemProps) {
   const [actionType, setActionType] = useState<ConfirmActionType>('Stop DApp');
-  const [sureConfirmAction, setSureConfirmAction] = useState(false);
   const [isShowConfirmModal, setIsShowConfirmModal] = useState(false);
-  const [currentDockerImage, setCurrentDockerImage] = useState('');
   const [isShowDeployDrawer, setIsShowDeployDrawer] = useState(false);
   const [isShowUpdateDrawer, setIsShowUpdateDrawer] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
 
   const handleAction = useCallback((type: ConfirmActionType) => {
     setActionType(type);
     setIsShowConfirmModal(true);
   }, []);
 
-  const handleDeploy = useCallback(() => {
-    console.log('deploy', appId, version);
-  }, [appId, version]);
-
-  const tempDeployApp = useCallback(async () => {
-    if (!appId || !version || !currentDockerImage) {
-      return;
-    }
-    const res = await deployApp({
-      appId,
-      version,
-      imageName: currentDockerImage,
-    });
-    setCurrentDockerImage('');
-    if (res) {
-      messageApi.success({
-        content: 'Batch deploy success',
-        key: 'BatchDeploy',
-      });
-    }
-  }, [appId, version, currentDockerImage]);
-
-  useEffect(() => {
-    if (!currentDockerImage || !appId || !version) {
-      return;
-    }
-    tempDeployApp();
-  }, [appId, version, currentDockerImage]);
-
   return (
     <div className='bg-white-normal flex items-center justify-end rounded-[8px] p-[8px]'>
-      {contextHolder}
       <Tooltip title='Deploy App'>
         <Image
           src='/assets/svg/deploy.svg'
@@ -98,6 +63,7 @@ export default function ActionMenuItem({
           alt='update'
           width={24}
           height={24}
+          onClick={() => setIsShowUpdateDrawer(true)}
           className='cursor-pointer'
         />
       </Tooltip>

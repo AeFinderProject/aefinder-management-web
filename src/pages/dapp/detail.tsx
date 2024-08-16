@@ -53,7 +53,7 @@ export default function Detail() {
     tempGetAppDetail();
     tempGetManifest();
     tempGetResources();
-  }, [appId]);
+  }, [appId, tempGetAppDetail, tempGetManifest, tempGetResources]);
 
   return (
     <div className='px-[16px] pb-[28px] pt-[26px]'>
