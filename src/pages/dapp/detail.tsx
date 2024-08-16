@@ -67,13 +67,15 @@ export default function Detail() {
         <span className='text-dark-normal font-medium'> App Detail</span>
       </div>
       <DetailBox currentAppDetail={currentAppDetail} />
-      <SubscriptionsVersion
-        title='Current Version'
-        VersionDetail={currentVersionDetail}
-        updateTime={currentAppDetail?.updateTime}
-        createTime={currentAppDetail?.createTime}
-        dockerImage={currentDockerImage}
-      />
+      {currentAppDetail?.versions?.currentVersion && (
+        <SubscriptionsVersion
+          title='Current Version'
+          VersionDetail={currentVersionDetail}
+          updateTime={currentAppDetail?.updateTime}
+          createTime={currentAppDetail?.createTime}
+          dockerImage={currentDockerImage}
+        />
+      )}
       {currentAppDetail?.versions?.pendingVersion && (
         <SubscriptionsVersion
           title='Pending Version'
@@ -83,6 +85,12 @@ export default function Detail() {
           dockerImage={pendingDockerImage}
         />
       )}
+      {!currentAppDetail?.versions?.currentVersion &&
+        !currentAppDetail?.versions?.pendingVersion && (
+          <div className='text-gray-80 mt-[26px] text-center text-[14px]'>
+            No version
+          </div>
+        )}
     </div>
   );
 }

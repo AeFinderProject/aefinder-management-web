@@ -12,10 +12,10 @@ import {
   stopApp,
 } from '@/api/requestApp';
 
-import { ConfirmActionType } from '@/types/appType';
+import { ConfirmActionType, UpdateType } from '@/types/appType';
 
 type ConfirmModalProps = {
-  readonly updateType: 'batch' | 'single';
+  readonly updateType: UpdateType;
   readonly appId?: string;
   readonly version?: string;
   readonly appIds?: string[];

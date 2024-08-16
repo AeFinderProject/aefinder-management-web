@@ -3,10 +3,10 @@ import {
   DownOutlined,
   FileSearchOutlined,
   SearchOutlined,
-  UpOutlined,
+  SmallDashOutlined,
 } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
-import { Button, Input, Table } from 'antd';
+import { Button, Dropdown, Input, MenuProps, Table } from 'antd';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
@@ -23,6 +23,13 @@ import { getAppList } from '@/api/requestApp';
 
 import { GetAppResponseItem } from '@/types/appType';
 
+const items: MenuProps['items'] = [
+  {
+    key: '1',
+    label: <></>,
+  },
+];
+
 export default function List() {
   const dispatch = useAppDispatch();
   const [organizationId, setOrganizationId] = useState('');
@@ -30,10 +37,8 @@ export default function List() {
   const [skipCount, setSkipCount] = useState(1);
   const [maxResultCount, setMaxResultCount] = useState(10);
   const [loading, setLoading] = useState(false);
-  const [isShowFilterBox, setIsShowFilterBox] = useState(false);
   const [tempOrganizationId, setTempOrganizationId] = useState('');
-  const [isShowBatchBox, setIsShowBatchBox] = useState(false);
-
+  const [currentAppIdSingleBox, setCurrentAppIdSingleBox] = useState('');
   const [rowSelection, setRowSelection] = useState<GetAppResponseItem[]>([]);
   const [totalCountItems, setTotalCountItems] = useState(0);
   const router = useRouter();
@@ -42,6 +47,11 @@ export default function List() {
   const columns: TableColumnsType<GetAppResponseItem> = [
     { title: 'AppId', dataIndex: 'appId', key: 'appId' },
     { title: 'AppName', dataIndex: 'appName', key: 'appName' },
+    {
+      title: 'OrganizationId',
+      dataIndex: 'organizationId',
+      key: 'organizationId',
+    },
     {
       title: 'OrganizationName',
       dataIndex: 'organizationName',
@@ -68,14 +78,34 @@ export default function List() {
       key: 'x',
       fixed: 'right',
       render: (record) => (
-        <div className='z-1 relative'>
+        <div className='relative z-10'>
           <FileSearchOutlined
-            className='text-blue-link cursor-pointer text-[16px]'
+            className='text-blue-link mr-[8px] cursor-pointer text-[16px]'
             onClick={() => {
               localStorage.setItem('appId', record.appId);
               router.push(`/dapp/detail`);
             }}
           />
+          <Dropdown
+            menu={{ items }}
+            placement='bottom'
+            dropdownRender={() => {
+              return (
+                <ActionMenu
+                  updateType='single'
+                  appId={record.appId}
+                  version={record.version}
+                  // className=''
+                  isShowBatchBox={currentAppIdSingleBox === record.appId}
+                />
+              );
+            }}
+          >
+            <SmallDashOutlined
+              className='text-blue-link cursor-pointer text-[16px]'
+              onClick={() => setCurrentAppIdSingleBox(record.appId)}
+            />
+          </Dropdown>
         </div>
       ),
     },
@@ -84,6 +114,7 @@ export default function List() {
   const getAppListTemp = useDebounceCallback(async () => {
     await queryAuthToken();
     setLoading(true);
+    setRowSelection([]);
     const { items = [], totalCount = 0 } = await getAppList({
       organizationId,
       appId,
@@ -97,23 +128,22 @@ export default function List() {
 
   useEffect(() => {
     getAppListTemp();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [organizationId, appId, skipCount, maxResultCount]);
+
+  const handleSearch = useDebounceCallback(async (e) => {
+    setAppId(e.target.value);
+    setSkipCount(1);
   }, []);
 
   const handleClearFilter = useCallback(() => {
     setOrganizationId('');
     setTempOrganizationId('');
-    setSkipCount(0);
-    setIsShowFilterBox(false);
+    setSkipCount(1);
   }, []);
 
   const handleApplyFilter = useCallback(() => {
-    if (!tempOrganizationId) {
-      return;
-    }
     setOrganizationId(tempOrganizationId);
-    setSkipCount(0);
-    setIsShowFilterBox(false);
+    setSkipCount(1);
   }, [tempOrganizationId]);
 
   const tableOnChange = useCallback(
@@ -137,7 +167,7 @@ export default function List() {
           <Input
             placeholder='Search by ID'
             value={appId}
-            onChange={(e) => setAppId(e.target.value)}
+            onChange={(e) => handleSearch(e)}
             style={{
               width: 200,
               height: 32,
@@ -147,70 +177,83 @@ export default function List() {
             }}
             prefix={<SearchOutlined className='text-[#E0E0E0]' />}
           />
-          <Button
-            className={clsx(
-              isShowFilterBox || organizationId ? 'bg-gray-F5' : ''
-            )}
-            icon={<ControlOutlined />}
-            onClick={() => setIsShowFilterBox(!isShowFilterBox)}
+          <Dropdown
+            menu={{ items }}
+            placement='bottom'
+            dropdownRender={() => {
+              return (
+                <div
+                  className={clsx(
+                    'bg-white-normal flex w-[388px] flex-col items-center rounded-md border border-solid p-[16px]'
+                  )}
+                >
+                  <div className='mb-[16px] flex w-full items-center justify-between'>
+                    <div className='mr-[8px] text-sm font-medium'>
+                      OrganizationId{' '}
+                    </div>
+                    <Input
+                      placeholder='Please input OrganizationId'
+                      value={tempOrganizationId}
+                      onChange={(e) => setTempOrganizationId(e.target.value)}
+                      style={{
+                        width: 250,
+                        height: 32,
+                        borderColor: '#E0E0E0',
+                        borderRadius: '8px',
+                      }}
+                    />
+                  </div>
+                  <div className='flex w-full items-center justify-between'>
+                    <Button
+                      className='text-blue-link border-blue-link w-[174px] border border-solid bg-white'
+                      onClick={() => handleClearFilter()}
+                    >
+                      Clear Filter
+                    </Button>
+                    <Button
+                      className='ml-[8px] w-[174px]'
+                      type='primary'
+                      onClick={() => handleApplyFilter()}
+                    >
+                      Apply Filter
+                    </Button>
+                  </div>
+                </div>
+              );
+            }}
           >
-            Filters
-            {organizationId ? ` (1)` : ''}
-          </Button>
-          <div
-            className={clsx(
-              'border-gray-E0 absolute left-[208px] top-[40px] z-10 flex w-[388px] flex-col items-center rounded-md border border-solid bg-white p-[16px] opacity-100',
-              { hidden: !isShowFilterBox }
-            )}
-          >
-            <div className='mb-[16px] flex w-full items-center justify-between'>
-              <div className='mr-[8px] text-sm font-medium'>
-                OrganizationId{' '}
-              </div>
-              <Input
-                placeholder='Please input OrganizationId'
-                value={tempOrganizationId}
-                onChange={(e) => setTempOrganizationId(e.target.value)}
-                style={{
-                  width: 250,
-                  height: 32,
-                  borderColor: '#E0E0E0',
-                  borderRadius: '8px',
-                }}
-              />
-            </div>
-            <div className='flex w-full items-center justify-between'>
-              <Button
-                className='text-blue-link border-blue-link w-[174px] border border-solid bg-white'
-                onClick={() => handleClearFilter()}
-              >
-                Clear Filter
-              </Button>
-              <Button
-                className='ml-[8px] w-[174px]'
-                type='primary'
-                onClick={() => handleApplyFilter()}
-              >
-                Apply Filter
-              </Button>
-            </div>
-          </div>
+            <Button
+              className={clsx(organizationId ? 'bg-gray-F5' : '')}
+              icon={<ControlOutlined />}
+            >
+              Filters
+              {organizationId ? ` (1)` : ''}
+            </Button>
+          </Dropdown>
         </div>
-        <div className='relative z-10'>
-          <Button
-            className='text-blue-link border-blue-link w-[174px] border border-solid bg-white'
-            onClick={() => setIsShowBatchBox(!isShowBatchBox)}
-            disabled={rowSelection?.length === 0}
-            icon={isShowBatchBox ? <UpOutlined /> : <DownOutlined />}
-            iconPosition='end'
+        <div className='relative'>
+          <Dropdown
+            menu={{ items }}
+            placement='bottom'
+            trigger={['click']}
+            dropdownRender={() => {
+              return (
+                <ActionMenu
+                  updateType='batch'
+                  appIds={rowSelection.map((item) => item.appId)}
+                />
+              );
+            }}
           >
-            Batch Actions
-          </Button>
-          <ActionMenu
-            appIds={rowSelection.map((item) => item.appId)}
-            className='absolute right-[0] top-[40px]'
-            isShowBatchBox={isShowBatchBox}
-          />
+            <Button
+              className='text-blue-link border-blue-link w-[174px] border border-solid bg-white'
+              disabled={rowSelection?.length === 0}
+              icon={<DownOutlined />}
+              iconPosition='end'
+            >
+              Batch Actions
+            </Button>
+          </Dropdown>
         </div>
       </div>
       <Table

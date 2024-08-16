@@ -44,7 +44,7 @@ export default function SubscriptionsVersion({
             vertical={false}
           />
         </Col>
-        <Col sm={24} md={8} className='min-w-[140px]'>
+        <Col sm={24} md={7} offset={1} className='min-w-[140px]'>
           <Copy
             label='Create Time: '
             content={dayjs(createTime).format('YYYY-MM-DD')}
@@ -72,7 +72,7 @@ export default function SubscriptionsVersion({
             vertical={false}
           />
         </Col>
-        <Col sm={24} md={8} className='min-w-[140px]'>
+        <Col sm={24} md={7} offset={1} className='min-w-[140px]'>
           <Copy
             label='Update Time: '
             content={dayjs(updateTime).format('YYYY-MM-DD')}
