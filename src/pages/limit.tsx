@@ -1,9 +1,4 @@
-import {
-  ControlOutlined,
-  DownOutlined,
-  SearchOutlined,
-  UpOutlined,
-} from '@ant-design/icons';
+import { ControlOutlined, SearchOutlined } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
 import { Button, Input, Table } from 'antd';
 import clsx from 'clsx';
@@ -103,7 +98,6 @@ export default function Limit() {
   const [loading, setLoading] = useState(false);
   const [isShowFilterBox, setIsShowFilterBox] = useState(false);
   const [tempOrganizationId, setTempOrganizationId] = useState('');
-  const [isShowBatchBox, setIsShowBatchBox] = useState(false);
   const [rowSelection, setRowSelection] = useState<
     GetAppResourceLimitItemType[]
   >([]);
@@ -229,9 +223,8 @@ export default function Limit() {
         <div className='relative'>
           <Button
             className='text-blue-link border-blue-link w-[174px] border border-solid bg-white'
-            onClick={() => setIsShowBatchBox(!isShowBatchBox)}
+            onClick={() => setIsShowUpdateDrawer(!isShowUpdateDrawer)}
             disabled={rowSelection?.length === 0}
-            icon={isShowBatchBox ? <UpOutlined /> : <DownOutlined />}
             iconPosition='end'
           >
             Batch Actions
@@ -262,10 +255,13 @@ export default function Limit() {
           onChange: tableOnChange,
           showSizeChanger: true,
           showTitle: true,
+          showTotal: (total) => `Total ${total} appsLimit`,
           pageSizeOptions: ['10', '20', '50', '100'],
         }}
       />
       <UpdateSettingDrawer
+        updateType='batch'
+        appIds={rowSelection?.map((item) => item.appId)}
         isShowUpdateDrawer={isShowUpdateDrawer}
         setIsShowUpdateDrawer={setIsShowUpdateDrawer}
       />

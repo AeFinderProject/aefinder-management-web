@@ -7,7 +7,7 @@ import { formatStr2Ellipsis } from '@/lib/utils';
 
 type CopyProps = {
   readonly label?: string;
-  readonly content: string | number;
+  readonly content?: string | number;
   readonly isShowCopy?: boolean;
   readonly className?: string;
   readonly showLittle?: boolean;
@@ -22,7 +22,7 @@ message.config({
 
 export default function Copy({
   label,
-  content,
+  content = '',
   isShowCopy = false,
   className,
   showLittle,

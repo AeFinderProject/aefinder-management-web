@@ -1,18 +1,20 @@
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { Col, Divider, Row } from 'antd';
 import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Copy from '@/components/Copy';
+import ActionMenuItem from '@/components/dapp/ActionMenuItem';
 import Manifest from '@/components/dapp/Manifest';
 
 import { SubscriptionStatusType, VersionType } from '@/types/appType';
 
 type SubscriptionsVersionProps = {
   readonly title: string;
-  readonly VersionDetail: VersionType;
-  readonly updateTime: string;
-  readonly createTime: string;
+  readonly VersionDetail?: VersionType;
+  readonly updateTime?: string;
+  readonly createTime?: string;
+  readonly dockerImage?: string;
 };
 
 export default function SubscriptionsVersion({
@@ -20,20 +22,18 @@ export default function SubscriptionsVersion({
   VersionDetail,
   updateTime,
   createTime,
+  dockerImage,
 }: SubscriptionsVersionProps) {
-  const [dockerImage, setDockerImage] = useState('');
   const [isShowManifest, setIsShowManifest] = useState(false);
-
-  useEffect(() => {
-    // todo appId -> request resource dockerImage
-
-    setDockerImage(dockerImage);
-  }, [VersionDetail?.appId, setDockerImage]);
 
   return (
     <div className='bg-gray-F5 mt-[30px] w-full rounded-md px-[24px] pt-[24px]'>
-      <div className='text-dark-normal mb-[30px] text-xl font-medium'>
-        {title}
+      <div className='text-dark-normal mb-[30px] flex items-center justify-between'>
+        <span className='text-xl font-medium'>{title}</span>
+        <ActionMenuItem
+          appId={VersionDetail?.appId}
+          version={VersionDetail?.version}
+        />
       </div>
       <Row gutter={24} className='mb-[16px] w-full'>
         <Col sm={24} md={8} className='min-w-[140px]'>
@@ -55,7 +55,9 @@ export default function SubscriptionsVersion({
         <Col sm={24} md={8} className='min-w-[140px]'>
           <Copy
             label='Subscription Status: '
-            content={SubscriptionStatusType[VersionDetail?.subscriptionStatus]}
+            content={
+              SubscriptionStatusType[VersionDetail?.subscriptionStatus ?? 0]
+            }
             className='flex items-center justify-start'
             vertical={false}
           />

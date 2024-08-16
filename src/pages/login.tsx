@@ -32,7 +32,7 @@ export default function LogIn() {
       type: 'success',
       content: 'login success',
     });
-    router.push('/dapp/list');
+    router.push('/dapp');
   }, [dispatch, form, router, messageApi]);
 
   const handleLogin = useDebounceCallback(async () => {

@@ -15,15 +15,6 @@ const items: MenuItem[] = [
 export default function MyMenu() {
   const router = useRouter();
   const { pathname } = router;
-  // const [collapsed, setCollapsed] = useState(false);
-
-  /**
-   * @description: Collapsed menu
-   */
-  // const toggleCollapsed = () => {
-  //   setCollapsed(!collapsed);
-  // };
-
   const handleRouterChange = (key: string) => {
     router.push(`/${key}`);
   };
@@ -35,11 +26,10 @@ export default function MyMenu() {
           ? 'm-w-[150px] hidden w-[150px] border-none pt-[48px] font-medium sm:block'
           : 'hidden'
       )}
-      defaultSelectedKeys={['dapp']}
+      defaultSelectedKeys={[`${pathname.replace(/^\/+/, '')}`]}
       mode='inline'
       theme='light'
       onClick={({ key }) => handleRouterChange(key)}
-      // inlineCollapsed={collapsed}
       items={items}
     />
   );

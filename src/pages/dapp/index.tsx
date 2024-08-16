@@ -3,7 +3,6 @@ import {
   DownOutlined,
   FileSearchOutlined,
   SearchOutlined,
-  SmallDashOutlined,
   UpOutlined,
 } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
@@ -15,9 +14,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDebounceCallback } from '@/lib/utils';
 
 import ActionMenu from '@/components/dapp/ActionMenu';
-import ConfirmModal from '@/components/dapp/ConfirmModal';
-import DeployDrawer from '@/components/dapp/DeployDrawer';
-import UpdateSettingDrawer from '@/components/dapp/UpdateSettingsDrawer';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setAppList } from '@/store/slices/appSlice';
@@ -25,7 +21,7 @@ import { setAppList } from '@/store/slices/appSlice';
 import { queryAuthToken } from '@/api/apiUtils';
 import { getAppList } from '@/api/requestApp';
 
-import { ConfirmActionType, GetAppResponseItem } from '@/types/appType';
+import { GetAppResponseItem } from '@/types/appType';
 
 export default function List() {
   const dispatch = useAppDispatch();
@@ -37,14 +33,9 @@ export default function List() {
   const [isShowFilterBox, setIsShowFilterBox] = useState(false);
   const [tempOrganizationId, setTempOrganizationId] = useState('');
   const [isShowBatchBox, setIsShowBatchBox] = useState(false);
-  const [isShowAppIdActionBox, setIsShowAppIdActionBox] = useState('');
-  const [actionType, setActionType] = useState<ConfirmActionType>('Stop DApp');
-  const [sureConfirmAction, setSureConfirmAction] = useState(false);
-  const [isShowConfirmModal, setIsShowConfirmModal] = useState(false);
+
   const [rowSelection, setRowSelection] = useState<GetAppResponseItem[]>([]);
   const [totalCountItems, setTotalCountItems] = useState(0);
-  const [isShowDeployDrawer, setIsShowDeployDrawer] = useState(false);
-  const [isShowUpdateDrawer, setIsShowUpdateDrawer] = useState(false);
   const router = useRouter();
   const appList = useAppSelector((state) => state.app.appList);
 
@@ -75,29 +66,15 @@ export default function List() {
       title: 'Action',
       dataIndex: '',
       key: 'x',
-      // fixed: 'right',
+      fixed: 'right',
       render: (record) => (
-        <div className='relative z-10'>
+        <div className='z-1 relative'>
           <FileSearchOutlined
-            className='text-blue-link mr-[8px] cursor-pointer text-[16px]'
+            className='text-blue-link cursor-pointer text-[16px]'
             onClick={() => {
               localStorage.setItem('appId', record.appId);
               router.push(`/dapp/detail`);
             }}
-          />
-          <SmallDashOutlined
-            onClick={() =>
-              setIsShowAppIdActionBox(isShowAppIdActionBox ? '' : record.appId)
-            }
-            className='text-blue-link cursor-pointer text-[16px]'
-          />
-          <ActionMenu
-            className='z-100 absolute right-[0] top-[34px] bg-white opacity-100'
-            isShowBatchBox={isShowAppIdActionBox === record.appId}
-            setActionType={setActionType}
-            setIsShowConfirmModal={setIsShowConfirmModal}
-            setIsShowDeployDrawer={setIsShowDeployDrawer}
-            setIsShowUpdateDrawer={setIsShowUpdateDrawer}
           />
         </div>
       ),
@@ -152,19 +129,6 @@ export default function List() {
     },
     [skipCount, maxResultCount]
   );
-
-  const handleBatchAction = useCallback(async () => {
-    setSureConfirmAction(false);
-  }, []);
-
-  useEffect(() => {
-    if (!sureConfirmAction) {
-      return;
-    }
-
-    handleBatchAction();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sureConfirmAction]);
 
   return (
     <div className='px-[16px] pb-[28px] pt-[48px]'>
@@ -232,7 +196,7 @@ export default function List() {
             </div>
           </div>
         </div>
-        <div className='relative'>
+        <div className='relative z-10'>
           <Button
             className='text-blue-link border-blue-link w-[174px] border border-solid bg-white'
             onClick={() => setIsShowBatchBox(!isShowBatchBox)}
@@ -243,12 +207,9 @@ export default function List() {
             Batch Actions
           </Button>
           <ActionMenu
+            appIds={rowSelection.map((item) => item.appId)}
             className='absolute right-[0] top-[40px]'
             isShowBatchBox={isShowBatchBox}
-            setActionType={setActionType}
-            setIsShowConfirmModal={setIsShowConfirmModal}
-            setIsShowDeployDrawer={setIsShowDeployDrawer}
-            setIsShowUpdateDrawer={setIsShowUpdateDrawer}
           />
         </div>
       </div>
@@ -276,22 +237,9 @@ export default function List() {
           onChange: tableOnChange,
           showSizeChanger: true,
           showTitle: true,
+          showTotal: (total) => `Total ${total} apps`,
           pageSizeOptions: ['10', '20', '50', '100'],
         }}
-      />
-      <ConfirmModal
-        isShowConfirmModal={isShowConfirmModal}
-        setIsShowConfirmModal={setIsShowConfirmModal}
-        actionType={actionType}
-        setSureConfirmAction={setSureConfirmAction}
-      />
-      <DeployDrawer
-        isShowDeployDrawer={isShowDeployDrawer}
-        setIsShowDeployDrawer={setIsShowDeployDrawer}
-      />
-      <UpdateSettingDrawer
-        isShowUpdateDrawer={isShowUpdateDrawer}
-        setIsShowUpdateDrawer={setIsShowUpdateDrawer}
       />
     </div>
   );

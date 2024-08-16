@@ -1,12 +1,25 @@
-import { Button, Divider, Drawer, Input } from 'antd';
+import { Button, Divider, Drawer, Input, message } from 'antd';
 import { useCallback, useState } from 'react';
 
+import { batchSetAppLimit, setAppLimit } from '@/api/requestApp';
+
+import {
+  BatchLimitItemRequestType,
+  SetAppLimitRequestType,
+} from '@/types/appType';
+
 type UpdateSettingDrawerProps = {
-  isShowUpdateDrawer: boolean;
-  setIsShowUpdateDrawer: (params: boolean) => void;
+  readonly updateType: 'batch' | 'single';
+  readonly appId?: string;
+  readonly appIds?: string[];
+  readonly isShowUpdateDrawer: boolean;
+  readonly setIsShowUpdateDrawer: (params: boolean) => void;
 };
 
 export default function UpdateSettingDrawer({
+  updateType,
+  appId,
+  appIds,
   isShowUpdateDrawer,
   setIsShowUpdateDrawer,
 }: UpdateSettingDrawerProps) {
@@ -21,11 +34,86 @@ export default function UpdateSettingDrawer({
     useState('');
   const [appQueryPodRequestMemoryp, setAppQueryPodRequestMemoryp] =
     useState('');
-  const [appPodReplicas, setAppPodReplicas] = useState('');
+  const [appPodReplicas, setAppPodReplicas] = useState<number>();
 
   const handleCancel = useCallback(() => {
+    setMaxEntityCallCount(undefined);
+    setMaxEntitySize(undefined);
+    setMaxLogCallCount(undefined);
+    setMaxLogSize(undefined);
+    setMaxContractCallCount(undefined);
+    setAppFullPodRequestCpuCore('');
+    setAppFullPodRequestMemory('');
+    setAppQueryPodRequestCpuCore('');
+    setAppQueryPodRequestMemoryp('');
+    setAppPodReplicas(undefined);
     setIsShowUpdateDrawer(false);
   }, [setIsShowUpdateDrawer]);
+
+  const handleUpdateSetting = useCallback(async () => {
+    const params = {} as BatchLimitItemRequestType;
+    if (updateType === 'batch') {
+      params.appIds = appIds;
+    }
+    if (updateType === 'single') {
+      params.appId = appId;
+    }
+    if (maxEntityCallCount) {
+      params.maxEntityCallCount = maxEntityCallCount;
+    }
+    if (maxEntitySize) {
+      params.maxEntitySize = maxEntitySize;
+    }
+    if (maxLogCallCount) {
+      params.maxLogCallCount = maxLogCallCount;
+    }
+    if (maxLogSize) {
+      params.maxLogSize = maxLogSize;
+    }
+    if (maxContractCallCount) {
+      params.maxContractCallCount = maxContractCallCount;
+    }
+    if (appFullPodRequestCpuCore) {
+      params.appFullPodRequestCpuCore = appFullPodRequestCpuCore;
+    }
+    if (appFullPodRequestMemory) {
+      params.appFullPodRequestMemory = appFullPodRequestMemory;
+    }
+    if (appQueryPodRequestCpuCore) {
+      params.appQueryPodRequestCpuCore = appQueryPodRequestCpuCore;
+    }
+    if (appQueryPodRequestMemoryp) {
+      params.appQueryPodRequestMemoryp = appQueryPodRequestMemoryp;
+    }
+    if (appPodReplicas) {
+      params.appPodReplicas = appPodReplicas;
+    }
+    console.log(params);
+    let res = null;
+    if (updateType === 'batch') {
+      res = await batchSetAppLimit(params);
+    }
+    if (updateType === 'single') {
+      res = await setAppLimit(params as SetAppLimitRequestType);
+    }
+    if (res === 'success') {
+      message.success('Update Success');
+    } else {
+      message.error('Update Failed');
+    }
+    handleCancel();
+  }, [
+    maxEntityCallCount,
+    maxEntitySize,
+    maxLogCallCount,
+    maxLogSize,
+    maxContractCallCount,
+    appFullPodRequestCpuCore,
+    appFullPodRequestMemory,
+    appQueryPodRequestCpuCore,
+    appQueryPodRequestMemoryp,
+    appPodReplicas,
+  ]);
 
   return (
     <Drawer
@@ -33,6 +121,7 @@ export default function UpdateSettingDrawer({
       open={isShowUpdateDrawer}
       onClose={() => handleCancel()}
       width={978}
+      destroyOnClose
     >
       <div className='mb-[24px] flex items-center justify-between'>
         <div className='w-[49%]'>
@@ -154,7 +243,7 @@ export default function UpdateSettingDrawer({
           <Input
             placeholder='Enter App Pod Replicas'
             value={appPodReplicas}
-            onChange={(e) => setAppPodReplicas(e.target.value)}
+            onChange={(e) => setAppPodReplicas(Number(e.target.value))}
             className='border-gray-E0 w-full rounded-[8px]'
           />
         </div>
@@ -173,9 +262,7 @@ export default function UpdateSettingDrawer({
           type='primary'
           size='large'
           className='w-[160px]'
-          onClick={() => {
-            console.log('Deploy');
-          }}
+          onClick={() => handleUpdateSetting()}
         >
           Deploy
         </Button>
