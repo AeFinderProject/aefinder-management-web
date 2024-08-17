@@ -2,7 +2,7 @@ import { PauseCircleOutlined } from '@ant-design/icons';
 import { Button, message, Modal } from 'antd';
 import clsx from 'clsx';
 import Image from 'next/image';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import {
   batchDestroyApp,
@@ -39,12 +39,15 @@ export default function ConfirmModal({
   needRefresh,
   setNeedRefresh,
 }: ConfirmModalProps) {
+  const [loading, setLoading] = useState(false);
+
   const handleCancel = useCallback(() => {
     setIsShowConfirmModal(false);
   }, [setIsShowConfirmModal]);
 
   const handleAction = useCallback(async () => {
     let res = null;
+    setLoading(true);
     if (updateType === 'batch' && appIds) {
       if (actionType === 'Destroy Services') {
         res = await batchDestroyApp({ appIds: appIds });
@@ -71,7 +74,7 @@ export default function ConfirmModal({
       message?.success(`${actionType} successfully`);
       setNeedRefresh(!needRefresh);
     }
-
+    setLoading(false);
     setIsShowConfirmModal(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setIsShowConfirmModal, updateType, appId, version, appIds, actionType]);
@@ -94,6 +97,7 @@ export default function ConfirmModal({
           <Button
             type={actionType === 'Stop DApp' ? 'default' : 'primary'}
             size='large'
+            loading={loading}
             className={clsx(
               'w-[180px]',
               actionType === 'Stop DApp' &&

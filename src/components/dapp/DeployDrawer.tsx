@@ -84,7 +84,6 @@ export default function DeployDrawer({
       title='Deploy'
       open={isShowDeployDrawer}
       onClose={() => handleCancel()}
-      zIndex={10000}
     >
       <div>
         <div className='text-dark-normal mb-[8px] text-[16px]'>

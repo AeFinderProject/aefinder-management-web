@@ -15,6 +15,7 @@ type ActionMenuProps = {
   readonly appIds?: string[];
   readonly className?: string;
   readonly isShowBatchBox?: boolean;
+  readonly setIsShowBatchBox: (isShowBatchBox: boolean) => void;
   readonly needRefresh: boolean;
   readonly setNeedRefresh: (needRefresh: boolean) => void;
 };
@@ -24,7 +25,8 @@ export default function ActionMenu({
   appId,
   version,
   appIds,
-  isShowBatchBox = true,
+  isShowBatchBox,
+  setIsShowBatchBox,
   className,
   needRefresh,
   setNeedRefresh,
@@ -39,9 +41,20 @@ export default function ActionMenu({
     (type: ConfirmActionType) => {
       setActionType(type);
       setIsShowConfirmModal(true);
+      setIsShowBatchBox(false);
     },
-    [setActionType, setIsShowConfirmModal]
+    [setActionType, setIsShowConfirmModal, setIsShowBatchBox]
   );
+
+  const handleDeploy = useCallback(() => {
+    setIsShowDeployDrawer(true);
+    setIsShowBatchBox(false);
+  }, [setIsShowDeployDrawer, setIsShowBatchBox]);
+
+  const handleUpdate = useCallback(() => {
+    setIsShowUpdateDrawer(true);
+    setIsShowBatchBox(false);
+  }, [setIsShowUpdateDrawer, setIsShowBatchBox]);
 
   return (
     <div
@@ -64,7 +77,7 @@ export default function ActionMenu({
         <div className='ml-[8px] text-sm'>Destroy Services</div>
       </div>
       <div
-        onClick={() => setIsShowDeployDrawer(true)}
+        onClick={() => handleDeploy()}
         className='hover:bg-gray-F5 flex w-full cursor-pointer items-center justify-start p-[16px]'
       >
         <Image
@@ -76,7 +89,7 @@ export default function ActionMenu({
         <div className='ml-[8px] text-sm'>Deploy App</div>
       </div>
       <div
-        onClick={() => setIsShowUpdateDrawer(true)}
+        onClick={() => handleUpdate()}
         className='hover:bg-gray-F5 flex w-full cursor-pointer items-center justify-start p-[16px]'
       >
         <Image

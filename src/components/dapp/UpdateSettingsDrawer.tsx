@@ -39,6 +39,7 @@ export default function UpdateSettingDrawer({
     useState('');
   const [appQueryPodRequestMemory, setAppQueryPodRequestMemory] = useState('');
   const [appPodReplicas, setAppPodReplicas] = useState<number>();
+  const [loading, setLoading] = useState(false);
 
   const handleCancel = useCallback(() => {
     setMaxEntityCallCount(undefined);
@@ -92,7 +93,7 @@ export default function UpdateSettingDrawer({
     if (appPodReplicas) {
       params.appPodReplicas = appPodReplicas;
     }
-    console.log(params);
+    setLoading(true);
     let res = null;
     if (updateType === 'batch') {
       res = await batchSetAppLimit(params);
@@ -104,6 +105,7 @@ export default function UpdateSettingDrawer({
       message.success('UpdateSetting Success');
       setNeedRefresh(!needRefresh);
     }
+    setLoading(false);
     handleCancel();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -130,7 +132,6 @@ export default function UpdateSettingDrawer({
       onClose={() => handleCancel()}
       width={978}
       destroyOnClose
-      zIndex={10000}
     >
       <div className='mb-[24px] flex items-center justify-between'>
         <div className='w-[49%]'>
@@ -271,6 +272,7 @@ export default function UpdateSettingDrawer({
           type='primary'
           size='large'
           className='w-[160px]'
+          loading={loading}
           onClick={() => handleUpdateSetting()}
         >
           Deploy
