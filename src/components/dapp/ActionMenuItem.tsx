@@ -18,11 +18,15 @@ message.config({
 type ActionMenuItemProps = {
   readonly appId?: string;
   readonly version?: string;
+  readonly needRefresh: boolean;
+  readonly setNeedRefresh: (needRefresh: boolean) => void;
 };
 
 export default function ActionMenuItem({
   appId,
   version,
+  needRefresh,
+  setNeedRefresh,
 }: ActionMenuItemProps) {
   const [actionType, setActionType] = useState<ConfirmActionType>('Stop DApp');
   const [isShowConfirmModal, setIsShowConfirmModal] = useState(false);
@@ -104,6 +108,8 @@ export default function ActionMenuItem({
         isShowConfirmModal={isShowConfirmModal}
         setIsShowConfirmModal={setIsShowConfirmModal}
         actionType={actionType}
+        needRefresh={needRefresh}
+        setNeedRefresh={setNeedRefresh}
       />
       <DeployDrawer
         updateType='single'
@@ -111,12 +117,16 @@ export default function ActionMenuItem({
         version={version}
         isShowDeployDrawer={isShowDeployDrawer}
         setIsShowDeployDrawer={setIsShowDeployDrawer}
+        needRefresh={needRefresh}
+        setNeedRefresh={setNeedRefresh}
       />
       <UpdateSettingDrawer
         updateType='single'
         appId={appId}
         isShowUpdateDrawer={isShowUpdateDrawer}
         setIsShowUpdateDrawer={setIsShowUpdateDrawer}
+        needRefresh={needRefresh}
+        setNeedRefresh={setNeedRefresh}
       />
     </div>
   );

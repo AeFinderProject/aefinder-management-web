@@ -40,6 +40,7 @@ export default function List() {
   const [tempOrganizationId, setTempOrganizationId] = useState('');
   const [rowSelection, setRowSelection] = useState<GetAppResponseItem[]>([]);
   const [totalCountItems, setTotalCountItems] = useState(0);
+  const [needRefresh, setNeedRefresh] = useState(false);
   const router = useRouter();
   const appList = useAppSelector((state) => state.app.appList);
 
@@ -133,7 +134,14 @@ export default function List() {
 
   useEffect(() => {
     getAppListTemp();
-  }, [getAppListTemp, organizationId, appId, skipCount, maxResultCount]);
+  }, [
+    getAppListTemp,
+    organizationId,
+    appId,
+    skipCount,
+    maxResultCount,
+    needRefresh,
+  ]);
 
   const handleSearch = useDebounceCallback(async (e) => {
     setAppId(e.target.value);
@@ -246,6 +254,8 @@ export default function List() {
                 <ActionMenu
                   updateType='batch'
                   appIds={rowSelection.map((item) => item.appId)}
+                  needRefresh={needRefresh}
+                  setNeedRefresh={setNeedRefresh}
                 />
               );
             }}

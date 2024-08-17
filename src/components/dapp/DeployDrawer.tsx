@@ -13,6 +13,8 @@ type DeployDrawerProps = {
   readonly appIds?: string[];
   readonly isShowDeployDrawer: boolean;
   readonly setIsShowDeployDrawer: (params: boolean) => void;
+  readonly needRefresh: boolean;
+  readonly setNeedRefresh: (needRefresh: boolean) => void;
   readonly messageApi?: MessageInstance;
 };
 
@@ -23,6 +25,8 @@ export default function DeployDrawer({
   appIds,
   isShowDeployDrawer,
   setIsShowDeployDrawer,
+  needRefresh,
+  setNeedRefresh,
   messageApi,
 }: DeployDrawerProps) {
   const [dockerImage, setDockerImage] = useState('');
@@ -61,12 +65,14 @@ export default function DeployDrawer({
         key: 'Deploy',
       });
       setDockerImage('');
+      setNeedRefresh(!needRefresh);
     }
     setLoading(false);
     setIsShowDeployDrawer(false);
     return () => {
       setDockerImage('');
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     dockerImage,
     setIsShowDeployDrawer,
