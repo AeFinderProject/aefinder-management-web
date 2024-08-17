@@ -33,8 +33,7 @@ export default function UpdateSettingDrawer({
   const [appFullPodRequestMemory, setAppFullPodRequestMemory] = useState('');
   const [appQueryPodRequestCpuCore, setAppQueryPodRequestCpuCore] =
     useState('');
-  const [appQueryPodRequestMemoryp, setAppQueryPodRequestMemoryp] =
-    useState('');
+  const [appQueryPodRequestMemory, setAppQueryPodRequestMemory] = useState('');
   const [appPodReplicas, setAppPodReplicas] = useState<number>();
 
   const handleCancel = useCallback(() => {
@@ -46,7 +45,7 @@ export default function UpdateSettingDrawer({
     setAppFullPodRequestCpuCore('');
     setAppFullPodRequestMemory('');
     setAppQueryPodRequestCpuCore('');
-    setAppQueryPodRequestMemoryp('');
+    setAppQueryPodRequestMemory('');
     setAppPodReplicas(undefined);
     setIsShowUpdateDrawer(false);
   }, [setIsShowUpdateDrawer]);
@@ -83,8 +82,8 @@ export default function UpdateSettingDrawer({
     if (appQueryPodRequestCpuCore) {
       params.appQueryPodRequestCpuCore = appQueryPodRequestCpuCore;
     }
-    if (appQueryPodRequestMemoryp) {
-      params.appQueryPodRequestMemoryp = appQueryPodRequestMemoryp;
+    if (appQueryPodRequestMemory) {
+      params.appQueryPodRequestMemory = appQueryPodRequestMemory;
     }
     if (appPodReplicas) {
       params.appPodReplicas = appPodReplicas;
@@ -97,8 +96,8 @@ export default function UpdateSettingDrawer({
     if (updateType === 'single') {
       res = await setAppLimit(params as SetAppLimitRequestType);
     }
-    if (res === 'success') {
-      message.success('Update Success');
+    if (res) {
+      message.success('UpdateSetting Success');
     }
     handleCancel();
   }, [
@@ -110,7 +109,7 @@ export default function UpdateSettingDrawer({
     appFullPodRequestCpuCore,
     appFullPodRequestMemory,
     appQueryPodRequestCpuCore,
-    appQueryPodRequestMemoryp,
+    appQueryPodRequestMemory,
     appPodReplicas,
     updateType,
     appId,
@@ -193,6 +192,19 @@ export default function UpdateSettingDrawer({
         </div>
         <div className='w-[49%]'>
           <div className='text-dark-normal mb-[8px] text-[16px]'>
+            App Pod Replicas
+          </div>
+          <Input
+            placeholder='Enter App Pod Replicas'
+            value={appPodReplicas}
+            onChange={(e) => setAppPodReplicas(Number(e.target.value))}
+            className='border-gray-E0 w-full rounded-[8px]'
+          />
+        </div>
+      </div>
+      <div className='mb-[24px] flex items-center justify-between'>
+        <div className='w-[49%]'>
+          <div className='text-dark-normal mb-[8px] text-[16px]'>
             App Full Pod Request CPU Core
           </div>
           <Input
@@ -202,19 +214,19 @@ export default function UpdateSettingDrawer({
             className='border-gray-E0 w-full rounded-[8px]'
           />
         </div>
-      </div>
-      <div className='mb-[24px] flex items-center justify-between'>
         <div className='w-[49%]'>
           <div className='text-dark-normal mb-[8px] text-[16px]'>
             App Full Pod Request Memory
           </div>
           <Input
             placeholder='Enter App Full Pod Request Memory'
-            value={appQueryPodRequestMemoryp}
-            onChange={(e) => setAppQueryPodRequestMemoryp(e.target.value)}
+            value={appQueryPodRequestMemory}
+            onChange={(e) => setAppQueryPodRequestMemory(e.target.value)}
             className='border-gray-E0 w-full rounded-[8px]'
           />
         </div>
+      </div>
+      <div className='mb-[24px] flex items-center justify-between'>
         <div className='w-[49%]'>
           <div className='text-dark-normal mb-[8px] text-[16px]'>
             App Query Pod Request CPU Core
@@ -226,8 +238,6 @@ export default function UpdateSettingDrawer({
             className='border-gray-E0 w-full rounded-[8px]'
           />
         </div>
-      </div>
-      <div className='mb-[24px] flex items-center justify-between'>
         <div className='w-[49%]'>
           <div className='text-dark-normal mb-[8px] text-[16px]'>
             App Query Pod Request Memory
@@ -236,17 +246,6 @@ export default function UpdateSettingDrawer({
             placeholder='Enter App Full Pod Request Memory'
             value={appFullPodRequestMemory}
             onChange={(e) => setAppFullPodRequestMemory(e.target.value)}
-            className='border-gray-E0 w-full rounded-[8px]'
-          />
-        </div>
-        <div className='w-[49%]'>
-          <div className='text-dark-normal mb-[8px] text-[16px]'>
-            App Pod Replicas
-          </div>
-          <Input
-            placeholder='Enter App Pod Replicas'
-            value={appPodReplicas}
-            onChange={(e) => setAppPodReplicas(Number(e.target.value))}
             className='border-gray-E0 w-full rounded-[8px]'
           />
         </div>

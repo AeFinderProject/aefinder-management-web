@@ -1,6 +1,8 @@
 import { RightOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { useDebounceCallback } from '@/lib/utils';
 
 import DetailBox from '@/components/dapp/DetailBox';
 import SubscriptionsVersion from '@/components/dapp/SubscriptionsVersion';
@@ -10,7 +12,7 @@ import { getAppDetail, getManifest } from '@/api/requestApp';
 
 import { GetAppResponseItem, VersionType } from '@/types/appType';
 
-export default function Detail() {
+export default function AppDetail() {
   const router = useRouter();
   const [currentAppDetail, setCurrentAppDetail] =
     useState<GetAppResponseItem>();
@@ -20,10 +22,10 @@ export default function Detail() {
     useState<VersionType>();
   const [currentDockerImage, setCurrentDockerImage] = useState('');
   const [pendingDockerImage, setPendingDockerImage] = useState('');
+  const { query } = router;
+  const appId = query.appId as string;
 
-  const appId = localStorage.getItem('appId');
-
-  const tempGetAppDetail = useCallback(async () => {
+  const tempGetAppDetail = useDebounceCallback(async () => {
     if (!appId) {
       return;
     }
@@ -31,7 +33,7 @@ export default function Detail() {
     setCurrentAppDetail(res);
   }, [appId]);
 
-  const tempGetManifest = useCallback(async () => {
+  const tempGetManifest = useDebounceCallback(async () => {
     if (!appId) {
       return;
     }
@@ -40,7 +42,7 @@ export default function Detail() {
     res[1] && setPendingVersionDetail(res[1]);
   }, [appId]);
 
-  const tempGetResources = useCallback(async () => {
+  const tempGetResources = useDebounceCallback(async () => {
     if (!appId) {
       return;
     }
@@ -53,7 +55,7 @@ export default function Detail() {
     tempGetAppDetail();
     tempGetManifest();
     tempGetResources();
-  }, [appId, tempGetAppDetail, tempGetManifest, tempGetResources]);
+  }, [tempGetAppDetail, tempGetManifest, tempGetResources]);
 
   return (
     <div className='px-[16px] pb-[28px] pt-[26px]'>

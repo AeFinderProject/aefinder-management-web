@@ -37,7 +37,7 @@ const columns: TableColumnsType<GetAppResourceLimitItemType> = [
     key: 'organizationName',
   },
   {
-    title: 'FullPodRequestCpuCore/Memory',
+    title: 'AppFullPodRequestCpuCore/Memory',
     dataIndex: '',
     key: 'appFullPodRequestCpuCore',
     render: (record) => (
@@ -48,13 +48,13 @@ const columns: TableColumnsType<GetAppResourceLimitItemType> = [
     ),
   },
   {
-    title: 'QueryPodRequestCpuCore/Memory',
+    title: 'AppQueryPodRequestCpuCore/Memory',
     dataIndex: '',
-    key: 'appFullPodRequestCpuCore',
+    key: 'appQueryPodRequestCpuCore',
     render: (record) => (
       <div>
         {record?.resourceLimit?.appQueryPodRequestCpuCore}/
-        {record?.resourceLimit?.appQueryPodRequestMemoryp}
+        {record?.resourceLimit?.appQueryPodRequestMemory}
       </div>
     ),
   },

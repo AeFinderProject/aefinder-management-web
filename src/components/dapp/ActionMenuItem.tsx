@@ -1,3 +1,4 @@
+import { DeleteOutlined } from '@ant-design/icons';
 import { Divider, message, Tooltip } from 'antd';
 import Image from 'next/image';
 import { useCallback, useState } from 'react';
@@ -79,14 +80,21 @@ export default function ActionMenuItem({
         />
       </Tooltip>
       <Divider type='vertical' />
-      <Tooltip title='Stop App'>
+      <Tooltip title='Pause App'>
         <Image
-          src='/assets/svg/stop.svg'
-          alt='stop'
+          src='/assets/svg/pause.svg'
+          alt='pause'
           width={24}
           height={24}
-          onClick={() => handleAction('Stop DApp')}
+          onClick={() => handleAction('Pause DApp')}
           className='cursor-pointer'
+        />
+      </Tooltip>
+      <Divider type='vertical' />
+      <Tooltip title='Stop App'>
+        <DeleteOutlined
+          onClick={() => handleAction('Stop DApp')}
+          className='text-danger-normal cursor-pointer text-[20px] font-medium'
         />
       </Tooltip>
       <ConfirmModal

@@ -3,7 +3,6 @@ import {
   DownOutlined,
   FileSearchOutlined,
   SearchOutlined,
-  SmallDashOutlined,
 } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
 import { Button, Dropdown, Input, MenuProps, Table } from 'antd';
@@ -22,7 +21,7 @@ import { setAppList } from '@/store/slices/appSlice';
 import { queryAuthToken } from '@/api/apiUtils';
 import { getAppList } from '@/api/requestApp';
 
-import { GetAppResponseItem } from '@/types/appType';
+import { AppStatus, GetAppResponseItem } from '@/types/appType';
 
 const items: MenuProps['items'] = [
   {
@@ -39,7 +38,6 @@ export default function List() {
   const [maxResultCount, setMaxResultCount] = useState(10);
   const [loading, setLoading] = useState(false);
   const [tempOrganizationId, setTempOrganizationId] = useState('');
-  const [currentAppIdSingleBox, setCurrentAppIdSingleBox] = useState('');
   const [rowSelection, setRowSelection] = useState<GetAppResponseItem[]>([]);
   const [totalCountItems, setTotalCountItems] = useState(0);
   const router = useRouter();
@@ -59,13 +57,20 @@ export default function List() {
       key: 'organizationName',
     },
     { title: 'DeployKey', dataIndex: 'deployKey', key: 'deployKey' },
-    { title: 'Status', dataIndex: 'status', key: 'status' },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (record) => {
+        return <>{record === AppStatus.Deployed ? 'Deployed' : 'UnDeployed'}</>;
+      },
+    },
     {
       title: 'CreateTime',
       dataIndex: 'createTime',
       key: 'createTime',
       render: (record) => {
-        return <>{dayjs(record?.createTime).format('YYYY-MM-DD')}</>;
+        return <>{dayjs(record).format('YYYY-MM-DD')}</>;
       },
     },
     {
@@ -73,18 +78,24 @@ export default function List() {
       dataIndex: 'updateTime',
       key: 'updateTime',
       render: (record) => {
-        return <>{dayjs(record?.updateTime).format('YYYY-MM-DD')}</>;
+        return <>{dayjs(record).format('YYYY-MM-DD')}</>;
       },
     },
     {
       title: 'CurrentVersion',
-      dataIndex: 'versions?.currentVersion',
-      key: 'versions?.currentVersion',
+      dataIndex: '',
+      key: 'currentVersion',
+      render: (record) => {
+        return <>{record?.versions?.currentVersion}</>;
+      },
     },
     {
       title: 'PendingVersion',
-      dataIndex: 'versions?.pendingVersion',
-      key: 'versions?.pendingVersion',
+      dataIndex: '',
+      key: 'pendingVersion',
+      render: (record) => {
+        return <>{record?.versions?.pendingVersion}</>;
+      },
     },
     { title: 'Description', dataIndex: 'description', key: 'description' },
     {
@@ -97,30 +108,9 @@ export default function List() {
           <FileSearchOutlined
             className='text-blue-link mr-[8px] cursor-pointer text-[16px]'
             onClick={() => {
-              localStorage.setItem('appId', record.appId);
-              router.push(`/dapp/detail`);
+              router.push(`/dapp/${record.appId}`);
             }}
           />
-          <Dropdown
-            menu={{ items }}
-            placement='bottom'
-            dropdownRender={() => {
-              return (
-                <ActionMenu
-                  updateType='single'
-                  appId={record.appId}
-                  version={record.version}
-                  // className=''
-                  isShowBatchBox={currentAppIdSingleBox === record.appId}
-                />
-              );
-            }}
-          >
-            <SmallDashOutlined
-              className='text-blue-link cursor-pointer text-[16px]'
-              onClick={() => setCurrentAppIdSingleBox(record.appId)}
-            />
-          </Dropdown>
         </div>
       ),
     },

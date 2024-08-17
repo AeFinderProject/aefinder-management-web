@@ -97,7 +97,7 @@ export const setAppLimit = async (
 export const destroyApp = async (params: ActionAppRequestType) => {
   try {
     const res = await request.app.destroyApp({ data: params });
-    return res;
+    return !res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'destroyApp error'));
   }
@@ -106,7 +106,7 @@ export const destroyApp = async (params: ActionAppRequestType) => {
 export const deployApp = async (params: DeployAppRequestType) => {
   try {
     const res = await request.app.deployApp({ data: params });
-    return res;
+    return !res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'deployApp error'));
   }
@@ -115,7 +115,7 @@ export const deployApp = async (params: DeployAppRequestType) => {
 export const restartApp = async (params: ActionAppRequestType) => {
   try {
     const res = await request.app.restartApp({ data: params });
-    return res;
+    return !res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'restartApp error'));
   }
@@ -124,7 +124,7 @@ export const restartApp = async (params: ActionAppRequestType) => {
 export const pauseApp = async (params: ActionAppRequestType) => {
   try {
     const res = await request.app.pauseApp({ data: params });
-    return res;
+    return !res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'pauseApp error'));
   }
@@ -133,7 +133,7 @@ export const pauseApp = async (params: ActionAppRequestType) => {
 export const upgradeApp = async (params: GetAppDetailRequestType) => {
   try {
     const res = await request.app.upgradeApp({ data: params });
-    return res;
+    return !res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'upgradeApp error'));
   }
@@ -142,7 +142,7 @@ export const upgradeApp = async (params: GetAppDetailRequestType) => {
 export const stopApp = async (params: ActionAppRequestType) => {
   try {
     const res = await request.app.stopApp({ data: params });
-    return res;
+    return !res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'stopApp error'));
   }
@@ -151,7 +151,7 @@ export const stopApp = async (params: ActionAppRequestType) => {
 export const batchSetAppLimit = async (params: BatchLimitItemRequestType) => {
   try {
     const res = await request.app.batchSetAppLimit({ data: params });
-    return res;
+    return !res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'batchSetAppLimit error'));
   }
@@ -160,7 +160,7 @@ export const batchSetAppLimit = async (params: BatchLimitItemRequestType) => {
 export const batchDestroyApp = async (params: BatchActionRequestType) => {
   try {
     const res = await request.app.batchDestroyApp({ data: params });
-    return res;
+    return !res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'batchDestroyApp error'));
   }
@@ -169,7 +169,7 @@ export const batchDestroyApp = async (params: BatchActionRequestType) => {
 export const batchDeployApp = async (params: BatchDeployRequestType) => {
   try {
     const res = await request.app.batchDeployApp({ data: params });
-    return res;
+    return !res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'batchDeployApp error'));
   }
@@ -178,7 +178,7 @@ export const batchDeployApp = async (params: BatchDeployRequestType) => {
 export const batchRestartApp = async (params: BatchActionRequestType) => {
   try {
     const res = await request.app.batchRestartApp({ data: params });
-    return res;
+    return !res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'batchRestartApp error'));
   }
@@ -187,7 +187,7 @@ export const batchRestartApp = async (params: BatchActionRequestType) => {
 export const batchPauseApp = async (params: BatchActionRequestType) => {
   try {
     const res = await request.app.batchPauseApp({ data: params });
-    return res;
+    return !res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'batchPauseApp error'));
   }
