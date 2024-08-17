@@ -26,57 +26,47 @@ export default function AppDetail() {
   const { query } = router;
   const appId = query.appId as string;
 
-  const tempGetAppDetail = useDebounceCallback(async () => {
-    if (!appId) {
-      return;
-    }
-    const res = await getAppDetail({ appId });
-    setCurrentAppDetail(res);
-  }, [appId]);
-
   const tempGetManifest = useDebounceCallback(async () => {
+    console.log(appId);
     if (!appId) {
       return;
     }
+
+    const resDetail = await getAppDetail({ appId });
+    setCurrentAppDetail(resDetail);
+    console.log(resDetail);
     const res = await getManifest({ appId });
-    if (res[0]?.version === currentAppDetail?.versions?.currentVersion) {
+    if (res[0]?.version === resDetail?.versions?.currentVersion) {
       setCurrentVersionDetail(res[0]);
     }
-    if (res[0]?.version === currentAppDetail?.versions?.pendingVersion) {
+    if (res[0]?.version === resDetail?.versions?.pendingVersion) {
       setPendingVersionDetail(res[0]);
     }
-    if (res[1]?.version === currentAppDetail?.versions?.currentVersion) {
+    if (res[1]?.version === resDetail?.versions?.currentVersion) {
       setCurrentVersionDetail(res[1]);
     }
-    if (res[1]?.version === currentAppDetail?.versions?.pendingVersion) {
+    if (res[1]?.version === resDetail?.versions?.pendingVersion) {
       setPendingVersionDetail(res[1]);
     }
-  }, [appId]);
 
-  const tempGetResources = useDebounceCallback(async () => {
-    if (!appId) {
-      return;
+    const resResources = await getResources({ appId });
+    if (resResources[0]?.version === resDetail?.versions?.currentVersion) {
+      setCurrentDockerImage(resResources[0].dockerImage);
     }
-    const res = await getResources({ appId });
-    if (res[0]?.version === currentAppDetail?.versions?.currentVersion) {
-      setCurrentDockerImage(res[0].dockerImage);
+    if (resResources[1]?.version === resDetail?.versions?.currentVersion) {
+      setCurrentDockerImage(resResources[1].dockerImage);
     }
-    if (res[1]?.version === currentAppDetail?.versions?.currentVersion) {
-      setCurrentDockerImage(res[1].dockerImage);
+    if (resResources[0]?.version === resDetail?.versions?.pendingVersion) {
+      setPendingDockerImage(resResources[0].dockerImage);
     }
-    if (res[0]?.version === currentAppDetail?.versions?.pendingVersion) {
-      setPendingDockerImage(res[0].dockerImage);
-    }
-    if (res[1]?.version === currentAppDetail?.versions?.pendingVersion) {
-      setPendingDockerImage(res[1].dockerImage);
+    if (resResources[1]?.version === resDetail?.versions?.pendingVersion) {
+      setPendingDockerImage(resResources[1].dockerImage);
     }
   }, [appId]);
 
   useEffect(() => {
-    tempGetAppDetail();
     tempGetManifest();
-    tempGetResources();
-  }, [tempGetAppDetail, tempGetManifest, tempGetResources, appId, needRefresh]);
+  }, [tempGetManifest, appId, needRefresh]);
 
   return (
     <div className='px-[16px] pb-[28px] pt-[26px]'>
