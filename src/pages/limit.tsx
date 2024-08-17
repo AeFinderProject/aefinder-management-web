@@ -128,7 +128,7 @@ export default function Limit() {
 
   useEffect(() => {
     getAppLimitListTemp();
-  }, [organizationId, appId, skipCount, maxResultCount]);
+  }, [getAppLimitListTemp, organizationId, appId, skipCount, maxResultCount]);
 
   const handleClearFilter = useCallback(() => {
     setOrganizationId('');
@@ -160,7 +160,7 @@ export default function Limit() {
       <div className='mb-[16px] flex w-full items-center justify-between'>
         <div className='relative'>
           <Input
-            placeholder='Search by ID'
+            placeholder='Search by AppId'
             value={appId}
             onChange={(e) => setAppId(e.target.value)}
             style={{

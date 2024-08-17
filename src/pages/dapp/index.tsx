@@ -8,6 +8,7 @@ import {
 import type { TableColumnsType } from 'antd';
 import { Button, Dropdown, Input, MenuProps, Table } from 'antd';
 import clsx from 'clsx';
+import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -59,8 +60,22 @@ export default function List() {
     },
     { title: 'DeployKey', dataIndex: 'deployKey', key: 'deployKey' },
     { title: 'Status', dataIndex: 'status', key: 'status' },
-    { title: 'CreateTime', dataIndex: 'createTime', key: 'createTime' },
-    { title: 'UpdateTime', dataIndex: 'updateTime', key: 'updateTime' },
+    {
+      title: 'CreateTime',
+      dataIndex: 'createTime',
+      key: 'createTime',
+      render: (record) => {
+        return <>{dayjs(record?.createTime).format('YYYY-MM-DD')}</>;
+      },
+    },
+    {
+      title: 'UpdateTime',
+      dataIndex: 'updateTime',
+      key: 'updateTime',
+      render: (record) => {
+        return <>{dayjs(record?.updateTime).format('YYYY-MM-DD')}</>;
+      },
+    },
     {
       title: 'CurrentVersion',
       dataIndex: 'versions?.currentVersion',
@@ -124,11 +139,11 @@ export default function List() {
     setLoading(false);
     dispatch(setAppList(items));
     setTotalCountItems(totalCount);
-  }, [organizationId, appId, skipCount, maxResultCount]);
+  }, [getAppList, organizationId, appId, skipCount, maxResultCount]);
 
   useEffect(() => {
     getAppListTemp();
-  }, [organizationId, appId, skipCount, maxResultCount]);
+  }, [getAppListTemp, organizationId, appId, skipCount, maxResultCount]);
 
   const handleSearch = useDebounceCallback(async (e) => {
     setAppId(e.target.value);
@@ -165,7 +180,7 @@ export default function List() {
       <div className='mb-[16px] flex w-full items-center justify-between'>
         <div className='relative'>
           <Input
-            placeholder='Search by ID'
+            placeholder='Search by AppId'
             value={appId}
             onChange={(e) => handleSearch(e)}
             style={{
