@@ -39,8 +39,18 @@ export default function AppDetail() {
       return;
     }
     const res = await getManifest({ appId });
-    res[0] && setCurrentVersionDetail(res[0]);
-    res[1] && setPendingVersionDetail(res[1]);
+    if (res[0]?.version === currentAppDetail?.versions?.currentVersion) {
+      setCurrentVersionDetail(res[0]);
+    }
+    if (res[0]?.version === currentAppDetail?.versions?.pendingVersion) {
+      setPendingVersionDetail(res[0]);
+    }
+    if (res[1]?.version === currentAppDetail?.versions?.currentVersion) {
+      setCurrentVersionDetail(res[1]);
+    }
+    if (res[1]?.version === currentAppDetail?.versions?.pendingVersion) {
+      setPendingVersionDetail(res[1]);
+    }
   }, [appId]);
 
   const tempGetResources = useDebounceCallback(async () => {
@@ -48,8 +58,18 @@ export default function AppDetail() {
       return;
     }
     const res = await getResources({ appId });
-    res[0] && setCurrentDockerImage(res[0].dockerImage);
-    res[1] && setPendingDockerImage(res[1].dockerImage);
+    if (res[0]?.version === currentAppDetail?.versions?.currentVersion) {
+      setCurrentDockerImage(res[0].dockerImage);
+    }
+    if (res[1]?.version === currentAppDetail?.versions?.currentVersion) {
+      setCurrentDockerImage(res[1].dockerImage);
+    }
+    if (res[0]?.version === currentAppDetail?.versions?.pendingVersion) {
+      setPendingDockerImage(res[0].dockerImage);
+    }
+    if (res[1]?.version === currentAppDetail?.versions?.pendingVersion) {
+      setPendingDockerImage(res[1].dockerImage);
+    }
   }, [appId]);
 
   useEffect(() => {
