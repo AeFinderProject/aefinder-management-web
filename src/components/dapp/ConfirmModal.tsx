@@ -24,6 +24,8 @@ type ConfirmModalProps = {
   readonly actionType: ConfirmActionType;
   readonly isShowConfirmModal: boolean;
   readonly setIsShowConfirmModal: (params: boolean) => void;
+  readonly needRefresh: boolean;
+  readonly setNeedRefresh: (needRefresh: boolean) => void;
 };
 
 export default function ConfirmModal({
@@ -34,6 +36,8 @@ export default function ConfirmModal({
   actionType,
   isShowConfirmModal,
   setIsShowConfirmModal,
+  needRefresh,
+  setNeedRefresh,
 }: ConfirmModalProps) {
   const handleCancel = useCallback(() => {
     setIsShowConfirmModal(false);
@@ -65,9 +69,11 @@ export default function ConfirmModal({
 
     if (res) {
       message?.success(`${actionType} successfully`);
+      setNeedRefresh(!needRefresh);
     }
 
     setIsShowConfirmModal(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setIsShowConfirmModal, updateType, appId, version, appIds, actionType]);
 
   return (

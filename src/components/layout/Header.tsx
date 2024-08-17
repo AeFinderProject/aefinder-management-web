@@ -46,7 +46,7 @@ export default function Header() {
           style={{ width: '150px', height: '24px' }}
         />
         <span className='text-dark-normal ml-[8px] text-2xl font-medium'>
-          Manager
+          Management
         </span>
       </div>
       {pathname !== '/login' && pathname !== '/' && (

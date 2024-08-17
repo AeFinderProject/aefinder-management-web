@@ -109,6 +109,7 @@ export default function Limit() {
   >([]);
   const [totalCountItems, setTotalCountItems] = useState(0);
   const [isShowUpdateDrawer, setIsShowUpdateDrawer] = useState(false);
+  const [needRefresh, setNeedRefresh] = useState(false);
   const appLimitList = useAppSelector((state) => state.app.appLimitList);
 
   const getAppLimitListTemp = useDebounceCallback(async () => {
@@ -128,7 +129,14 @@ export default function Limit() {
 
   useEffect(() => {
     getAppLimitListTemp();
-  }, [getAppLimitListTemp, organizationId, appId, skipCount, maxResultCount]);
+  }, [
+    getAppLimitListTemp,
+    organizationId,
+    appId,
+    skipCount,
+    maxResultCount,
+    needRefresh,
+  ]);
 
   const handleClearFilter = useCallback(() => {
     setOrganizationId('');
@@ -270,6 +278,8 @@ export default function Limit() {
         appIds={rowSelection?.map((item) => item.appId)}
         isShowUpdateDrawer={isShowUpdateDrawer}
         setIsShowUpdateDrawer={setIsShowUpdateDrawer}
+        needRefresh={needRefresh}
+        setNeedRefresh={setNeedRefresh}
       />
     </div>
   );

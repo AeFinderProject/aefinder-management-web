@@ -15,6 +15,8 @@ type UpdateSettingDrawerProps = {
   readonly appIds?: string[];
   readonly isShowUpdateDrawer: boolean;
   readonly setIsShowUpdateDrawer: (params: boolean) => void;
+  readonly needRefresh: boolean;
+  readonly setNeedRefresh: (needRefresh: boolean) => void;
 };
 
 export default function UpdateSettingDrawer({
@@ -23,6 +25,8 @@ export default function UpdateSettingDrawer({
   appIds,
   isShowUpdateDrawer,
   setIsShowUpdateDrawer,
+  needRefresh,
+  setNeedRefresh,
 }: UpdateSettingDrawerProps) {
   const [maxEntityCallCount, setMaxEntityCallCount] = useState<number>();
   const [maxEntitySize, setMaxEntitySize] = useState<number>();
@@ -98,8 +102,10 @@ export default function UpdateSettingDrawer({
     }
     if (res) {
       message.success('UpdateSetting Success');
+      setNeedRefresh(!needRefresh);
     }
     handleCancel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     maxEntityCallCount,
     maxEntitySize,

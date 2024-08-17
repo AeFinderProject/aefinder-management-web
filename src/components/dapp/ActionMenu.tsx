@@ -22,6 +22,8 @@ type ActionMenuProps = {
   readonly appIds?: string[];
   readonly className?: string;
   readonly isShowBatchBox?: boolean;
+  readonly needRefresh: boolean;
+  readonly setNeedRefresh: (needRefresh: boolean) => void;
 };
 
 export default function ActionMenu({
@@ -31,6 +33,8 @@ export default function ActionMenu({
   appIds,
   isShowBatchBox = true,
   className,
+  needRefresh,
+  setNeedRefresh,
 }: ActionMenuProps) {
   const [actionType, setActionType] =
     useState<ConfirmActionType>('Restart DApp');
@@ -119,6 +123,8 @@ export default function ActionMenu({
         isShowConfirmModal={isShowConfirmModal}
         setIsShowConfirmModal={setIsShowConfirmModal}
         actionType={actionType}
+        needRefresh={needRefresh}
+        setNeedRefresh={setNeedRefresh}
       />
       <DeployDrawer
         updateType={updateType}
@@ -128,6 +134,8 @@ export default function ActionMenu({
         isShowDeployDrawer={isShowDeployDrawer}
         setIsShowDeployDrawer={setIsShowDeployDrawer}
         messageApi={messageApi}
+        needRefresh={needRefresh}
+        setNeedRefresh={setNeedRefresh}
       />
       <UpdateSettingDrawer
         updateType={updateType}
@@ -135,6 +143,8 @@ export default function ActionMenu({
         appIds={appIds}
         isShowUpdateDrawer={isShowUpdateDrawer}
         setIsShowUpdateDrawer={setIsShowUpdateDrawer}
+        needRefresh={needRefresh}
+        setNeedRefresh={setNeedRefresh}
       />
     </div>
   );

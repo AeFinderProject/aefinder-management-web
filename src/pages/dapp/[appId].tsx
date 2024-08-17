@@ -22,6 +22,7 @@ export default function AppDetail() {
     useState<VersionType>();
   const [currentDockerImage, setCurrentDockerImage] = useState('');
   const [pendingDockerImage, setPendingDockerImage] = useState('');
+  const [needRefresh, setNeedRefresh] = useState(false);
   const { query } = router;
   const appId = query.appId as string;
 
@@ -55,7 +56,7 @@ export default function AppDetail() {
     tempGetAppDetail();
     tempGetManifest();
     tempGetResources();
-  }, [tempGetAppDetail, tempGetManifest, tempGetResources]);
+  }, [tempGetAppDetail, tempGetManifest, tempGetResources, appId, needRefresh]);
 
   return (
     <div className='px-[16px] pb-[28px] pt-[26px]'>
@@ -76,6 +77,8 @@ export default function AppDetail() {
           updateTime={currentAppDetail?.updateTime}
           createTime={currentAppDetail?.createTime}
           dockerImage={currentDockerImage}
+          needRefresh={needRefresh}
+          setNeedRefresh={setNeedRefresh}
         />
       )}
       {currentAppDetail?.versions?.pendingVersion && (
@@ -85,6 +88,8 @@ export default function AppDetail() {
           updateTime={currentAppDetail?.updateTime}
           createTime={currentAppDetail?.createTime}
           dockerImage={pendingDockerImage}
+          needRefresh={needRefresh}
+          setNeedRefresh={setNeedRefresh}
         />
       )}
       {!currentAppDetail?.versions?.currentVersion &&

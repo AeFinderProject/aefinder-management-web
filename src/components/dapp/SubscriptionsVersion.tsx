@@ -15,6 +15,8 @@ type SubscriptionsVersionProps = {
   readonly updateTime?: string;
   readonly createTime?: string;
   readonly dockerImage?: string;
+  readonly needRefresh: boolean;
+  readonly setNeedRefresh: (needRefresh: boolean) => void;
 };
 
 export default function SubscriptionsVersion({
@@ -23,6 +25,8 @@ export default function SubscriptionsVersion({
   updateTime,
   createTime,
   dockerImage,
+  needRefresh,
+  setNeedRefresh,
 }: SubscriptionsVersionProps) {
   const [isShowManifest, setIsShowManifest] = useState(false);
 
@@ -33,6 +37,8 @@ export default function SubscriptionsVersion({
         <ActionMenuItem
           appId={VersionDetail?.appId}
           version={VersionDetail?.version}
+          needRefresh={needRefresh}
+          setNeedRefresh={setNeedRefresh}
         />
       </div>
       <Row gutter={24} className='mb-[16px] w-full'>
