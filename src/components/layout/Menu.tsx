@@ -17,9 +17,12 @@ export default function MyMenu() {
   const router = useRouter();
   const { pathname } = router;
 
-  const handleRouterChange = useCallback((key: string) => {
-    router.push(`/${key}`);
-  }, []);
+  const handleRouterChange = useCallback(
+    (key: string) => {
+      router.push(`/${key}`);
+    },
+    [router]
+  );
 
   useEffect(() => {
     setCurrentRoute(pathname.split('/')[1]);
