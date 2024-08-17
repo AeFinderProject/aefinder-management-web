@@ -1,3 +1,4 @@
+import { PauseCircleOutlined } from '@ant-design/icons';
 import { Button, message, Modal } from 'antd';
 import clsx from 'clsx';
 import Image from 'next/image';
@@ -8,6 +9,7 @@ import {
   batchPauseApp,
   batchRestartApp,
   destroyApp,
+  pauseApp,
   restartApp,
   stopApp,
 } from '@/api/requestApp';
@@ -44,10 +46,11 @@ export default function ConfirmModal({
         res = await batchDestroyApp({ appIds: appIds });
       } else if (actionType === 'Restart DApp') {
         res = await batchRestartApp({ appIds: appIds });
-      } else if (actionType === 'Stop DApp') {
+      } else if (actionType === 'Pause DApp') {
         res = await batchPauseApp({ appIds: appIds });
       }
     }
+
     if (updateType === 'single' && appId && version) {
       if (actionType === 'Destroy Services') {
         res = await destroyApp({ appId, version });
@@ -55,9 +58,11 @@ export default function ConfirmModal({
         res = await restartApp({ appId, version });
       } else if (actionType === 'Stop DApp') {
         res = await stopApp({ appId, version });
+      } else if (actionType === 'Pause DApp') {
+        res = await pauseApp({ appId, version });
       }
     }
-    console.log(res);
+
     if (res) {
       message?.success(`${actionType} successfully`);
     }
@@ -86,7 +91,7 @@ export default function ConfirmModal({
             className={clsx(
               'w-[180px]',
               actionType === 'Stop DApp' &&
-                'bg-danger-normal border-danger-normal border border-solid text-white'
+                'bg-danger-normal border-danger-normal text-white-normal border border-solid'
             )}
             onClick={() => handleAction()}
           >
@@ -95,6 +100,15 @@ export default function ConfirmModal({
         </div>
       }
     >
+      {actionType === 'Pause DApp' && (
+        <div className='text-center'>
+          <PauseCircleOutlined className='text-danger-normal m-auto my-[10px] text-[70px]' />
+          <div className='text-gray-80 text-left text-[16px]'>
+            Are you sure you want to pause this DApp? It needs to be restarted
+            to be used.
+          </div>
+        </div>
+      )}
       {actionType === 'Stop DApp' && (
         <div className='text-center'>
           <Image

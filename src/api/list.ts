@@ -68,15 +68,15 @@ export const AppList = {
     baseConfig: { method: 'PUT' },
   },
   batchDestroyApp: {
-    target: `${AeFinderHost} /api/app-deploy/batch-destroy`,
+    target: `${AeFinderHost}/api/app-deploy/batch-destroy`,
     baseConfig: { method: 'POST' },
   },
   batchDeployApp: {
-    target: `${AeFinderHost} /api/app-deploy/batch-deploy`,
+    target: `${AeFinderHost}/api/app-deploy/batch-deploy`,
     baseConfig: { method: 'POST' },
   },
   batchRestartApp: {
-    target: `${AeFinderHost} /api/app-deploy/batch-restart`,
+    target: `${AeFinderHost}/api/app-deploy/batch-restart`,
     baseConfig: { method: 'POST' },
   },
   batchPauseApp: {

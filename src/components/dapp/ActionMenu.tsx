@@ -32,7 +32,8 @@ export default function ActionMenu({
   isShowBatchBox = true,
   className,
 }: ActionMenuProps) {
-  const [actionType, setActionType] = useState<ConfirmActionType>('Stop DApp');
+  const [actionType, setActionType] =
+    useState<ConfirmActionType>('Restart DApp');
   const [isShowConfirmModal, setIsShowConfirmModal] = useState(false);
   const [isShowDeployDrawer, setIsShowDeployDrawer] = useState(false);
   const [isShowUpdateDrawer, setIsShowUpdateDrawer] = useState(false);
@@ -104,11 +105,11 @@ export default function ActionMenu({
         <div className='ml-[8px] text-sm'>Restart App</div>
       </div>
       <div
-        onClick={() => handleAction('Stop DApp')}
+        onClick={() => handleAction('Pause DApp')}
         className='border-gray-E0 hover:bg-gray-F5 flex w-full cursor-pointer items-center justify-start rounded-b-lg border-t border-solid p-[16px]'
       >
-        <Image src='/assets/svg/stop.svg' alt='stop' width={24} height={24} />
-        <div className='text-danger-normal ml-[8px] text-sm'>Stop App</div>
+        <Image src='/assets/svg/pause.svg' alt='pause' width={24} height={24} />
+        <div className='text-danger-normal ml-[8px] text-sm'>Pause App</div>
       </div>
       <ConfirmModal
         updateType={updateType}

@@ -9,6 +9,11 @@ export type GetAppDetailRequestType = {
   appId: string;
 };
 
+export enum AppStatus {
+  UnDeployed = 0,
+  Deployed = 1,
+}
+
 // Initialized = 0, Started = 1, Paused = 2
 export enum SubscriptionStatusType {
   Initialized = 0,
@@ -25,7 +30,7 @@ export type GetAppResponseItem = {
   description: string;
   deployKey: string;
   sourceCodeUrl: string;
-  status: SubscriptionStatusType;
+  status: AppStatus.UnDeployed | AppStatus.Deployed;
   createTime: string;
   updateTime: string;
   versions: {
@@ -42,7 +47,8 @@ export type GetAppResponseType = {
 export type ConfirmActionType =
   | 'Destroy Services'
   | 'Restart DApp'
-  | 'Stop DApp';
+  | 'Stop DApp'
+  | 'Pause DApp';
 
 export type UpdateType = 'batch' | 'single';
 
@@ -118,7 +124,7 @@ export type LimitItemType = {
   appFullPodRequestCpuCore?: string;
   appFullPodRequestMemory?: string;
   appQueryPodRequestCpuCore?: string;
-  appQueryPodRequestMemoryp?: string;
+  appQueryPodRequestMemory?: string;
   appPodReplicas?: number;
 };
 
