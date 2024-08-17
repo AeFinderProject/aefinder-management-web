@@ -40,6 +40,7 @@ export default function List() {
   const [tempOrganizationId, setTempOrganizationId] = useState('');
   const [rowSelection, setRowSelection] = useState<GetAppResponseItem[]>([]);
   const [totalCountItems, setTotalCountItems] = useState(0);
+  const [isShowBatchBox, setIsShowBatchBox] = useState(true);
   const [needRefresh, setNeedRefresh] = useState(false);
   const router = useRouter();
   const appList = useAppSelector((state) => state.app.appList);
@@ -247,12 +248,14 @@ export default function List() {
           <Dropdown
             menu={{ items }}
             placement='bottom'
-            trigger={['hover']}
+            trigger={['click']}
             dropdownRender={() => {
               return (
                 <ActionMenu
                   updateType='batch'
                   appIds={rowSelection.map((item) => item.appId)}
+                  isShowBatchBox={isShowBatchBox}
+                  setIsShowBatchBox={setIsShowBatchBox}
                   needRefresh={needRefresh}
                   setNeedRefresh={setNeedRefresh}
                 />
@@ -264,6 +267,7 @@ export default function List() {
               disabled={rowSelection?.length === 0}
               icon={<DownOutlined />}
               iconPosition='end'
+              onClick={() => setIsShowBatchBox(true)}
             >
               Batch Actions
             </Button>
