@@ -1,5 +1,4 @@
 import { Button, Divider, Drawer, Input, message } from 'antd';
-import { MessageInstance } from 'antd/es/message/interface';
 import { useCallback, useState } from 'react';
 
 import { batchDeployApp, deployApp } from '@/api/requestApp';
@@ -15,7 +14,6 @@ type DeployDrawerProps = {
   readonly setIsShowDeployDrawer: (params: boolean) => void;
   readonly needRefresh: boolean;
   readonly setNeedRefresh: (needRefresh: boolean) => void;
-  readonly messageApi?: MessageInstance;
 };
 
 export default function DeployDrawer({
@@ -27,7 +25,6 @@ export default function DeployDrawer({
   setIsShowDeployDrawer,
   needRefresh,
   setNeedRefresh,
-  messageApi,
 }: DeployDrawerProps) {
   const [dockerImage, setDockerImage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -43,51 +40,51 @@ export default function DeployDrawer({
       return;
     }
     setLoading(true);
-    let res = null;
     if (updateType === 'batch' && appIds?.length) {
-      res = await batchDeployApp({
+      const res = await batchDeployApp({
         appIds: appIds,
         imageName: dockerImage,
       });
+      if (res) {
+        message.success({
+          content: 'batchDeploy success',
+          key: 'Deploy',
+        });
+        setDockerImage('');
+        setNeedRefresh(!needRefresh);
+      }
     }
 
     if (updateType === 'single' && appId && version) {
-      res = await deployApp({
+      const res = await deployApp({
         appId: appId,
         version: version,
         imageName: dockerImage,
       });
+      if (!res) {
+        message.success({
+          content: 'Deploy success',
+          key: 'Deploy',
+        });
+        setDockerImage('');
+        setNeedRefresh(!needRefresh);
+      }
     }
 
-    if (res) {
-      messageApi?.success({
-        content: 'Deploy success',
-        key: 'Deploy',
-      });
-      setDockerImage('');
-      setNeedRefresh(!needRefresh);
-    }
     setLoading(false);
     setIsShowDeployDrawer(false);
     return () => {
       setDockerImage('');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    dockerImage,
-    setIsShowDeployDrawer,
-    updateType,
-    appId,
-    version,
-    appIds,
-    messageApi,
-  ]);
+  }, [dockerImage, setIsShowDeployDrawer, updateType, appId, version, appIds]);
 
   return (
     <Drawer
       title='Deploy'
       open={isShowDeployDrawer}
       onClose={() => handleCancel()}
+      zIndex={10000}
     >
       <div>
         <div className='text-dark-normal mb-[8px] text-[16px]'>

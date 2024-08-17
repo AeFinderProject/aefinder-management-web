@@ -1,5 +1,5 @@
 import { DeleteOutlined } from '@ant-design/icons';
-import { Divider, message, Tooltip } from 'antd';
+import { Divider, Tooltip } from 'antd';
 import Image from 'next/image';
 import { useCallback, useState } from 'react';
 
@@ -8,12 +8,6 @@ import DeployDrawer from './DeployDrawer';
 import UpdateSettingDrawer from './UpdateSettingsDrawer';
 
 import { ConfirmActionType } from '@/types/appType';
-
-message.config({
-  top: 100,
-  duration: 2,
-  maxCount: 2,
-});
 
 type ActionMenuItemProps = {
   readonly appId?: string;
