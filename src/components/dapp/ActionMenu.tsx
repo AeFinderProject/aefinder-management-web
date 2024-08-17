@@ -1,4 +1,3 @@
-import { message } from 'antd';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useCallback, useState } from 'react';
@@ -8,12 +7,6 @@ import DeployDrawer from '@/components/dapp/DeployDrawer';
 import UpdateSettingDrawer from '@/components/dapp/UpdateSettingsDrawer';
 
 import { ConfirmActionType, UpdateType } from '@/types/appType';
-
-message.config({
-  top: 100,
-  duration: 2,
-  maxCount: 2,
-});
 
 type ActionMenuProps = {
   readonly updateType: UpdateType;
@@ -41,7 +34,6 @@ export default function ActionMenu({
   const [isShowConfirmModal, setIsShowConfirmModal] = useState(false);
   const [isShowDeployDrawer, setIsShowDeployDrawer] = useState(false);
   const [isShowUpdateDrawer, setIsShowUpdateDrawer] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
 
   const handleAction = useCallback(
     (type: ConfirmActionType) => {
@@ -59,7 +51,6 @@ export default function ActionMenu({
         className
       )}
     >
-      {contextHolder}
       <div
         onClick={() => handleAction('Destroy Services')}
         className='hover:bg-gray-F5 flex w-full cursor-pointer items-center justify-start rounded-t-lg p-[16px]'
@@ -133,7 +124,6 @@ export default function ActionMenu({
         appIds={appIds}
         isShowDeployDrawer={isShowDeployDrawer}
         setIsShowDeployDrawer={setIsShowDeployDrawer}
-        messageApi={messageApi}
         needRefresh={needRefresh}
         setNeedRefresh={setNeedRefresh}
       />

@@ -120,7 +120,6 @@ export default function List() {
   const getAppListTemp = useDebounceCallback(async () => {
     await queryAuthToken();
     setLoading(true);
-    setRowSelection([]);
     const { items = [], totalCount = 0 } = await getAppList({
       organizationId,
       appId,
@@ -248,7 +247,7 @@ export default function List() {
           <Dropdown
             menu={{ items }}
             placement='bottom'
-            trigger={['click']}
+            trigger={['hover']}
             dropdownRender={() => {
               return (
                 <ActionMenu

@@ -115,7 +115,6 @@ export default function Limit() {
   const getAppLimitListTemp = useDebounceCallback(async () => {
     await queryAuthToken();
     setLoading(true);
-    setRowSelection([]);
     const { items = [], totalCount = 0 } = await getAppLimitList({
       organizationId,
       appId,

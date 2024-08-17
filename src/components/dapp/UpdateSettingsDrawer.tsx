@@ -130,6 +130,7 @@ export default function UpdateSettingDrawer({
       onClose={() => handleCancel()}
       width={978}
       destroyOnClose
+      zIndex={10000}
     >
       <div className='mb-[24px] flex items-center justify-between'>
         <div className='w-[49%]'>
