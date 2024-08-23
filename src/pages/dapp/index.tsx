@@ -1,3 +1,5 @@
+'use client';
+
 import {
   ControlOutlined,
   DownOutlined,
@@ -44,21 +46,16 @@ export default function List() {
   const [needRefresh, setNeedRefresh] = useState(false);
   const router = useRouter();
   const appList = useAppSelector((state) => state.app.appList);
+  const isMobile = window?.innerWidth < 640;
 
   const columns: TableColumnsType<GetAppResponseItem> = [
     { title: 'AppId', dataIndex: 'appId', key: 'appId' },
     { title: 'AppName', dataIndex: 'appName', key: 'appName' },
     {
-      title: 'OrganizationId',
-      dataIndex: 'organizationId',
-      key: 'organizationId',
-    },
-    {
       title: 'OrganizationName',
       dataIndex: 'organizationName',
       key: 'organizationName',
     },
-    { title: 'DeployKey', dataIndex: 'deployKey', key: 'deployKey' },
     {
       title: 'Status',
       dataIndex: 'status',
@@ -72,7 +69,7 @@ export default function List() {
       dataIndex: 'createTime',
       key: 'createTime',
       render: (record) => {
-        return <>{dayjs(record).format('YYYY-MM-DD')}</>;
+        return <>{dayjs(record).format('YYYY-MM-DD HH:mm:ss')}</>;
       },
     },
     {
@@ -80,7 +77,7 @@ export default function List() {
       dataIndex: 'updateTime',
       key: 'updateTime',
       render: (record) => {
-        return <>{dayjs(record).format('YYYY-MM-DD')}</>;
+        return <>{dayjs(record).format('YYYY-MM-DD HH:mm:ss')}</>;
       },
     },
     {
@@ -99,12 +96,11 @@ export default function List() {
         return <>{record?.versions?.pendingVersion}</>;
       },
     },
-    { title: 'Description', dataIndex: 'description', key: 'description' },
     {
       title: 'Action',
       dataIndex: '',
       key: 'x',
-      fixed: 'right',
+      fixed: isMobile ? false : 'right',
       render: (record) => (
         <div className='relative z-10'>
           <FileSearchOutlined
@@ -182,7 +178,7 @@ export default function List() {
             value={appId}
             onChange={(e) => handleSearch(e)}
             style={{
-              width: 200,
+              width: 160,
               height: 32,
               borderColor: '#E0E0E0',
               borderRadius: '8px',
@@ -197,7 +193,7 @@ export default function List() {
               return (
                 <div
                   className={clsx(
-                    'bg-white-normal flex w-[388px] flex-col items-center rounded-md border border-solid p-[16px]'
+                    'bg-white-normal flex w-[308px] flex-col items-center rounded-md border border-solid p-[16px] sm:w-[388px]'
                   )}
                 >
                   <div className='mb-[16px] flex w-full items-center justify-between'>
@@ -218,7 +214,7 @@ export default function List() {
                   </div>
                   <div className='flex w-full items-center justify-between'>
                     <Button
-                      className='text-blue-link border-blue-link w-[174px] border border-solid bg-white'
+                      className='text-blue-link border-blue-link bg-white-normal w-[174px] border border-solid'
                       onClick={() => handleClearFilter()}
                     >
                       Clear Filter
@@ -263,13 +259,13 @@ export default function List() {
             }}
           >
             <Button
-              className='text-blue-link border-blue-link w-[174px] border border-solid bg-white'
+              className='text-blue-link border-blue-link bg-white-normal w-[20px] border border-solid sm:w-[174px]'
               disabled={rowSelection?.length === 0}
-              icon={<DownOutlined />}
+              icon={!isMobile && <DownOutlined />}
               iconPosition='end'
               onClick={() => setIsShowBatchBox(true)}
             >
-              Batch Actions
+              {isMobile ? '...' : 'Batch Actions'}
             </Button>
           </Dropdown>
         </div>
@@ -281,6 +277,7 @@ export default function List() {
         loading={loading}
         scroll={{ x: 1700 }}
         className='w-full'
+        size={isMobile ? 'small' : 'middle'}
         rowSelection={{
           onSelect: (record, selected, selectedRows) => {
             console.log(record, selected, selectedRows);
@@ -298,7 +295,7 @@ export default function List() {
           onChange: tableOnChange,
           showSizeChanger: true,
           showTitle: true,
-          showTotal: (total) => `Total ${total} apps`,
+          showTotal: (total) => (isMobile ? '' : `Total ${total} apps`),
           pageSizeOptions: ['10', '20', '50', '100'],
         }}
       />

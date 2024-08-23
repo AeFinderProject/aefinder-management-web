@@ -21,15 +21,24 @@ export default function DetailBox({ currentAppDetail }: DetailBoxProps) {
             </span>
           </div>
           <div className='mb-[24px] flex justify-start'>
-            <Copy label='Network' content='aelf' />
+            <Copy
+              label='status'
+              content={
+                currentAppDetail?.status === 1 ? 'Deployed' : 'UnDeployed'
+              }
+            />
             <Copy
               className='mx-[32px]'
               label='Last updated'
-              content={dayjs(currentAppDetail?.updateTime).format('YYYY-MM-DD')}
+              content={dayjs(currentAppDetail?.updateTime).format(
+                'YYYY-MM-DD HH:mm:ss'
+              )}
             />
             <Copy
               label='Created'
-              content={dayjs(currentAppDetail?.createTime).format('YYYY-MM-DD')}
+              content={dayjs(currentAppDetail?.createTime).format(
+                'YYYY-MM-DD HH:mm:ss'
+              )}
             />
           </div>
           {currentAppDetail?.description && (
@@ -46,17 +55,17 @@ export default function DetailBox({ currentAppDetail }: DetailBoxProps) {
             content={currentAppDetail?.appId ?? ''}
             isShowCopy={true}
           />
-          <Copy
-            className='my-[24px]'
-            label='Deploy Key'
-            content={currentAppDetail?.deployKey ?? ''}
-            isShowCopy={true}
-            showLittle={true}
-          />
           {currentAppDetail?.sourceCodeUrl && (
             <Copy
               label='SourceCodeUrl'
               content={currentAppDetail?.sourceCodeUrl}
+              isShowCopy={true}
+            />
+          )}
+          {currentAppDetail?.imageUrl && (
+            <Copy
+              label='ImageUrl'
+              content={currentAppDetail?.imageUrl}
               isShowCopy={true}
             />
           )}
