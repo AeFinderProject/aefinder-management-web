@@ -29,11 +29,12 @@ export default function SubscriptionsVersion({
   setNeedRefresh,
 }: SubscriptionsVersionProps) {
   const [isShowManifest, setIsShowManifest] = useState(false);
+  const isMobile = window.innerWidth < 640;
 
   return (
     <div className='bg-gray-F5 mt-[30px] w-full rounded-md px-[24px] pt-[24px]'>
       <div className='text-dark-normal mb-[30px] flex items-center justify-between'>
-        <span className='text-xl font-medium'>{title}</span>
+        <span className='text-sm font-medium sm:text-xl'>{title}</span>
         <ActionMenuItem
           appId={VersionDetail?.appId}
           version={VersionDetail?.version}
@@ -42,18 +43,24 @@ export default function SubscriptionsVersion({
         />
       </div>
       <Row gutter={24} className='mb-[16px] w-full'>
-        <Col sm={24} md={8} className='min-w-[140px]'>
+        <Col sm={24} md={8} className='sm:min-w-[140px]'>
           <Copy
             label='Version: '
             content={VersionDetail?.version}
             className='flex items-center justify-start text-base'
             vertical={false}
+            showLittle={isMobile}
           />
         </Col>
-        <Col sm={24} md={7} offset={1} className='min-w-[140px]'>
+        <Col
+          sm={24}
+          md={7}
+          offset={isMobile ? 0 : 1}
+          className='sm:min-w-[140px]'
+        >
           <Copy
             label='Create Time: '
-            content={dayjs(createTime).format('YYYY-MM-DD')}
+            content={dayjs(createTime).format('YYYY-MM-DD HH:mm:ss')}
             className='flex items-center justify-start'
             vertical={false}
           />
@@ -78,10 +85,10 @@ export default function SubscriptionsVersion({
             vertical={false}
           />
         </Col>
-        <Col sm={24} md={7} offset={1} className='min-w-[140px]'>
+        <Col sm={24} md={7} offset={isMobile ? 0 : 1} className='min-w-[140px]'>
           <Copy
             label='Update Time: '
-            content={dayjs(updateTime).format('YYYY-MM-DD')}
+            content={dayjs(updateTime).format('YYYY-MM-DD HH:mm:ss')}
             className='flex items-center justify-start'
             vertical={false}
           />

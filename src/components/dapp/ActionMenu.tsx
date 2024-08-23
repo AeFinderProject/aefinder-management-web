@@ -4,7 +4,6 @@ import { useCallback, useState } from 'react';
 
 import ConfirmModal from '@/components/dapp/ConfirmModal';
 import DeployDrawer from '@/components/dapp/DeployDrawer';
-import UpdateSettingDrawer from '@/components/dapp/UpdateSettingsDrawer';
 
 import { ConfirmActionType, UpdateType } from '@/types/appType';
 
@@ -35,7 +34,6 @@ export default function ActionMenu({
     useState<ConfirmActionType>('Restart DApp');
   const [isShowConfirmModal, setIsShowConfirmModal] = useState(false);
   const [isShowDeployDrawer, setIsShowDeployDrawer] = useState(false);
-  const [isShowUpdateDrawer, setIsShowUpdateDrawer] = useState(false);
 
   const handleAction = useCallback(
     (type: ConfirmActionType) => {
@@ -50,11 +48,6 @@ export default function ActionMenu({
     setIsShowDeployDrawer(true);
     setIsShowBatchBox(false);
   }, [setIsShowDeployDrawer, setIsShowBatchBox]);
-
-  const handleUpdate = useCallback(() => {
-    setIsShowUpdateDrawer(true);
-    setIsShowBatchBox(false);
-  }, [setIsShowUpdateDrawer, setIsShowBatchBox]);
 
   return (
     <div
@@ -87,18 +80,6 @@ export default function ActionMenu({
           height={24}
         />
         <div className='ml-[8px] text-sm'>Deploy App</div>
-      </div>
-      <div
-        onClick={() => handleUpdate()}
-        className='hover:bg-gray-F5 flex w-full cursor-pointer items-center justify-start p-[16px]'
-      >
-        <Image
-          src='/assets/svg/update.svg'
-          alt='update'
-          width={24}
-          height={24}
-        />
-        <div className='ml-[8px] text-sm'>Update Settings</div>
       </div>
       <div
         onClick={() => handleAction('Restart DApp')}
@@ -137,15 +118,6 @@ export default function ActionMenu({
         appIds={appIds}
         isShowDeployDrawer={isShowDeployDrawer}
         setIsShowDeployDrawer={setIsShowDeployDrawer}
-        needRefresh={needRefresh}
-        setNeedRefresh={setNeedRefresh}
-      />
-      <UpdateSettingDrawer
-        updateType={updateType}
-        appId={appId}
-        appIds={appIds}
-        isShowUpdateDrawer={isShowUpdateDrawer}
-        setIsShowUpdateDrawer={setIsShowUpdateDrawer}
         needRefresh={needRefresh}
         setNeedRefresh={setNeedRefresh}
       />

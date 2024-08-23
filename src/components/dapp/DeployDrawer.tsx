@@ -100,7 +100,7 @@ export default function DeployDrawer({
           <Button
             type='default'
             size='large'
-            className='text-blue-link border-blue-link w-[160px] border border-solid bg-white'
+            className='text-blue-link border-blue-link bg-white-normal w-[160px] border border-solid'
             onClick={() => handleCancel()}
           >
             Cancel
