@@ -94,7 +94,7 @@ const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
               'hover:bg-gray-800 active:bg-gray-700 disabled:bg-gray-700',
             ],
           ],
-          //#endregion  //*======== Variants ===========
+          //#endregion
           'disabled:cursor-not-allowed',
           className
         )}
