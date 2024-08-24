@@ -187,7 +187,7 @@ export default function UpdateSettingDrawer({
       </div>
       <div className='mb-[24px] flex items-center justify-between'>
         <div className='w-[49%]'>
-          <div className='text-dark-normal mb-[8px] text-[16px]'>
+          <div className='text-dark-normal mb-[8px] text-[14px] sm:text-[16px]'>
             Max Contract Call Count
           </div>
           <Input
@@ -263,7 +263,7 @@ export default function UpdateSettingDrawer({
         <Button
           type='default'
           size='large'
-          className='text-blue-link border-blue-link mr-[8px] w-[160px] border border-solid bg-white'
+          className='text-blue-link border-blue-link bg-white-normal mr-[8px] w-[160px] border border-solid'
           onClick={() => handleCancel()}
         >
           Cancel
@@ -275,7 +275,7 @@ export default function UpdateSettingDrawer({
           loading={loading}
           onClick={() => handleUpdateSetting()}
         >
-          Deploy
+          Update
         </Button>
       </div>
     </Drawer>

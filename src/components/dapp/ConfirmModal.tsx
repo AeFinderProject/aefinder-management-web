@@ -89,7 +89,7 @@ export default function ConfirmModal({
         <div className='flex items-center justify-between'>
           <Button
             size='large'
-            className='text-blue-link border-blue-link w-[180px] border border-solid bg-white'
+            className='text-blue-link border-blue-link bg-white-normal w-[120px] border border-solid sm:w-[180px]'
             onClick={() => handleCancel()}
           >
             Cancel

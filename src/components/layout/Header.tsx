@@ -45,7 +45,12 @@ export default function Header() {
           className='cursor-pointer'
           style={{ width: '150px', height: '24px' }}
         />
-        <span className='text-dark-normal ml-[8px] text-2xl font-medium'>
+        {pathname === '/login' && (
+          <span className='text-dark-normal ml-[8px] text-2xl font-medium'>
+            Management
+          </span>
+        )}
+        <span className='text-dark-normal ml-[8px] hidden text-2xl font-medium sm:inline-block'>
           Management
         </span>
       </div>
@@ -75,11 +80,11 @@ export default function Header() {
             <div
               id='logout-container'
               className={clsx(
-                'h-13 border-gray-F0 fixed left-0 top-[71px] z-10 w-full border-b border-t bg-white bg-opacity-100 p-1 sm:absolute sm:top-[52px] sm:min-w-[144px] sm:rounded sm:border',
+                'h-13 border-gray-F0 bg-white-normal fixed left-0 top-[71px] z-10 w-full border-b border-t bg-opacity-100 p-1 sm:absolute sm:top-[52px] sm:min-w-[144px] sm:rounded sm:border',
                 !isShowBox && 'hidden'
               )}
             >
-              <UpOutlined className='border-b-none text-gray-E0 absolute hidden bg-white text-xs sm:right-[58px] sm:top-[-12px] sm:block' />
+              <UpOutlined className='border-b-none text-gray-E0 bg-white-normal absolute hidden text-xs sm:right-[58px] sm:top-[-12px] sm:block' />
               <PrimaryLink
                 href='/dapp'
                 className='hover:bg-gray-F5 w-full border-none px-[16px] sm:hidden'

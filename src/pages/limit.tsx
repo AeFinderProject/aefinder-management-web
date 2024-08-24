@@ -1,3 +1,5 @@
+'use client';
+
 import { ControlOutlined, SearchOutlined } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
 import { Button, Dropdown, Input, MenuProps, Table } from 'antd';
@@ -26,11 +28,6 @@ const items: MenuProps['items'] = [
 const columns: TableColumnsType<GetAppResourceLimitItemType> = [
   { title: 'AppId', dataIndex: 'appId', key: 'appId' },
   { title: 'AppName', dataIndex: 'appName', key: 'appName' },
-  {
-    title: 'OrganizationId',
-    dataIndex: 'organizationId',
-    key: 'organizationId',
-  },
   {
     title: 'OrganizationName',
     dataIndex: 'organizationName',
@@ -111,6 +108,7 @@ export default function Limit() {
   const [isShowUpdateDrawer, setIsShowUpdateDrawer] = useState(false);
   const [needRefresh, setNeedRefresh] = useState(false);
   const appLimitList = useAppSelector((state) => state.app.appLimitList);
+  const isMobile = window?.innerWidth < 640;
 
   const getAppLimitListTemp = useDebounceCallback(async () => {
     await queryAuthToken();
@@ -171,7 +169,7 @@ export default function Limit() {
             value={appId}
             onChange={(e) => setAppId(e.target.value)}
             style={{
-              width: 200,
+              width: 160,
               height: 32,
               borderColor: '#E0E0E0',
               borderRadius: '8px',
@@ -186,7 +184,7 @@ export default function Limit() {
               return (
                 <div
                   className={clsx(
-                    'bg-white-normal flex w-[388px] flex-col items-center rounded-md border border-solid p-[16px]'
+                    'bg-white-normal flex w-[308px] flex-col items-center rounded-md border border-solid p-[16px] sm:w-[388px]'
                   )}
                 >
                   <div className='mb-[16px] flex w-full items-center justify-between'>
@@ -207,7 +205,7 @@ export default function Limit() {
                   </div>
                   <div className='flex w-full items-center justify-between'>
                     <Button
-                      className='text-blue-link border-blue-link w-[174px] border border-solid bg-white'
+                      className='text-blue-link border-blue-link bg-white-normal w-[174px] border border-solid'
                       onClick={() => handleClearFilter()}
                     >
                       Clear Filter
@@ -235,12 +233,12 @@ export default function Limit() {
         </div>
         <div className='relative'>
           <Button
-            className='text-blue-link border-blue-link w-[174px] border border-solid bg-white'
+            className='text-blue-link border-blue-link bg-white-normal w-[20px] border border-solid sm:w-[174px]'
             onClick={() => setIsShowUpdateDrawer(!isShowUpdateDrawer)}
             disabled={rowSelection?.length === 0}
             iconPosition='end'
           >
-            Batch Actions
+            {isMobile ? '...' : 'Batch Update'}
           </Button>
         </div>
       </div>
@@ -251,6 +249,7 @@ export default function Limit() {
         loading={loading}
         scroll={{ x: 1700 }}
         className='w-full'
+        size={isMobile ? 'small' : 'middle'}
         rowSelection={{
           onSelect: (record, selected, selectedRows) => {
             console.log(record, selected, selectedRows);
@@ -268,7 +267,7 @@ export default function Limit() {
           onChange: tableOnChange,
           showSizeChanger: true,
           showTitle: true,
-          showTotal: (total) => `Total ${total} appsLimit`,
+          showTotal: (total) => (isMobile ? '' : `Total ${total} appsLimit`),
           pageSizeOptions: ['10', '20', '50', '100'],
         }}
       />

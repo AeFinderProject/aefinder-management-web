@@ -14,7 +14,7 @@ type ManifestProps = {
 };
 export default function Manifest({ manifestJson = {} }: ManifestProps) {
   return (
-    <div className='mb-[24px] w-full'>
+    <div className='mb-[24px] w-full overflow-auto'>
       <ReactJson src={manifestJson}></ReactJson>
     </div>
   );

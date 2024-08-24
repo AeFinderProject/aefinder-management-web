@@ -5,7 +5,6 @@ import { useCallback, useState } from 'react';
 
 import ConfirmModal from './ConfirmModal';
 import DeployDrawer from './DeployDrawer';
-import UpdateSettingDrawer from './UpdateSettingsDrawer';
 
 import { ConfirmActionType } from '@/types/appType';
 
@@ -25,7 +24,6 @@ export default function ActionMenuItem({
   const [actionType, setActionType] = useState<ConfirmActionType>('Stop DApp');
   const [isShowConfirmModal, setIsShowConfirmModal] = useState(false);
   const [isShowDeployDrawer, setIsShowDeployDrawer] = useState(false);
-  const [isShowUpdateDrawer, setIsShowUpdateDrawer] = useState(false);
 
   const handleAction = useCallback((type: ConfirmActionType) => {
     setActionType(type);
@@ -52,17 +50,6 @@ export default function ActionMenuItem({
           width={24}
           height={24}
           onClick={() => handleAction('Destroy Services')}
-          className='cursor-pointer'
-        />
-      </Tooltip>
-      <Divider type='vertical' />
-      <Tooltip title='Update Settings'>
-        <Image
-          src='/assets/svg/update.svg'
-          alt='update'
-          width={24}
-          height={24}
-          onClick={() => setIsShowUpdateDrawer(true)}
           className='cursor-pointer'
         />
       </Tooltip>
@@ -111,14 +98,6 @@ export default function ActionMenuItem({
         version={version}
         isShowDeployDrawer={isShowDeployDrawer}
         setIsShowDeployDrawer={setIsShowDeployDrawer}
-        needRefresh={needRefresh}
-        setNeedRefresh={setNeedRefresh}
-      />
-      <UpdateSettingDrawer
-        updateType='single'
-        appId={appId}
-        isShowUpdateDrawer={isShowUpdateDrawer}
-        setIsShowUpdateDrawer={setIsShowUpdateDrawer}
         needRefresh={needRefresh}
         setNeedRefresh={setNeedRefresh}
       />
