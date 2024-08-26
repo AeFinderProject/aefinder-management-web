@@ -228,8 +228,8 @@ export default function UpdateSettingDrawer({
           </div>
           <Input
             placeholder='Enter App Full Pod Request Memory'
-            value={appQueryPodRequestMemory}
-            onChange={(e) => setAppQueryPodRequestMemory(e.target.value)}
+            value={appFullPodRequestMemory}
+            onChange={(e) => setAppFullPodRequestMemory(e.target.value)}
             className='border-gray-E0 w-full rounded-[8px]'
           />
         </div>
@@ -251,9 +251,9 @@ export default function UpdateSettingDrawer({
             App Query Pod Request Memory
           </div>
           <Input
-            placeholder='Enter App Full Pod Request Memory'
-            value={appFullPodRequestMemory}
-            onChange={(e) => setAppFullPodRequestMemory(e.target.value)}
+            placeholder='Enter App Query Pod Request Memory'
+            value={appQueryPodRequestMemory}
+            onChange={(e) => setAppQueryPodRequestMemory(e.target.value)}
             className='border-gray-E0 w-full rounded-[8px]'
           />
         </div>
