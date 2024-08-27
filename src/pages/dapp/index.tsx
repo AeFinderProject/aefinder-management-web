@@ -175,8 +175,8 @@ export default function List() {
         <div className='relative'>
           <Input
             placeholder='Search by AppId'
-            value={appId}
-            onChange={(e) => handleSearch(e)}
+            defaultValue={appId}
+            onBlur={(e) => handleSearch(e)}
             style={{
               width: 160,
               height: 32,

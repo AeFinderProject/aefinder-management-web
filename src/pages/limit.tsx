@@ -166,8 +166,8 @@ export default function Limit() {
         <div className='relative'>
           <Input
             placeholder='Search by AppId'
-            value={appId}
-            onChange={(e) => setAppId(e.target.value)}
+            defaultValue={appId}
+            onBlur={(e) => setAppId(e.target.value)}
             style={{
               width: 160,
               height: 32,
