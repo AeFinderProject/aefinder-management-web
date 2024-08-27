@@ -1,6 +1,5 @@
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import { Col, Divider, Row } from 'antd';
-import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import Copy from '@/components/Copy';
@@ -12,8 +11,6 @@ import { SubscriptionStatusType, VersionType } from '@/types/appType';
 type SubscriptionsVersionProps = {
   readonly title: string;
   readonly VersionDetail?: VersionType;
-  readonly updateTime?: string;
-  readonly createTime?: string;
   readonly dockerImage?: string;
   readonly needRefresh: boolean;
   readonly setNeedRefresh: (needRefresh: boolean) => void;
@@ -22,8 +19,6 @@ type SubscriptionsVersionProps = {
 export default function SubscriptionsVersion({
   title,
   VersionDetail,
-  updateTime,
-  createTime,
   dockerImage,
   needRefresh,
   setNeedRefresh,
@@ -50,19 +45,17 @@ export default function SubscriptionsVersion({
             className='flex items-center justify-start text-base'
             vertical={false}
             showLittle={isMobile}
+            isShowCopy={true}
           />
         </Col>
-        <Col
-          sm={24}
-          md={7}
-          offset={isMobile ? 0 : 1}
-          className='sm:min-w-[140px]'
-        >
+        <Col sm={24} md={8} className='min-w-[140px]'>
           <Copy
-            label='Create Time: '
-            content={dayjs(createTime).format('YYYY-MM-DD HH:mm:ss')}
+            label='Docker Image: '
+            content={dockerImage}
             className='flex items-center justify-start'
             vertical={false}
+            showLittle={isMobile}
+            isShowCopy={true}
           />
         </Col>
         <Col sm={24} md={8} className='min-w-[140px]'>
@@ -71,24 +64,6 @@ export default function SubscriptionsVersion({
             content={
               SubscriptionStatusType[VersionDetail?.subscriptionStatus ?? 0]
             }
-            className='flex items-center justify-start'
-            vertical={false}
-          />
-        </Col>
-      </Row>
-      <Row gutter={24} className='w-full'>
-        <Col sm={24} md={8} className='min-w-[140px]'>
-          <Copy
-            label='Docker Image: '
-            content={dockerImage}
-            className='flex items-center justify-start'
-            vertical={false}
-          />
-        </Col>
-        <Col sm={24} md={7} offset={isMobile ? 0 : 1} className='min-w-[140px]'>
-          <Copy
-            label='Update Time: '
-            content={dayjs(updateTime).format('YYYY-MM-DD HH:mm:ss')}
             className='flex items-center justify-start'
             vertical={false}
           />

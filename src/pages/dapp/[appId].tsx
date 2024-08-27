@@ -84,8 +84,6 @@ export default function AppDetail() {
         <SubscriptionsVersion
           title='Current Version'
           VersionDetail={currentVersionDetail}
-          updateTime={currentAppDetail?.updateTime}
-          createTime={currentAppDetail?.createTime}
           dockerImage={currentDockerImage}
           needRefresh={needRefresh}
           setNeedRefresh={setNeedRefresh}
@@ -95,8 +93,6 @@ export default function AppDetail() {
         <SubscriptionsVersion
           title='Pending Version'
           VersionDetail={pendingVersionDetail}
-          updateTime={currentAppDetail?.updateTime}
-          createTime={currentAppDetail?.createTime}
           dockerImage={pendingDockerImage}
           needRefresh={needRefresh}
           setNeedRefresh={setNeedRefresh}
