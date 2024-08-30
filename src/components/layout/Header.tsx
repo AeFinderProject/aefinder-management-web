@@ -46,7 +46,7 @@ export default function Header() {
           style={{ width: '150px', height: '24px' }}
         />
         {pathname === '/login' && (
-          <span className='text-dark-normal ml-[8px] text-2xl font-medium'>
+          <span className='text-dark-normal ml-[8px] inline-block text-2xl font-medium sm:hidden'>
             Management
           </span>
         )}
