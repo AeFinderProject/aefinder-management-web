@@ -24,7 +24,6 @@ export default function SubscriptionsVersion({
   setNeedRefresh,
 }: SubscriptionsVersionProps) {
   const [isShowManifest, setIsShowManifest] = useState(false);
-  const isMobile = window.innerWidth < 640;
 
   return (
     <div className='bg-gray-F5 mt-[30px] w-full rounded-md px-[24px] pt-[24px]'>
@@ -44,7 +43,7 @@ export default function SubscriptionsVersion({
             content={VersionDetail?.version}
             className='flex items-center justify-start text-base'
             vertical={false}
-            showLittle={isMobile}
+            showLittle={true}
             isShowCopy={true}
           />
         </Col>
@@ -54,7 +53,7 @@ export default function SubscriptionsVersion({
             content={dockerImage}
             className='flex items-center justify-start'
             vertical={false}
-            showLittle={isMobile}
+            showLittle={true}
             isShowCopy={true}
           />
         </Col>
