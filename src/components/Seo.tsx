@@ -5,7 +5,7 @@ const defaultMeta = {
   title: 'AeFinder-management-web',
   siteName: 'Finding data is easier',
   description: 'aeFinder-management-web is a management system of aeFinder',
-  url: 'https://aefinder.io/',
+  url: 'https://management.aefinder.io/',
   type: 'website',
   robots: 'follow, index',
   /**

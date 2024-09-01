@@ -112,6 +112,15 @@ export const deployApp = async (params: DeployAppRequestType) => {
   }
 };
 
+export const updateApp = async (params: DeployAppRequestType) => {
+  try {
+    const res = await request.app.updateApp({ data: params });
+    return !res;
+  } catch (error) {
+    throw new Error(handleErrorMessage(error, 'updateApp error'));
+  }
+};
+
 export const restartApp = async (params: ActionAppRequestType) => {
   try {
     const res = await request.app.restartApp({ data: params });
@@ -172,6 +181,15 @@ export const batchDeployApp = async (params: BatchDeployRequestType) => {
     return !res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'batchDeployApp error'));
+  }
+};
+
+export const batchUpdateApp = async (params: BatchDeployRequestType) => {
+  try {
+    const res = await request.app.batchUpdateApp({ data: params });
+    return !res;
+  } catch (error) {
+    throw new Error(handleErrorMessage(error, 'batchUpdateApp error'));
   }
 };
 

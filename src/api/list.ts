@@ -47,6 +47,10 @@ export const AppList = {
     target: `${AeFinderHost}/api/app-deploy/deploy`,
     baseConfig: { method: 'POST' },
   },
+  updateApp: {
+    target: `${AeFinderHost}/api/app-deploy/update-image`,
+    baseConfig: { method: 'POST' },
+  },
   restartApp: {
     target: `${AeFinderHost}/api/app-deploy/restart`,
     baseConfig: { method: 'POST' },
@@ -73,6 +77,10 @@ export const AppList = {
   },
   batchDeployApp: {
     target: `${AeFinderHost}/api/app-deploy/batch-deploy`,
+    baseConfig: { method: 'POST' },
+  },
+  batchUpdateApp: {
+    target: `${AeFinderHost}/api/app-deploy/batch-update-image`,
     baseConfig: { method: 'POST' },
   },
   batchRestartApp: {

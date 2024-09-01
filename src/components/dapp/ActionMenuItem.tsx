@@ -1,4 +1,4 @@
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
 import { Divider, Tooltip } from 'antd';
 import Image from 'next/image';
 import { useCallback, useState } from 'react';
@@ -24,6 +24,7 @@ export default function ActionMenuItem({
   const [actionType, setActionType] = useState<ConfirmActionType>('Stop DApp');
   const [isShowConfirmModal, setIsShowConfirmModal] = useState(false);
   const [isShowDeployDrawer, setIsShowDeployDrawer] = useState(false);
+  const [drawerType, setDrawerType] = useState<'Deploy' | 'Update'>('Deploy');
 
   const handleAction = useCallback((type: ConfirmActionType) => {
     setActionType(type);
@@ -38,8 +39,21 @@ export default function ActionMenuItem({
           alt='deploy'
           width={24}
           height={24}
-          onClick={() => setIsShowDeployDrawer(true)}
+          onClick={() => {
+            setDrawerType('Deploy');
+            setIsShowDeployDrawer(true);
+          }}
           className='cursor-pointer'
+        />
+      </Tooltip>
+      <Divider type='vertical' />
+      <Tooltip title='Update App'>
+        <SyncOutlined
+          onClick={() => {
+            setDrawerType('Update');
+            setIsShowDeployDrawer(true);
+          }}
+          className='text-blue-normal cursor-pointer text-[20px] font-medium'
         />
       </Tooltip>
       <Divider type='vertical' />
@@ -93,6 +107,7 @@ export default function ActionMenuItem({
         setNeedRefresh={setNeedRefresh}
       />
       <DeployDrawer
+        drawerType={drawerType}
         updateType='single'
         appId={appId}
         version={version}
