@@ -1,4 +1,3 @@
-import { DeleteOutlined, SyncOutlined } from '@ant-design/icons';
 import { Divider, Tooltip } from 'antd';
 import Image from 'next/image';
 import { useCallback, useState } from 'react';
@@ -48,12 +47,16 @@ export default function ActionMenuItem({
       </Tooltip>
       <Divider type='vertical' />
       <Tooltip title='Update App'>
-        <SyncOutlined
+        <Image
+          src='/assets/svg/update.svg'
+          alt='update'
+          width={24}
+          height={24}
           onClick={() => {
             setDrawerType('Update');
             setIsShowDeployDrawer(true);
           }}
-          className='text-blue-normal cursor-pointer text-[20px] font-medium'
+          className='cursor-pointer'
         />
       </Tooltip>
       <Divider type='vertical' />
@@ -91,9 +94,13 @@ export default function ActionMenuItem({
       </Tooltip>
       <Divider type='vertical' />
       <Tooltip title='Stop App'>
-        <DeleteOutlined
+        <Image
+          src='/assets/svg/stop.svg'
+          alt='stop'
+          width={24}
+          height={24}
           onClick={() => handleAction('Stop DApp')}
-          className='text-danger-normal cursor-pointer text-[20px] font-medium'
+          className='cursor-pointer'
         />
       </Tooltip>
       <ConfirmModal

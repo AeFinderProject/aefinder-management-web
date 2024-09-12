@@ -126,6 +126,9 @@ export type LimitItemType = {
   appQueryPodRequestCpuCore?: string;
   appQueryPodRequestMemory?: string;
   appPodReplicas?: number;
+  maxAppCodeSize?: number;
+  maxAppAttachmentSize?: number;
+  enableMultipleInstances?: boolean;
 };
 
 export type SetAppLimitRequestType = {
@@ -141,6 +144,7 @@ export type DeployAppRequestType = {
   appId: string;
   version: string;
   imageName: string;
+  isUpdateConfig?: boolean;
 };
 
 export type BatchLimitItemRequestType = {
@@ -154,4 +158,27 @@ export type BatchActionRequestType = {
 
 export type BatchDeployRequestType = {
   imageName: string;
+  isUpdateConfig?: boolean;
 } & BatchActionRequestType;
+
+export type OrganizationsQuestType = {
+  skipCount: number;
+  maxResultCount: number;
+};
+
+export type OrganizationsItem = {
+  organizationId: string;
+  organizationName: string;
+  maxAppCount: number;
+  appIds: string[];
+};
+
+export type OrganizationsResponseType = {
+  items: OrganizationsItem[];
+  totalCount: number;
+};
+
+export type SetMaxAppCountQuestType = {
+  organizationId: string;
+  maxAppCount: number;
+};

@@ -2,7 +2,7 @@
 
 import { ControlOutlined, SearchOutlined } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
-import { Button, Dropdown, Input, MenuProps, Table } from 'antd';
+import { Button, Dropdown, Input, MenuProps, Select, Table } from 'antd';
 import clsx from 'clsx';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -12,11 +12,14 @@ import UpdateSettingDrawer from '@/components/dapp/UpdateSettingsDrawer';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setAppLimitList } from '@/store/slices/appSlice';
+import { setOrganizationsCommon } from '@/store/slices/commonSlice';
 
 import { queryAuthToken } from '@/api/apiUtils';
-import { getAppLimitList } from '@/api/requestApp';
+import { getAppLimitList, getOrganizations } from '@/api/requestApp';
 
 import { GetAppResourceLimitItemType } from '@/types/appType';
+
+const Option = Select.Option;
 
 const items: MenuProps['items'] = [
   {
@@ -108,7 +111,22 @@ export default function Limit() {
   const [isShowUpdateDrawer, setIsShowUpdateDrawer] = useState(false);
   const [needRefresh, setNeedRefresh] = useState(false);
   const appLimitList = useAppSelector((state) => state.app.appLimitList);
+  const organizationsCommon = useAppSelector(
+    (state) => state.common.organizationsCommon
+  );
   const isMobile = window?.innerWidth < 640;
+
+  const getOrganizationsCommon = useCallback(async () => {
+    const { items = [] } = await getOrganizations({
+      skipCount: 0,
+      maxResultCount: 1000,
+    });
+    dispatch(setOrganizationsCommon(items));
+  }, [dispatch]);
+
+  useEffect(() => {
+    getOrganizationsCommon();
+  }, [getOrganizationsCommon]);
 
   const getAppLimitListTemp = useDebounceCallback(async () => {
     await queryAuthToken();
@@ -180,6 +198,7 @@ export default function Limit() {
           <Dropdown
             menu={{ items }}
             placement='bottom'
+            trigger={['click']}
             dropdownRender={() => {
               return (
                 <div
@@ -188,20 +207,29 @@ export default function Limit() {
                   )}
                 >
                   <div className='mb-[16px] flex w-full items-center justify-between'>
-                    <div className='mr-[8px] text-sm font-medium'>
-                      OrganizationId{' '}
+                    <div className='mr-[10px] text-sm font-medium'>
+                      OrganizationId
                     </div>
-                    <Input
-                      placeholder='Please input OrganizationId'
+                    <Select
                       value={tempOrganizationId}
-                      onChange={(e) => setTempOrganizationId(e.target.value)}
+                      placeholder='Please input OrganizationId'
+                      onChange={(value) => setTempOrganizationId(value)}
+                      showSearch={true}
                       style={{
                         width: 250,
                         height: 32,
                         borderColor: '#E0E0E0',
                         borderRadius: '8px',
                       }}
-                    />
+                    >
+                      {organizationsCommon?.map((item) => {
+                        return (
+                          <Option key={item.organizationId}>
+                            {item.organizationName}
+                          </Option>
+                        );
+                      })}
+                    </Select>
                   </div>
                   <div className='flex w-full items-center justify-between'>
                     <Button

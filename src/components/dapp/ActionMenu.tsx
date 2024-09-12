@@ -34,6 +34,7 @@ export default function ActionMenu({
     useState<ConfirmActionType>('Restart DApp');
   const [isShowConfirmModal, setIsShowConfirmModal] = useState(false);
   const [isShowDeployDrawer, setIsShowDeployDrawer] = useState(false);
+  const [drawerType, setDrawerType] = useState<'Deploy' | 'Update'>('Deploy');
 
   const handleAction = useCallback(
     (type: ConfirmActionType) => {
@@ -70,7 +71,10 @@ export default function ActionMenu({
         <div className='ml-[8px] text-sm'>Destroy Services</div>
       </div>
       <div
-        onClick={() => handleDeploy()}
+        onClick={() => {
+          setDrawerType('Deploy');
+          handleDeploy();
+        }}
         className='hover:bg-gray-F5 flex w-full cursor-pointer items-center justify-start p-[16px]'
       >
         <Image
@@ -80,6 +84,21 @@ export default function ActionMenu({
           height={24}
         />
         <div className='ml-[8px] text-sm'>Deploy App</div>
+      </div>
+      <div
+        onClick={() => {
+          setDrawerType('Update');
+          handleDeploy();
+        }}
+        className='hover:bg-gray-F5 flex w-full cursor-pointer items-center justify-start p-[16px]'
+      >
+        <Image
+          src='/assets/svg/update.svg'
+          alt='update'
+          width={24}
+          height={24}
+        />
+        <div className='ml-[8px] text-sm'>Update App</div>
       </div>
       <div
         onClick={() => handleAction('Restart DApp')}
@@ -112,6 +131,7 @@ export default function ActionMenu({
         setNeedRefresh={setNeedRefresh}
       />
       <DeployDrawer
+        drawerType={drawerType}
         updateType={updateType}
         appId={appId}
         version={version}

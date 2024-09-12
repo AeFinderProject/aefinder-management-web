@@ -1,6 +1,8 @@
 import { handleErrorMessage } from '@/lib/utils';
 
+import { getLocalJWT } from './apiUtils';
 import { request } from './index';
+import { AppList } from './list';
 
 import {
   ActionAppRequestType,
@@ -16,8 +18,21 @@ import {
   GetResourcesResponse,
   GetSubscriptionResponse,
   LimitItemType,
+  OrganizationsQuestType,
+  OrganizationsResponseType,
   SetAppLimitRequestType,
+  SetMaxAppCountQuestType,
 } from '@/types/appType';
+export const getOrganizations = async (
+  params: OrganizationsQuestType
+): Promise<OrganizationsResponseType> => {
+  try {
+    const res = await request.app.getOrganizations({ params });
+    return res;
+  } catch (error) {
+    throw new Error(handleErrorMessage(error, 'getOrganizations error'));
+  }
+};
 
 /**
  * getAppList
@@ -208,5 +223,43 @@ export const batchPauseApp = async (params: BatchActionRequestType) => {
     return !res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'batchPauseApp error'));
+  }
+};
+
+export const setMaxAppCountApi = async (
+  params: SetMaxAppCountQuestType
+): Promise<boolean> => {
+  let response = false;
+  try {
+    const { organizationId, maxAppCount } = params;
+    const localData = getLocalJWT('LocalJWTData');
+    let status = 0;
+    await fetch(
+      `${AppList.setMaxAppCount.target}/${organizationId}/max-app-count`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({ maxAppCount }),
+        headers: {
+          Authorization: `${localData?.token_type} ${localData?.access_token}`,
+        },
+      }
+    )
+      .then((res: Response) => {
+        response = res?.ok;
+        status = res?.status;
+        return res;
+      })
+      .then((data) => {
+        // tip data error when status is 400 403 500
+        if (status >= 400) {
+          throw new Error(handleErrorMessage(data, 'setMaxAppCount error'));
+        } else {
+          return response;
+        }
+      });
+    return true;
+  } catch (error) {
+    console.log('error', error);
+    return response;
   }
 };
