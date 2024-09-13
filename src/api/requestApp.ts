@@ -233,14 +233,18 @@ export const setMaxAppCountApi = async (
   try {
     const { organizationId, maxAppCount } = params;
     const localData = getLocalJWT('LocalJWTData');
+    const urlEncodedData = new URLSearchParams({
+      maxAppCount: String(maxAppCount),
+    }).toString();
     let status = 0;
     await fetch(
       `${AppList.setMaxAppCount.target}/${organizationId}/max-app-count`,
       {
         method: 'PUT',
-        body: JSON.stringify({ maxAppCount }),
+        body: urlEncodedData,
         headers: {
           Authorization: `${localData?.token_type} ${localData?.access_token}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
       }
     )
