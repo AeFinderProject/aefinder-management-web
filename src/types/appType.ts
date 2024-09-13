@@ -46,9 +46,9 @@ export type GetAppResponseType = {
 
 export type ConfirmActionType =
   | 'Destroy Services'
-  | 'Restart DApp'
-  | 'Stop DApp'
-  | 'Pause DApp';
+  | 'Restart AeIndexer'
+  | 'Stop AeIndexer'
+  | 'Pause AeIndexer';
 
 export type UpdateType = 'batch' | 'single';
 

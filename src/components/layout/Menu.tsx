@@ -12,7 +12,7 @@ import { useCallback, useEffect, useState } from 'react';
 type MenuItem = Required<MenuProps>['items'][number];
 
 const items: MenuItem[] = [
-  { key: 'dapp', icon: <AppstoreOutlined />, label: 'DApp' },
+  { key: 'dapp', icon: <AppstoreOutlined />, label: 'AeIndexer' },
   { key: 'limit', icon: <DashboardOutlined />, label: 'Limit' },
   { key: 'organization', icon: <PartitionOutlined />, label: 'Organization' },
 ];

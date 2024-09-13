@@ -111,7 +111,7 @@ export default function List() {
           onChange: tableOnChange,
           showSizeChanger: true,
           showTitle: true,
-          showTotal: (total) => (isMobile ? '' : `Total ${total} apps`),
+          showTotal: (total) => (isMobile ? '' : `Total ${total} AeIndexer`),
           pageSizeOptions: ['10', '20', '50', '100'],
         }}
       />

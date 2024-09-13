@@ -56,7 +56,7 @@ export default function List() {
 
   const columns: TableColumnsType<GetAppResponseItem> = [
     { title: 'AppId', dataIndex: 'appId', key: 'appId' },
-    { title: 'AppName', dataIndex: 'appName', key: 'appName' },
+    { title: 'AeIndexerName', dataIndex: 'appName', key: 'appName' },
     {
       title: 'OrganizationName',
       dataIndex: 'organizationName',
@@ -323,7 +323,7 @@ export default function List() {
           onChange: tableOnChange,
           showSizeChanger: true,
           showTitle: true,
-          showTotal: (total) => (isMobile ? '' : `Total ${total} apps`),
+          showTotal: (total) => (isMobile ? '' : `Total ${total} AeIndexer`),
           pageSizeOptions: ['10', '20', '50', '100'],
         }}
       />

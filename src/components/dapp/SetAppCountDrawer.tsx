@@ -28,7 +28,7 @@ export default function SetAppCountDrawer({
 
   const handleSetMaxAppCount = useCallback(async () => {
     if (!maxAppCount) {
-      message.warning('please enter max app code count');
+      message.warning('please enter max AeIndexer code count');
       return;
     }
 
@@ -40,7 +40,7 @@ export default function SetAppCountDrawer({
     });
     if (res) {
       message.success({
-        content: 'Set max app count success',
+        content: 'Set max AeIndexer count success',
         key: 'Set',
       });
       setMaxAppCount(undefined);
@@ -57,17 +57,17 @@ export default function SetAppCountDrawer({
 
   return (
     <Drawer
-      title='Set Max App Count'
+      title='Set Max AeIndexer Count'
       open={isShowChangeAppCountDrawer}
       onClose={() => handleCancel()}
       destroyOnClose={true}
     >
       <div>
         <div className='text-dark-normal mb-[8px] text-[16px]'>
-          Max App Count
+          Max AeIndexer Count
         </div>
         <Input
-          placeholder='Enter Max App Count'
+          placeholder='Enter Max AeIndexer Count'
           value={maxAppCount}
           onChange={(e) => setMaxAppCount(Number(e.target.value))}
           className='border-gray-E0 w-full rounded-[8px]'

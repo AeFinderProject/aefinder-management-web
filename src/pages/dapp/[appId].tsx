@@ -73,11 +73,11 @@ export default function AppDetail() {
       <div>
         <span className='text-gray-80 mt-[26px] text-[14px]'>
           <span onClick={() => router.back()} className='cursor-pointer'>
-            DApp
+            AeIndexer
           </span>
           <RightOutlined />
         </span>
-        <span className='text-dark-normal font-medium'> App Detail</span>
+        <span className='text-dark-normal font-medium'> AeIndexer Detail</span>
       </div>
       <DetailBox currentAppDetail={currentAppDetail} />
       {currentAppDetail?.versions?.currentVersion && (

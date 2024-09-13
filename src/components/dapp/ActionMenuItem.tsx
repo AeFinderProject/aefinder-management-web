@@ -20,7 +20,8 @@ export default function ActionMenuItem({
   needRefresh,
   setNeedRefresh,
 }: ActionMenuItemProps) {
-  const [actionType, setActionType] = useState<ConfirmActionType>('Stop DApp');
+  const [actionType, setActionType] =
+    useState<ConfirmActionType>('Stop AeIndexer');
   const [isShowConfirmModal, setIsShowConfirmModal] = useState(false);
   const [isShowDeployDrawer, setIsShowDeployDrawer] = useState(false);
   const [drawerType, setDrawerType] = useState<'Deploy' | 'Update'>('Deploy');
@@ -32,7 +33,7 @@ export default function ActionMenuItem({
 
   return (
     <div className='bg-white-normal flex items-center justify-end rounded-[8px] p-[8px]'>
-      <Tooltip title='Deploy App'>
+      <Tooltip title='Deploy AeIndexer'>
         <Image
           src='/assets/svg/deploy.svg'
           alt='deploy'
@@ -46,7 +47,7 @@ export default function ActionMenuItem({
         />
       </Tooltip>
       <Divider type='vertical' />
-      <Tooltip title='Update App'>
+      <Tooltip title='Update AeIndexer'>
         <Image
           src='/assets/svg/update.svg'
           alt='update'
@@ -71,35 +72,35 @@ export default function ActionMenuItem({
         />
       </Tooltip>
       <Divider type='vertical' />
-      <Tooltip title='Restart App'>
+      <Tooltip title='Restart AeIndexer'>
         <Image
           src='/assets/svg/restart.svg'
           alt='restart'
           width={24}
           height={24}
-          onClick={() => handleAction('Restart DApp')}
+          onClick={() => handleAction('Restart AeIndexer')}
           className='cursor-pointer'
         />
       </Tooltip>
       <Divider type='vertical' />
-      <Tooltip title='Pause App'>
+      <Tooltip title='Pause AeIndexer'>
         <Image
           src='/assets/svg/pause.svg'
           alt='pause'
           width={24}
           height={24}
-          onClick={() => handleAction('Pause DApp')}
+          onClick={() => handleAction('Pause AeIndexer')}
           className='cursor-pointer'
         />
       </Tooltip>
       <Divider type='vertical' />
-      <Tooltip title='Stop App'>
+      <Tooltip title='Stop AeIndexer'>
         <Image
           src='/assets/svg/stop.svg'
           alt='stop'
           width={24}
           height={24}
-          onClick={() => handleAction('Stop DApp')}
+          onClick={() => handleAction('Stop AeIndexer')}
           className='cursor-pointer'
         />
       </Tooltip>

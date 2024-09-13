@@ -30,14 +30,14 @@ const items: MenuProps['items'] = [
 
 const columns: TableColumnsType<GetAppResourceLimitItemType> = [
   { title: 'AppId', dataIndex: 'appId', key: 'appId' },
-  { title: 'AppName', dataIndex: 'appName', key: 'appName' },
+  { title: 'AeIndexerName', dataIndex: 'appName', key: 'appName' },
   {
     title: 'OrganizationName',
     dataIndex: 'organizationName',
     key: 'organizationName',
   },
   {
-    title: 'AppFullPodRequestCpuCore/Memory',
+    title: 'AeIndexerFullPodRequestCpuCore/Memory',
     dataIndex: '',
     key: 'appFullPodRequestCpuCore',
     render: (record) => (
@@ -48,7 +48,7 @@ const columns: TableColumnsType<GetAppResourceLimitItemType> = [
     ),
   },
   {
-    title: 'AppQueryPodRequestCpuCore/Memory',
+    title: 'AeIndexerQueryPodRequestCpuCore/Memory',
     dataIndex: '',
     key: 'appQueryPodRequestCpuCore',
     render: (record) => (
@@ -59,7 +59,7 @@ const columns: TableColumnsType<GetAppResourceLimitItemType> = [
     ),
   },
   {
-    title: 'AppPodReplicas',
+    title: 'AeIndexerPodReplicas',
     dataIndex: '',
     key: 'appPodReplicas',
     render: (record) => <div>{record?.resourceLimit?.appPodReplicas}</div>,
@@ -295,7 +295,7 @@ export default function Limit() {
           onChange: tableOnChange,
           showSizeChanger: true,
           showTitle: true,
-          showTotal: (total) => (isMobile ? '' : `Total ${total} appsLimit`),
+          showTotal: (total) => (isMobile ? '' : `Total ${total} AeIndexer`),
           pageSizeOptions: ['10', '20', '50', '100'],
         }}
       />

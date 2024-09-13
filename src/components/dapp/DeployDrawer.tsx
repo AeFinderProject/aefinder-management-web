@@ -1,4 +1,4 @@
-import { Button, Divider, Drawer, Input, message } from 'antd';
+import { Button, Divider, Drawer, Input, message, Select } from 'antd';
 import { useCallback, useState } from 'react';
 
 import {
@@ -26,6 +26,8 @@ type DeployDrawerProps = {
   readonly setNeedRefresh: (needRefresh: boolean) => void;
 };
 
+const Option = Select.Option;
+
 export default function DeployDrawer({
   drawerType = 'Deploy',
   updateType,
@@ -38,7 +40,7 @@ export default function DeployDrawer({
   setNeedRefresh,
 }: DeployDrawerProps) {
   const [dockerImage, setDockerImage] = useState('');
-  const [isUpdateConfig, setIsUpdateConfig] = useState('');
+  const [isUpdateConfig, setIsUpdateConfig] = useState('false');
   const [loading, setLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
 
@@ -101,7 +103,7 @@ export default function DeployDrawer({
 
     if (isUpdateConfig) {
       if (isUpdateConfig !== 'true' && isUpdateConfig !== 'false') {
-        message.info('Enter Is Update Config: true or false');
+        message.info('Update Config: true or false');
         return;
       }
     }
@@ -185,14 +187,18 @@ export default function DeployDrawer({
         {drawerType === 'Update' && (
           <div>
             <div className='text-dark-normal mb-[8px] mt-[16px] text-[16px]'>
-              {drawerType} Is Update Config
+              Update Config
             </div>
-            <Input
-              placeholder='Enter Is Update Config: true or false'
+            <Select
+              placeholder='Update Config: true or false'
               value={isUpdateConfig}
-              onChange={(e) => setIsUpdateConfig(e.target.value)}
+              onChange={(value) => setIsUpdateConfig(value)}
               className='border-gray-E0 w-full rounded-[8px]'
-            />
+              size='large'
+            >
+              <Option value='false'>false</Option>
+              <Option value='true'>true</Option>
+            </Select>
           </div>
         )}
         <Divider />
