@@ -44,7 +44,9 @@ export default function SetAppCountDrawer({
         key: 'Set',
       });
       setMaxAppCount(undefined);
-      setNeedRefresh(!needRefresh);
+      setTimeout(() => {
+        setNeedRefresh(!needRefresh);
+      }, 1000);
     }
 
     setLoading(false);
