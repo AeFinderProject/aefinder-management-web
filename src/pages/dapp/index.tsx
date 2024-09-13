@@ -121,6 +121,7 @@ export default function List() {
   ];
 
   const getOrganizationsCommon = useCallback(async () => {
+    await queryAuthToken();
     const { items = [] } = await getOrganizations({
       skipCount: 0,
       maxResultCount: 1000,

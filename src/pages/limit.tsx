@@ -117,6 +117,7 @@ export default function Limit() {
   const isMobile = window?.innerWidth < 640;
 
   const getOrganizationsCommon = useCallback(async () => {
+    await queryAuthToken();
     const { items = [] } = await getOrganizations({
       skipCount: 0,
       maxResultCount: 1000,

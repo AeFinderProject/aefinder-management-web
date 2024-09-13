@@ -99,6 +99,7 @@ export default function List() {
   return (
     <div className='px-[16px] pb-[28px] pt-[48px]'>
       <Table
+        rowKey='organizationId'
         columns={columns}
         dataSource={organizationsList}
         loading={loading}
