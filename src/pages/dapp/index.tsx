@@ -7,7 +7,7 @@ import {
   SearchOutlined,
 } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
-import { Button, Dropdown, Input, MenuProps, Table } from 'antd';
+import { Button, Dropdown, Input, MenuProps, Select, Table } from 'antd';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
@@ -19,11 +19,14 @@ import ActionMenu from '@/components/dapp/ActionMenu';
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setAppList } from '@/store/slices/appSlice';
+import { setOrganizationsCommon } from '@/store/slices/commonSlice';
 
 import { queryAuthToken } from '@/api/apiUtils';
-import { getAppList } from '@/api/requestApp';
+import { getAppList, getOrganizations } from '@/api/requestApp';
 
 import { AppStatus, GetAppResponseItem } from '@/types/appType';
+
+const Option = Select.Option;
 
 const items: MenuProps['items'] = [
   {
@@ -46,11 +49,14 @@ export default function List() {
   const [needRefresh, setNeedRefresh] = useState(false);
   const router = useRouter();
   const appList = useAppSelector((state) => state.app.appList);
+  const organizationsCommon = useAppSelector(
+    (state) => state.common.organizationsCommon
+  );
   const isMobile = window?.innerWidth < 640;
 
   const columns: TableColumnsType<GetAppResponseItem> = [
     { title: 'AppId', dataIndex: 'appId', key: 'appId' },
-    { title: 'AppName', dataIndex: 'appName', key: 'appName' },
+    { title: 'AeIndexerName', dataIndex: 'appName', key: 'appName' },
     {
       title: 'OrganizationName',
       dataIndex: 'organizationName',
@@ -104,7 +110,7 @@ export default function List() {
       render: (record) => (
         <div className='relative z-10'>
           <FileSearchOutlined
-            className='text-blue-link mr-[8px] cursor-pointer text-[16px]'
+            className='text-blue-link ml-[20px] mr-[8px] cursor-pointer text-[16px]'
             onClick={() => {
               router.push(`/dapp/${record.appId}`);
             }}
@@ -113,6 +119,19 @@ export default function List() {
       ),
     },
   ];
+
+  const getOrganizationsCommon = useCallback(async () => {
+    await queryAuthToken();
+    const { items = [] } = await getOrganizations({
+      skipCount: 0,
+      maxResultCount: 1000,
+    });
+    dispatch(setOrganizationsCommon(items));
+  }, [dispatch]);
+
+  useEffect(() => {
+    getOrganizationsCommon();
+  }, [getOrganizationsCommon]);
 
   const getAppListTemp = useDebounceCallback(async () => {
     await queryAuthToken();
@@ -189,6 +208,7 @@ export default function List() {
           <Dropdown
             menu={{ items }}
             placement='bottom'
+            trigger={['click']}
             dropdownRender={() => {
               return (
                 <div
@@ -197,20 +217,29 @@ export default function List() {
                   )}
                 >
                   <div className='mb-[16px] flex w-full items-center justify-between'>
-                    <div className='mr-[8px] text-sm font-medium'>
-                      OrganizationId{' '}
+                    <div className='mr-[10px] text-sm font-medium'>
+                      OrganizationId
                     </div>
-                    <Input
-                      placeholder='Please input OrganizationId'
+                    <Select
                       value={tempOrganizationId}
-                      onChange={(e) => setTempOrganizationId(e.target.value)}
+                      placeholder='Please input OrganizationId'
+                      onChange={(value) => setTempOrganizationId(value)}
+                      showSearch={true}
                       style={{
                         width: 250,
                         height: 32,
                         borderColor: '#E0E0E0',
                         borderRadius: '8px',
                       }}
-                    />
+                    >
+                      {organizationsCommon?.map((item) => {
+                        return (
+                          <Option key={item.organizationId}>
+                            {item.organizationName}
+                          </Option>
+                        );
+                      })}
+                    </Select>
                   </div>
                   <div className='flex w-full items-center justify-between'>
                     <Button
@@ -295,7 +324,7 @@ export default function List() {
           onChange: tableOnChange,
           showSizeChanger: true,
           showTitle: true,
-          showTotal: (total) => (isMobile ? '' : `Total ${total} apps`),
+          showTotal: (total) => (isMobile ? '' : `Total ${total} AeIndexer`),
           pageSizeOptions: ['10', '20', '50', '100'],
         }}
       />

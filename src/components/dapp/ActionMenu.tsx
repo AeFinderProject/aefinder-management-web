@@ -31,9 +31,10 @@ export default function ActionMenu({
   setNeedRefresh,
 }: ActionMenuProps) {
   const [actionType, setActionType] =
-    useState<ConfirmActionType>('Restart DApp');
+    useState<ConfirmActionType>('Restart AeIndexer');
   const [isShowConfirmModal, setIsShowConfirmModal] = useState(false);
   const [isShowDeployDrawer, setIsShowDeployDrawer] = useState(false);
+  const [drawerType, setDrawerType] = useState<'Deploy' | 'Update'>('Deploy');
 
   const handleAction = useCallback(
     (type: ConfirmActionType) => {
@@ -70,7 +71,10 @@ export default function ActionMenu({
         <div className='ml-[8px] text-sm'>Destroy Services</div>
       </div>
       <div
-        onClick={() => handleDeploy()}
+        onClick={() => {
+          setDrawerType('Deploy');
+          handleDeploy();
+        }}
         className='hover:bg-gray-F5 flex w-full cursor-pointer items-center justify-start p-[16px]'
       >
         <Image
@@ -79,10 +83,25 @@ export default function ActionMenu({
           width={24}
           height={24}
         />
-        <div className='ml-[8px] text-sm'>Deploy App</div>
+        <div className='ml-[8px] text-sm'>Deploy AeIndexer</div>
       </div>
       <div
-        onClick={() => handleAction('Restart DApp')}
+        onClick={() => {
+          setDrawerType('Update');
+          handleDeploy();
+        }}
+        className='hover:bg-gray-F5 flex w-full cursor-pointer items-center justify-start p-[16px]'
+      >
+        <Image
+          src='/assets/svg/update.svg'
+          alt='update'
+          width={24}
+          height={24}
+        />
+        <div className='ml-[8px] text-sm'>Update AeIndexer</div>
+      </div>
+      <div
+        onClick={() => handleAction('Restart AeIndexer')}
         className='hover:bg-gray-F5 flex w-full cursor-pointer items-center justify-start p-[16px]'
       >
         <Image
@@ -91,14 +110,16 @@ export default function ActionMenu({
           width={24}
           height={24}
         />
-        <div className='ml-[8px] text-sm'>Restart App</div>
+        <div className='ml-[8px] text-sm'>Restart AeIndexer</div>
       </div>
       <div
-        onClick={() => handleAction('Pause DApp')}
+        onClick={() => handleAction('Pause AeIndexer')}
         className='border-gray-E0 hover:bg-gray-F5 flex w-full cursor-pointer items-center justify-start rounded-b-lg border-t border-solid p-[16px]'
       >
         <Image src='/assets/svg/pause.svg' alt='pause' width={24} height={24} />
-        <div className='text-danger-normal ml-[8px] text-sm'>Pause App</div>
+        <div className='text-danger-normal ml-[8px] text-sm'>
+          Pause AeIndexer
+        </div>
       </div>
       <ConfirmModal
         updateType={updateType}
@@ -112,6 +133,7 @@ export default function ActionMenu({
         setNeedRefresh={setNeedRefresh}
       />
       <DeployDrawer
+        drawerType={drawerType}
         updateType={updateType}
         appId={appId}
         version={version}
