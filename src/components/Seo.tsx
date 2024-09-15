@@ -2,9 +2,9 @@
 import Head from 'next/head';
 
 const defaultMeta = {
-  title: 'AeIndexer-management-web',
+  title: 'aeFinder-management-web',
   siteName: 'Finding data is easier',
-  description: 'AeIndexer-management-web is a management system of AeIndexer',
+  description: 'aeFinder-management-web is a management system of aeFinder',
   url: 'https://management.aefinder.io/',
   type: 'website',
   robots: 'follow, index',
