@@ -1,4 +1,4 @@
-import { Button, Divider, Drawer, Input, message } from 'antd';
+import { Button, Divider, Drawer, Input, message, Select } from 'antd';
 import { useCallback, useState } from 'react';
 
 import {
@@ -8,7 +8,11 @@ import {
   updateApp,
 } from '@/api/requestApp';
 
-import { UpdateType } from '@/types/appType';
+import {
+  BatchDeployRequestType,
+  DeployAppRequestType,
+  UpdateType,
+} from '@/types/appType';
 
 type DeployDrawerProps = {
   readonly drawerType?: 'Deploy' | 'Update';
@@ -22,6 +26,8 @@ type DeployDrawerProps = {
   readonly setNeedRefresh: (needRefresh: boolean) => void;
 };
 
+const Option = Select.Option;
+
 export default function DeployDrawer({
   drawerType = 'Deploy',
   updateType,
@@ -34,12 +40,14 @@ export default function DeployDrawer({
   setNeedRefresh,
 }: DeployDrawerProps) {
   const [dockerImage, setDockerImage] = useState('');
+  const [isUpdateConfig, setIsUpdateConfig] = useState('false');
   const [loading, setLoading] = useState(false);
   const [uploadLoading, setUploadLoading] = useState(false);
 
   const handleCancel = useCallback(() => {
     setIsShowDeployDrawer(false);
     setDockerImage('');
+    setIsUpdateConfig('');
   }, [setIsShowDeployDrawer]);
 
   const handleDeploy = useCallback(async () => {
@@ -93,36 +101,52 @@ export default function DeployDrawer({
       return;
     }
 
-    setUploadLoading(true);
+    if (isUpdateConfig) {
+      if (isUpdateConfig !== 'true' && isUpdateConfig !== 'false') {
+        message.info('Update Config: true or false');
+        return;
+      }
+    }
 
     if (updateType === 'batch' && appIds?.length) {
-      const res = await batchUpdateApp({
+      const param: BatchDeployRequestType = {
         appIds: appIds,
         imageName: dockerImage,
-      });
+      };
+      if (isUpdateConfig) {
+        param.isUpdateConfig = isUpdateConfig === 'true';
+      }
+      setUploadLoading(true);
+      const res = await batchUpdateApp(param);
       if (res) {
         message.success({
           content: 'batchUpdate success',
           key: 'Update',
         });
         setDockerImage('');
+        setIsUpdateConfig('');
         setNeedRefresh(!needRefresh);
       }
     }
 
     if (updateType === 'single' && appId && version) {
-      const res = await updateApp({
+      const param: DeployAppRequestType = {
         appId: appId,
         version: version,
         imageName: dockerImage,
-      });
-      console.log(res);
+      };
+      if (isUpdateConfig) {
+        param.isUpdateConfig = isUpdateConfig === 'true';
+      }
+      setUploadLoading(true);
+      const res = await updateApp(param);
       if (res) {
         message.success({
           content: 'Update success',
           key: 'Update',
         });
         setDockerImage('');
+        setIsUpdateConfig('');
         setNeedRefresh(!needRefresh);
       }
     }
@@ -133,13 +157,22 @@ export default function DeployDrawer({
       setDockerImage('');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dockerImage, setIsShowDeployDrawer, updateType, appId, version, appIds]);
+  }, [
+    dockerImage,
+    isUpdateConfig,
+    setIsShowDeployDrawer,
+    updateType,
+    appId,
+    version,
+    appIds,
+  ]);
 
   return (
     <Drawer
       title={drawerType}
       open={isShowDeployDrawer}
       onClose={() => handleCancel()}
+      destroyOnClose={true}
     >
       <div>
         <div className='text-dark-normal mb-[8px] text-[16px]'>
@@ -151,6 +184,23 @@ export default function DeployDrawer({
           onChange={(e) => setDockerImage(e.target.value)}
           className='border-gray-E0 w-full rounded-[8px]'
         />
+        {drawerType === 'Update' && (
+          <div>
+            <div className='text-dark-normal mb-[8px] mt-[16px] text-[16px]'>
+              Update Config
+            </div>
+            <Select
+              placeholder='Update Config: true or false'
+              value={isUpdateConfig}
+              onChange={(value) => setIsUpdateConfig(value)}
+              className='border-gray-E0 w-full rounded-[8px]'
+              size='large'
+            >
+              <Option value='false'>false</Option>
+              <Option value='true'>true</Option>
+            </Select>
+          </div>
+        )}
         <Divider />
         <div className='flex w-full justify-between'>
           <Button

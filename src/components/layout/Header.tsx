@@ -89,7 +89,7 @@ export default function Header() {
                 href='/dapp'
                 className='hover:bg-gray-F5 w-full border-none px-[16px] sm:hidden'
               >
-                Dapp
+                AeIndexer
               </PrimaryLink>
               <div className='hover:bg-gray-F5 border-gray-F0 w-full border-b border-t px-[16px] text-left sm:hidden'>
                 <PrimaryLink href='/limit' className='test-left block w-full'>

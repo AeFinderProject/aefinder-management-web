@@ -30,6 +30,7 @@ export const AuthList = {
 };
 
 export const AppList = {
+  getOrganizations: `${AeFinderHost}/api/organizations`,
   getAppsList: `${AeFinderHost}/api/management/apps`,
   getAppDetail: `${AeFinderHost}/api/management/apps`,
   getManifest: `${AeFinderHost}/api/apps/subscriptions/manifest`,
@@ -37,6 +38,10 @@ export const AppList = {
   getLimitsList: `${AeFinderHost}/api/apps/resource-limits`,
   setAppLimit: {
     target: `${AeFinderHost}/api/apps/set-limit`,
+    baseConfig: { method: 'PUT' },
+  },
+  setMaxAppCount: {
+    target: `${AeFinderHost}/api/organizations`,
     baseConfig: { method: 'PUT' },
   },
   destroyApp: {

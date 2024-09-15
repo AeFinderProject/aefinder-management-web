@@ -1,4 +1,8 @@
-import { AppstoreOutlined, DashboardOutlined } from '@ant-design/icons';
+import {
+  AppstoreOutlined,
+  DashboardOutlined,
+  PartitionOutlined,
+} from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import clsx from 'clsx';
@@ -8,8 +12,9 @@ import { useCallback, useEffect, useState } from 'react';
 type MenuItem = Required<MenuProps>['items'][number];
 
 const items: MenuItem[] = [
-  { key: 'dapp', icon: <AppstoreOutlined />, label: 'DApp' },
+  { key: 'dapp', icon: <AppstoreOutlined />, label: 'AeIndexer' },
   { key: 'limit', icon: <DashboardOutlined />, label: 'Limit' },
+  { key: 'organization', icon: <PartitionOutlined />, label: 'Organization' },
 ];
 
 export default function MyMenu() {
@@ -32,7 +37,7 @@ export default function MyMenu() {
     <Menu
       className={clsx(
         pathname !== '/login' && pathname !== '/'
-          ? 'm-w-[150px] hidden w-[150px] border-none pt-[48px] font-medium sm:block'
+          ? 'm-w-[170px] hidden w-[170px] border-none pt-[48px] font-medium sm:block'
           : 'hidden'
       )}
       selectedKeys={[currentRoute]}

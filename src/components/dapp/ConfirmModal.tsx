@@ -51,9 +51,9 @@ export default function ConfirmModal({
     if (updateType === 'batch' && appIds) {
       if (actionType === 'Destroy Services') {
         res = await batchDestroyApp({ appIds: appIds });
-      } else if (actionType === 'Restart DApp') {
+      } else if (actionType === 'Restart AeIndexer') {
         res = await batchRestartApp({ appIds: appIds });
-      } else if (actionType === 'Pause DApp') {
+      } else if (actionType === 'Pause AeIndexer') {
         res = await batchPauseApp({ appIds: appIds });
       }
     }
@@ -61,11 +61,11 @@ export default function ConfirmModal({
     if (updateType === 'single' && appId && version) {
       if (actionType === 'Destroy Services') {
         res = await destroyApp({ appId, version });
-      } else if (actionType === 'Restart DApp') {
+      } else if (actionType === 'Restart AeIndexer') {
         res = await restartApp({ appId, version });
-      } else if (actionType === 'Stop DApp') {
+      } else if (actionType === 'Stop AeIndexer') {
         res = await stopApp({ appId, version });
-      } else if (actionType === 'Pause DApp') {
+      } else if (actionType === 'Pause AeIndexer') {
         res = await pauseApp({ appId, version });
       }
     }
@@ -95,12 +95,12 @@ export default function ConfirmModal({
             Cancel
           </Button>
           <Button
-            type={actionType === 'Stop DApp' ? 'default' : 'primary'}
+            type={actionType === 'Stop AeIndexer' ? 'default' : 'primary'}
             size='large'
             loading={loading}
             className={clsx(
               'w-[180px]',
-              actionType === 'Stop DApp' &&
+              actionType === 'Stop AeIndexer' &&
                 'bg-danger-normal border-danger-normal text-white-normal border border-solid'
             )}
             onClick={() => handleAction()}
@@ -110,16 +110,16 @@ export default function ConfirmModal({
         </div>
       }
     >
-      {actionType === 'Pause DApp' && (
+      {actionType === 'Pause AeIndexer' && (
         <div className='text-center'>
           <PauseCircleOutlined className='text-danger-normal m-auto my-[10px] text-[70px]' />
           <div className='text-gray-80 text-left text-[16px]'>
-            Are you sure you want to pause this DApp? It needs to be restarted
-            to be used.
+            Are you sure you want to pause this AeIndexer? It needs to be
+            restarted to be used.
           </div>
         </div>
       )}
-      {actionType === 'Stop DApp' && (
+      {actionType === 'Stop AeIndexer' && (
         <div className='text-center'>
           <Image
             src='/assets/svg/stop-dapp.svg'
@@ -129,12 +129,12 @@ export default function ConfirmModal({
             className='mx-auto my-[16px]'
           />
           <div className='text-gray-80 text-left text-[16px]'>
-            Are you sure you want to stop this DApp? It will be unavailable for
-            users after this action.
+            Are you sure you want to stop this AeIndexer? It will be unavailable
+            for users after this action.
           </div>
         </div>
       )}
-      {actionType === 'Restart DApp' && (
+      {actionType === 'Restart AeIndexer' && (
         <div className='text-center'>
           <Image
             src='/assets/svg/restart-dapp.svg'
@@ -144,7 +144,7 @@ export default function ConfirmModal({
             className='mx-auto my-[16px]'
           />
           <div className='text-gray-80 text-left text-[16px]'>
-            Are you sure you want to restart this DApp?
+            Are you sure you want to restart this AeIndexer?
           </div>
         </div>
       )}
@@ -158,7 +158,7 @@ export default function ConfirmModal({
             className='mx-auto my-[16px]'
           />
           <div className='text-gray-80 text-left text-[16px]'>
-            Are you sure you want to destroy services for this DApp?
+            Are you sure you want to destroy services for this AeIndexer?
           </div>
         </div>
       )}
