@@ -1,4 +1,4 @@
-# AeIndexer Management Web
+# AeFinder Management Web Application
 
 In the project directory, you can run:
 
@@ -10,12 +10,12 @@ Install dependencies.
 
 ### yarn build:dev
 
-Runs the AeIndexer in the development mode.
+Runs the app in the development mode.
 
 ### yarn build:pro
 
-Runs the AeIndexer in the production mode.
+Runs the app in the production mode.
 
 ### yarn start
 
-Start the AeIndexer. The AeIndexer should be compiled with yarn build:mode first.
+Start the application. The application should be compiled with yarn build:mode first.

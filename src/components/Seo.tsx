@@ -2,7 +2,7 @@
 import Head from 'next/head';
 
 const defaultMeta = {
-  title: 'aeFinder-management-web',
+  title: 'AeFinder-management-web',
   siteName: 'Finding data is easier',
   description: 'aeFinder-management-web is a management system of aeFinder',
   url: 'https://management.aefinder.io/',
