@@ -94,6 +94,28 @@ const columns: TableColumnsType<GetAppResourceLimitItemType> = [
       <div>{record?.operationLimit?.maxContractCallCount}</div>
     ),
   },
+  {
+    title: 'EnableMultipleInstances',
+    dataIndex: '',
+    key: 'enableMultipleInstances',
+    render: (record) => (
+      <div>
+        {record?.resourceLimit?.enableMultipleInstances ? 'true' : 'false'}
+      </div>
+    ),
+  },
+  {
+    title: 'MaxAeIndexerCodeSize',
+    dataIndex: '',
+    key: 'maxAppCodeSize',
+    render: (record) => <div>{record?.deployLimit?.maxAppCodeSize}</div>,
+  },
+  {
+    title: 'MaxAeIndexerAttachmentSize',
+    dataIndex: '',
+    key: 'maxAppAttachmentSize',
+    render: (record) => <div>{record?.deployLimit?.maxAppAttachmentSize}</div>,
+  },
 ];
 
 export default function Limit() {
