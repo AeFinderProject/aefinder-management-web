@@ -4,7 +4,7 @@ import { Input, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import { useDebounceCallback } from '@/lib/utils';
+import { formatDuration, useDebounceCallback } from '@/lib/utils';
 
 import PodContainerDrawer from '@/components/dapp/PodContainerDrawer';
 
@@ -36,24 +36,6 @@ export default function Pod() {
     { title: 'AeIndexerVersion', dataIndex: 'appVersion', key: 'appVersion' },
     { title: 'PodName', dataIndex: 'podName', key: 'podName' },
     {
-      title: 'PodUid',
-      dataIndex: 'podUid',
-      key: 'podUid',
-      render: (podUid) => (
-        <div className='text-black-normal whitespace-nowrap'>{podUid}</div>
-      ),
-    },
-    { title: 'Status', dataIndex: 'status', key: 'status' },
-    { title: 'PodIP', dataIndex: 'podIP', key: 'podIP' },
-    {
-      title: 'NodeName',
-      dataIndex: 'nodeName',
-      key: 'nodeName',
-      render: (nodeName) => (
-        <div className='text-black-normal whitespace-nowrap'>{nodeName}</div>
-      ),
-    },
-    {
       title: 'StartTime',
       dataIndex: 'startTime',
       key: 'startTime',
@@ -61,17 +43,31 @@ export default function Pod() {
         <div className='text-black-normal whitespace-nowrap'>{startTime}</div>
       ),
     },
+    { title: 'Status', dataIndex: 'status', key: 'status' },
     {
-      title: 'ReadyContainersCount',
+      title: 'Ready',
       dataIndex: 'readyContainersCount',
       key: 'readyContainersCount',
+      render: (readyContainersCount, record) => {
+        return (
+          <div className='text-black-normal whitespace-nowrap'>
+            {readyContainersCount}/{record.totalContainersCount}
+          </div>
+        );
+      },
     },
     {
-      title: 'TotalContainersCount',
-      dataIndex: 'totalContainersCount',
-      key: 'totalContainersCount',
+      title: 'Age',
+      dataIndex: 'ageSeconds',
+      key: 'ageSeconds',
+      render: (ageSeconds) => {
+        return (
+          <div className='text-black-normal whitespace-nowrap'>
+            {formatDuration(ageSeconds)}
+          </div>
+        );
+      },
     },
-    { title: 'AgeSeconds', dataIndex: 'ageSeconds', key: 'ageSeconds' },
     {
       title: 'Containers',
       dataIndex: 'containers',
