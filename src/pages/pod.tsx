@@ -1,6 +1,7 @@
 import { SearchOutlined } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
 import { Input, Table } from 'antd';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -40,7 +41,9 @@ export default function Pod() {
       dataIndex: 'startTime',
       key: 'startTime',
       render: (startTime) => (
-        <div className='text-black-normal whitespace-nowrap'>{startTime}</div>
+        <div className='text-black-normal whitespace-nowrap'>
+          {dayjs(startTime).format('YYYY-MM-DD HH:mm:ss')}
+        </div>
       ),
     },
     { title: 'Status', dataIndex: 'status', key: 'status' },
