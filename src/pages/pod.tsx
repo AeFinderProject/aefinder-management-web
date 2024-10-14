@@ -1,7 +1,7 @@
 import { SearchOutlined } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
 import { Input, Table } from 'antd';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { useDebounceCallback } from '@/lib/utils';
@@ -92,14 +92,14 @@ export default function Pod() {
     },
   ];
 
-  const handleAppIdChange = useCallback(
-    async (value: string) => {
-      setTempContinueToken('');
-      dispatch(setPodInfosList([]));
-      setAppId(value);
-    },
-    [dispatch]
-  );
+  const handleAppIdChange = (value: string) => {
+    if (appId === '' && value === '') {
+      return;
+    }
+    setTempContinueToken('');
+    dispatch(setPodInfosList([]));
+    setAppId(value);
+  };
 
   const getDeployPodsListTemp = useDebounceCallback(async () => {
     await queryAuthToken();
@@ -138,7 +138,7 @@ export default function Pod() {
         <Input
           placeholder='Search by AppId'
           defaultValue={appId}
-          onBlur={(e) => handleAppIdChange(e.target.value)}
+          onBlur={(e) => handleAppIdChange(e?.target?.value || '')}
           style={{
             width: 180,
             height: 32,
