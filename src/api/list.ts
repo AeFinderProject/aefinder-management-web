@@ -96,6 +96,10 @@ export const AppList = {
     target: `${AeFinderHost}/api/block-scan/batch-pause`,
     baseConfig: { method: 'POST' },
   },
+  deployPods: {
+    target: `${AeFinderHost}/api/app-deploy/pods`,
+    baseConfig: { method: 'GET' },
+  },
 };
 
 /**
