@@ -1,4 +1,5 @@
 import {
+  ApiOutlined,
   AppstoreOutlined,
   DashboardOutlined,
   PartitionOutlined,
@@ -15,6 +16,7 @@ const items: MenuItem[] = [
   { key: 'dapp', icon: <AppstoreOutlined />, label: 'AeIndexer' },
   { key: 'limit', icon: <DashboardOutlined />, label: 'Limit' },
   { key: 'organization', icon: <PartitionOutlined />, label: 'Organization' },
+  { key: 'pod', icon: <ApiOutlined />, label: 'Pod' },
 ];
 
 export default function MyMenu() {

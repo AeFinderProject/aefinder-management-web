@@ -10,6 +10,8 @@ import {
   BatchDeployRequestType,
   BatchLimitItemRequestType,
   DeployAppRequestType,
+  DeployPodsQuestType,
+  DeployPodsResponseType,
   GetAppDetailRequestType,
   GetAppRequestType,
   GetAppResourceLimitResponse,
@@ -265,5 +267,16 @@ export const setMaxAppCountApi = async (
   } catch (error) {
     console.log('error', error);
     return response;
+  }
+};
+
+export const getDeployPodsList = async (
+  params: DeployPodsQuestType
+): Promise<DeployPodsResponseType> => {
+  try {
+    const res = await request.app.deployPods({ params });
+    return res;
+  } catch (error) {
+    throw new Error(handleErrorMessage(error, 'deployPodsList error'));
   }
 };
