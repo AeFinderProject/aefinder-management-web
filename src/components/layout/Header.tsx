@@ -96,6 +96,19 @@ export default function Header() {
                   Limit
                 </PrimaryLink>
               </div>
+              <div className='hover:bg-gray-F5 border-gray-F0 w-full border-b border-t px-[16px] text-left sm:hidden'>
+                <PrimaryLink
+                  href='/organization'
+                  className='test-left block w-full'
+                >
+                  Organization
+                </PrimaryLink>
+              </div>
+              <div className='hover:bg-gray-F5 border-gray-F0 w-full border-b border-t px-[16px] text-left sm:hidden'>
+                <PrimaryLink href='/pod' className='test-left block w-full'>
+                  Pod
+                </PrimaryLink>
+              </div>
               <div
                 className='hover:bg-gray-F5 border-none px-[16px] text-left sm:text-center'
                 onClick={() => handleLogout()}

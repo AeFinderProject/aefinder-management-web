@@ -4,18 +4,21 @@ import {
   GetAppResourceLimitItemType,
   GetAppResponseItem,
   OrganizationsItem,
+  PodInfosType,
 } from '@/types/appType';
 
 export interface AppSliceState {
   appList: GetAppResponseItem[];
   appLimitList: GetAppResourceLimitItemType[];
   organizationsList: OrganizationsItem[];
+  podInfosList: PodInfosType[];
 }
 
 const initialState: AppSliceState = {
   appList: [],
   appLimitList: [],
   organizationsList: [],
+  podInfosList: [],
 };
 
 export const appSlice = createAppSlice({
@@ -31,8 +34,15 @@ export const appSlice = createAppSlice({
     setOrganizationsList: (state, action) => {
       state.organizationsList = action.payload;
     },
+    setPodInfosList: (state, action) => {
+      state.podInfosList = action.payload;
+    },
   },
 });
 
-export const { setAppList, setAppLimitList, setOrganizationsList } =
-  appSlice.actions;
+export const {
+  setAppList,
+  setAppLimitList,
+  setOrganizationsList,
+  setPodInfosList,
+} = appSlice.actions;

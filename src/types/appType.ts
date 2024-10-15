@@ -187,3 +187,38 @@ export type SetMaxAppCountQuestType = {
   organizationId: string;
   maxAppCount: number;
 };
+
+export type DeployPodsQuestType = {
+  appId: string;
+  pageSize: number;
+  continueToken: string;
+};
+
+export type ContainersType = {
+  containerID: string;
+  containerName: string;
+  containerImage: string;
+  restartCount: number;
+  ready: boolean;
+  currentState: string;
+};
+
+export type PodInfosType = {
+  podUid: string;
+  podName: string;
+  appId: string;
+  appVersion: string;
+  status: string;
+  podIP: string;
+  nodeName: string;
+  startTime: string;
+  readyContainersCount: number;
+  totalContainersCount: number;
+  ageSeconds: number;
+  containers: ContainersType[];
+};
+
+export type DeployPodsResponseType = {
+  continueToken: string;
+  podInfos: PodInfosType[];
+};

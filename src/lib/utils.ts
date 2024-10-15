@@ -129,3 +129,24 @@ export const formatStr2Ellipsis = (
   const suffix = address.substring(len - digits[1]);
   return `${pre}...${suffix}`;
 };
+
+/**
+ * formatDuration [16140, 518400, 83880, 1245600] => ["4h29m", "9d", "23h21m", "14d"]
+ * @param seconds
+ * @returns
+ */
+export const formatDuration = (seconds: number) => {
+  const days = Math.floor(seconds / (24 * 3600));
+  seconds %= 24 * 3600;
+  const hours = Math.floor(seconds / 3600);
+  seconds %= 3600;
+  const minutes = Math.floor(seconds / 60);
+
+  if (days > 0) {
+    return `${days}d`;
+  } else if (hours > 0) {
+    return `${hours}h${minutes}m`;
+  } else {
+    return `${minutes}m`;
+  }
+};
