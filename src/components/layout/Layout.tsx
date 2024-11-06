@@ -3,7 +3,11 @@ import * as React from 'react';
 import Footer from '@/components/layout/Footer';
 import Header from '@/components/layout/Header';
 import Menu from '@/components/layout/Menu';
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({
+  children,
+}: {
+  readonly children: React.ReactNode;
+}) {
   return (
     <div className='flex min-h-[100vh] flex-col justify-between'>
       <Header />
