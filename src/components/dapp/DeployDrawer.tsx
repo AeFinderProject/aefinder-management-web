@@ -95,18 +95,26 @@ export default function DeployDrawer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dockerImage, setIsShowDeployDrawer, updateType, appId, version, appIds]);
 
-  const handleUpdate = useCallback(async () => {
+  const validateInputs = useCallback(() => {
     if (!dockerImage) {
-      message.warning('please enter docker image');
-      return;
+      message.warning('Please enter docker image');
+      return false;
     }
 
-    if (isUpdateConfig) {
-      if (isUpdateConfig !== 'true' && isUpdateConfig !== 'false') {
-        message.info('Update Config: true or false');
-        return;
-      }
+    if (
+      isUpdateConfig &&
+      isUpdateConfig !== 'true' &&
+      isUpdateConfig !== 'false'
+    ) {
+      message.info('Update Config: true or false');
+      return false;
     }
+
+    return true;
+  }, [dockerImage, isUpdateConfig]);
+
+  const handleUpdate = useCallback(async () => {
+    if (!validateInputs()) return;
 
     if (updateType === 'batch' && appIds?.length) {
       const param: BatchDeployRequestType = {
