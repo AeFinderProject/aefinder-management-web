@@ -6,7 +6,11 @@ import { setUsername } from '@/store/slices/commonSlice';
 
 import { queryAuthToken } from '@/api/apiUtils';
 
-export default function LoginProvider({ children }: { children: ReactNode }) {
+export default function LoginProvider({
+  children,
+}: {
+  readonly children: ReactNode;
+}) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const queryAuth = useCallback(async () => {
