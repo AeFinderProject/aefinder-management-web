@@ -35,6 +35,8 @@ export default function UpdateSettingDrawer({
   const [maxLogCallCount, setMaxLogCallCount] = useState<number>();
   const [maxLogSize, setMaxLogSize] = useState<number>();
   const [maxContractCallCount, setMaxContractCallCount] = useState<number>();
+  const [appFullPodLimitCpuCore, setAppFullPodLimitCpuCore] = useState('');
+  const [appFullPodLimitMemory, setAppFullPodLimitMemory] = useState('');
   const [appFullPodRequestCpuCore, setAppFullPodRequestCpuCore] = useState('');
   const [appFullPodRequestMemory, setAppFullPodRequestMemory] = useState('');
   const [appQueryPodRequestCpuCore, setAppQueryPodRequestCpuCore] =
@@ -53,6 +55,8 @@ export default function UpdateSettingDrawer({
     setMaxLogCallCount(undefined);
     setMaxLogSize(undefined);
     setMaxContractCallCount(undefined);
+    setAppFullPodLimitCpuCore('');
+    setAppFullPodLimitMemory('');
     setAppFullPodRequestCpuCore('');
     setAppFullPodRequestMemory('');
     setAppQueryPodRequestCpuCore('');
@@ -86,6 +90,12 @@ export default function UpdateSettingDrawer({
     }
     if (maxContractCallCount) {
       params.maxContractCallCount = maxContractCallCount;
+    }
+    if (appFullPodLimitCpuCore) {
+      params.appFullPodLimitCpuCore = appFullPodLimitCpuCore;
+    }
+    if (appFullPodLimitMemory) {
+      params.appFullPodLimitMemory = appFullPodLimitMemory;
     }
     if (appFullPodRequestCpuCore) {
       params.appFullPodRequestCpuCore = appFullPodRequestCpuCore;
@@ -139,6 +149,8 @@ export default function UpdateSettingDrawer({
     maxLogCallCount,
     maxLogSize,
     maxContractCallCount,
+    appFullPodLimitCpuCore,
+    appFullPodLimitMemory,
     appFullPodRequestCpuCore,
     appFullPodRequestMemory,
     appQueryPodRequestCpuCore,
@@ -236,6 +248,30 @@ export default function UpdateSettingDrawer({
             onChange={(e) => setAppPodReplicas(Number(e.target.value))}
             className='border-gray-E0 w-full rounded-[8px]'
             type='number'
+          />
+        </div>
+      </div>
+      <div className='mb-[24px] flex items-center justify-between'>
+        <div className='w-[49%]'>
+          <div className='text-dark-normal mb-[8px] text-[16px]'>
+            AeIndexer Full Pod Limit CPU Core
+          </div>
+          <Input
+            placeholder='Enter AeIndexer Full Pod Limit CPU Core'
+            value={appFullPodLimitCpuCore}
+            onChange={(e) => setAppFullPodLimitCpuCore(e.target.value)}
+            className='border-gray-E0 w-full rounded-[8px]'
+          />
+        </div>
+        <div className='w-[49%]'>
+          <div className='text-dark-normal mb-[8px] text-[16px]'>
+            AeIndexer Full Pod Limit Memory
+          </div>
+          <Input
+            placeholder='Enter AeIndexer Full Pod Limit Memory'
+            value={appFullPodLimitMemory}
+            onChange={(e) => setAppFullPodLimitMemory(e.target.value)}
+            className='border-gray-E0 w-full rounded-[8px]'
           />
         </div>
       </div>

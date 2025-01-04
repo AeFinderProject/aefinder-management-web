@@ -37,6 +37,17 @@ const columns: TableColumnsType<GetAppResourceLimitItemType> = [
     key: 'organizationName',
   },
   {
+    title: 'AeIndexerFullPodLimitCpuCore/Memory',
+    dataIndex: '',
+    key: 'appFullPodLimitCpuCore',
+    render: (record) => (
+      <div>
+        {record?.resourceLimit?.appFullPodLimitCpuCore}/
+        {record?.resourceLimit?.appFullPodLimitMemory}
+      </div>
+    ),
+  },
+  {
     title: 'AeIndexerFullPodRequestCpuCore/Memory',
     dataIndex: '',
     key: 'appFullPodRequestCpuCore',
