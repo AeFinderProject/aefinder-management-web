@@ -101,6 +101,8 @@ export type GetAppResourceLimitItemType = {
     appQueryPodRequestMemory: string;
     appPodReplicas: number;
     enableMultipleInstances: boolean;
+    appFullPodLimitCpuCore: string;
+    appFullPodLimitMemory: string;
   };
   operationLimit: {
     maxEntityCallCount: number;
