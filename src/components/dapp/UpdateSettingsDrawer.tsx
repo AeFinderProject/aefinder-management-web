@@ -68,8 +68,25 @@ export default function UpdateSettingDrawer({
     setEnableMultipleInstances(undefined);
   }, [setIsShowUpdateDrawer]);
 
-  const handleUpdateSetting = useCallback(async () => {
-    const params = {} as BatchLimitItemRequestType;
+  const prepareParams = useCallback(async () => {
+    const params = {
+      maxEntityCallCount,
+      maxEntitySize,
+      maxLogCallCount,
+      maxLogSize,
+      maxContractCallCount,
+      appFullPodLimitCpuCore,
+      appFullPodLimitMemory,
+      appFullPodRequestCpuCore,
+      appFullPodRequestMemory,
+      appQueryPodRequestCpuCore,
+      appQueryPodRequestMemory,
+      appPodReplicas,
+      maxAppCodeSize,
+      maxAppAttachmentSize,
+      enableMultipleInstances,
+    } as BatchLimitItemRequestType;
+
     if (updateType === 'batch') {
       params.appIds = appIds;
     }
@@ -142,6 +159,11 @@ export default function UpdateSettingDrawer({
     }
     setLoading(false);
     handleCancel();
+
+    // Remove keys with empty string values
+    return Object.fromEntries(
+      Object.entries(params).filter(([_, value]) => value !== '')
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     maxEntityCallCount,
@@ -162,8 +184,27 @@ export default function UpdateSettingDrawer({
     updateType,
     appId,
     appIds,
-    handleCancel,
   ]);
+
+  const handleUpdateSetting = useCallback(async () => {
+    const params = (await prepareParams()) ?? {};
+
+    setLoading(true);
+    let res = null;
+    if (updateType === 'batch') {
+      res = await batchSetAppLimit(params);
+    }
+    if (updateType === 'single') {
+      res = await setAppLimit(params as SetAppLimitRequestType);
+    }
+    if (res) {
+      message.success('UpdateSetting Success');
+      setNeedRefresh(!needRefresh);
+    }
+    setLoading(false);
+    handleCancel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updateType, handleCancel, prepareParams]);
 
   return (
     <Drawer

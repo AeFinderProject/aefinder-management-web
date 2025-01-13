@@ -112,7 +112,7 @@ export default function List() {
           <FileSearchOutlined
             className='text-blue-link ml-[20px] mr-[8px] cursor-pointer text-[16px]'
             onClick={() => {
-              router.push(`/dapp/${record.appId}`);
+              router.push(`/dapp/detail?appId=${record.appId}`);
             }}
           />
         </div>

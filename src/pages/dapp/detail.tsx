@@ -7,8 +7,7 @@ import { useDebounceCallback } from '@/lib/utils';
 import DetailBox from '@/components/dapp/DetailBox';
 import SubscriptionsVersion from '@/components/dapp/SubscriptionsVersion';
 
-import { getResources } from '@/api/requestApp';
-import { getAppDetail, getManifest } from '@/api/requestApp';
+import { getAppDetail, getManifest, getResources } from '@/api/requestApp';
 
 import { GetAppResponseItem, VersionType } from '@/types/appType';
 
@@ -23,8 +22,9 @@ export default function AppDetail() {
   const [currentDockerImage, setCurrentDockerImage] = useState('');
   const [pendingDockerImage, setPendingDockerImage] = useState('');
   const [needRefresh, setNeedRefresh] = useState(false);
-  const { query } = router;
-  const appId = query.appId as string;
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const [appId, setAppId] = useState(searchParams.get('appId'));
 
   const tempGetManifest = useDebounceCallback(async () => {
     console.log(appId);
@@ -67,6 +67,18 @@ export default function AppDetail() {
   useEffect(() => {
     tempGetManifest();
   }, [tempGetManifest, appId, needRefresh]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!appId) {
+        const searchParams = new URLSearchParams(window.location.search);
+        setAppId(searchParams?.get('appId'));
+      } else {
+        clearInterval(interval);
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, [appId]);
 
   return (
     <div className='px-[16px] pb-[28px] pt-[26px]'>
