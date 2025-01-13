@@ -27,8 +27,6 @@ export default function UpdateSettingDrawer({
   appIds,
   isShowUpdateDrawer,
   setIsShowUpdateDrawer,
-  needRefresh,
-  setNeedRefresh,
 }: UpdateSettingDrawerProps) {
   const [maxEntityCallCount, setMaxEntityCallCount] = useState<number>();
   const [maxEntitySize, setMaxEntitySize] = useState<number>();
@@ -68,7 +66,7 @@ export default function UpdateSettingDrawer({
     setEnableMultipleInstances(undefined);
   }, [setIsShowUpdateDrawer]);
 
-  const prepareParams = useCallback(async () => {
+  const prepareParams = useCallback(() => {
     const params = {
       maxEntityCallCount,
       maxEntitySize,
@@ -93,78 +91,11 @@ export default function UpdateSettingDrawer({
     if (updateType === 'single') {
       params.appId = appId;
     }
-    if (maxEntityCallCount) {
-      params.maxEntityCallCount = maxEntityCallCount;
-    }
-    if (maxEntitySize) {
-      params.maxEntitySize = maxEntitySize;
-    }
-    if (maxLogCallCount) {
-      params.maxLogCallCount = maxLogCallCount;
-    }
-    if (maxLogSize) {
-      params.maxLogSize = maxLogSize;
-    }
-    if (maxContractCallCount) {
-      params.maxContractCallCount = maxContractCallCount;
-    }
-    if (appFullPodLimitCpuCore) {
-      params.appFullPodLimitCpuCore = appFullPodLimitCpuCore;
-    }
-    if (appFullPodLimitMemory) {
-      params.appFullPodLimitMemory = appFullPodLimitMemory;
-    }
-    if (appFullPodRequestCpuCore) {
-      params.appFullPodRequestCpuCore = appFullPodRequestCpuCore;
-    }
-    if (appFullPodRequestMemory) {
-      params.appFullPodRequestMemory = appFullPodRequestMemory;
-    }
-    if (appQueryPodRequestCpuCore) {
-      params.appQueryPodRequestCpuCore = appQueryPodRequestCpuCore;
-    }
-    if (appQueryPodRequestMemory) {
-      params.appQueryPodRequestMemory = appQueryPodRequestMemory;
-    }
-    if (appPodReplicas) {
-      params.appPodReplicas = appPodReplicas;
-    }
-    if (maxAppCodeSize) {
-      params.maxAppCodeSize = maxAppCodeSize;
-    }
-    if (maxAppAttachmentSize) {
-      params.maxAppAttachmentSize = maxAppAttachmentSize;
-    }
-    if (enableMultipleInstances) {
-      if (
-        enableMultipleInstances !== 'true' &&
-        enableMultipleInstances !== 'false'
-      ) {
-        message.info('Enter Enable Multiple Instances: true or false');
-        return;
-      }
-      params.enableMultipleInstances = enableMultipleInstances === 'true';
-    }
-    setLoading(true);
-    let res = null;
-    if (updateType === 'batch') {
-      res = await batchSetAppLimit(params);
-    }
-    if (updateType === 'single') {
-      res = await setAppLimit(params as SetAppLimitRequestType);
-    }
-    if (res) {
-      message.success('UpdateSetting Success');
-      setNeedRefresh(!needRefresh);
-    }
-    setLoading(false);
-    handleCancel();
 
     // Remove keys with empty string values
     return Object.fromEntries(
       Object.entries(params).filter(([_, value]) => value !== '')
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     maxEntityCallCount,
     maxEntitySize,
@@ -187,7 +118,7 @@ export default function UpdateSettingDrawer({
   ]);
 
   const handleUpdateSetting = useCallback(async () => {
-    const params = (await prepareParams()) ?? {};
+    const params = prepareParams() ?? {};
 
     setLoading(true);
     let res = null;
@@ -199,10 +130,12 @@ export default function UpdateSettingDrawer({
     }
     if (res) {
       message.success('UpdateSetting Success');
-      setNeedRefresh(!needRefresh);
     }
-    setLoading(false);
-    handleCancel();
+
+    setTimeout(() => {
+      setLoading(false);
+      handleCancel();
+    }, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateType, handleCancel, prepareParams]);
 

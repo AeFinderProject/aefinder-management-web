@@ -174,18 +174,11 @@ export default function Limit() {
     setLoading(false);
     dispatch(setAppLimitList(items));
     setTotalCountItems(totalCount);
-  }, [organizationId, appId, skipCount, maxResultCount]);
+  }, [organizationId, appId, skipCount, maxResultCount, isShowUpdateDrawer]);
 
   useEffect(() => {
     getAppLimitListTemp();
-  }, [
-    getAppLimitListTemp,
-    organizationId,
-    appId,
-    skipCount,
-    maxResultCount,
-    needRefresh,
-  ]);
+  }, [getAppLimitListTemp]);
 
   const handleClearFilter = useCallback(() => {
     setOrganizationId('');
