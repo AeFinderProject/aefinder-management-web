@@ -37,6 +37,17 @@ const columns: TableColumnsType<GetAppResourceLimitItemType> = [
     key: 'organizationName',
   },
   {
+    title: 'AeIndexerFullPodLimitCpuCore/Memory',
+    dataIndex: '',
+    key: 'appFullPodLimitCpuCore',
+    render: (record) => (
+      <div>
+        {record?.resourceLimit?.appFullPodLimitCpuCore}/
+        {record?.resourceLimit?.appFullPodLimitMemory}
+      </div>
+    ),
+  },
+  {
     title: 'AeIndexerFullPodRequestCpuCore/Memory',
     dataIndex: '',
     key: 'appFullPodRequestCpuCore',
@@ -163,18 +174,11 @@ export default function Limit() {
     setLoading(false);
     dispatch(setAppLimitList(items));
     setTotalCountItems(totalCount);
-  }, [organizationId, appId, skipCount, maxResultCount]);
+  }, [organizationId, appId, skipCount, maxResultCount, isShowUpdateDrawer]);
 
   useEffect(() => {
     getAppLimitListTemp();
-  }, [
-    getAppLimitListTemp,
-    organizationId,
-    appId,
-    skipCount,
-    maxResultCount,
-    needRefresh,
-  ]);
+  }, [getAppLimitListTemp]);
 
   const handleClearFilter = useCallback(() => {
     setOrganizationId('');

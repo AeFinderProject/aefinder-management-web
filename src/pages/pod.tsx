@@ -102,23 +102,28 @@ export default function Pod() {
 
   const getDeployPodsListTemp = useDebounceCallback(async () => {
     await queryAuthToken();
-    setLoading(true);
-    const { podInfos = [], continueToken } = await getDeployPodsList({
-      appId,
-      pageSize: 10,
-      continueToken: tempContinueToken,
-    });
-    setLoading(false);
-    // add pods and remove duplicates
-    const temp = [...podInfosList, ...podInfos];
-    const uniqueData = temp.reduce((acc: PodInfosType[], current) => {
-      if (!acc.find((item) => item.podUid === current.podUid)) {
-        acc.push(current);
-      }
-      return acc;
-    }, []);
-    dispatch(setPodInfosList(uniqueData));
-    setTempContinueToken(continueToken);
+    try {
+      setLoading(true);
+      const { podInfos = [], continueToken } = await getDeployPodsList({
+        appId,
+        pageSize: 10,
+        continueToken: tempContinueToken,
+      });
+      // add pods and remove duplicates
+      const temp = [...podInfosList, ...podInfos];
+      const uniqueData = temp.reduce((acc: PodInfosType[], current) => {
+        if (!acc.find((item) => item.podUid === current.podUid)) {
+          acc.push(current);
+        }
+        return acc;
+      }, []);
+      dispatch(setPodInfosList(uniqueData));
+      setTempContinueToken(continueToken);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
+    }
   }, [dispatch, appId]);
 
   useEffect(() => {

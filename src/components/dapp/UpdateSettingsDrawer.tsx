@@ -27,14 +27,14 @@ export default function UpdateSettingDrawer({
   appIds,
   isShowUpdateDrawer,
   setIsShowUpdateDrawer,
-  needRefresh,
-  setNeedRefresh,
 }: UpdateSettingDrawerProps) {
   const [maxEntityCallCount, setMaxEntityCallCount] = useState<number>();
   const [maxEntitySize, setMaxEntitySize] = useState<number>();
   const [maxLogCallCount, setMaxLogCallCount] = useState<number>();
   const [maxLogSize, setMaxLogSize] = useState<number>();
   const [maxContractCallCount, setMaxContractCallCount] = useState<number>();
+  const [appFullPodLimitCpuCore, setAppFullPodLimitCpuCore] = useState('');
+  const [appFullPodLimitMemory, setAppFullPodLimitMemory] = useState('');
   const [appFullPodRequestCpuCore, setAppFullPodRequestCpuCore] = useState('');
   const [appFullPodRequestMemory, setAppFullPodRequestMemory] = useState('');
   const [appQueryPodRequestCpuCore, setAppQueryPodRequestCpuCore] =
@@ -53,6 +53,8 @@ export default function UpdateSettingDrawer({
     setMaxLogCallCount(undefined);
     setMaxLogSize(undefined);
     setMaxContractCallCount(undefined);
+    setAppFullPodLimitCpuCore('');
+    setAppFullPodLimitMemory('');
     setAppFullPodRequestCpuCore('');
     setAppFullPodRequestMemory('');
     setAppQueryPodRequestCpuCore('');
@@ -64,81 +66,44 @@ export default function UpdateSettingDrawer({
     setEnableMultipleInstances(undefined);
   }, [setIsShowUpdateDrawer]);
 
-  const handleUpdateSetting = useCallback(async () => {
-    const params = {} as BatchLimitItemRequestType;
+  const prepareParams = useCallback(() => {
+    const params = {
+      maxEntityCallCount,
+      maxEntitySize,
+      maxLogCallCount,
+      maxLogSize,
+      maxContractCallCount,
+      appFullPodLimitCpuCore,
+      appFullPodLimitMemory,
+      appFullPodRequestCpuCore,
+      appFullPodRequestMemory,
+      appQueryPodRequestCpuCore,
+      appQueryPodRequestMemory,
+      appPodReplicas,
+      maxAppCodeSize,
+      maxAppAttachmentSize,
+      enableMultipleInstances,
+    } as BatchLimitItemRequestType;
+
     if (updateType === 'batch') {
       params.appIds = appIds;
     }
     if (updateType === 'single') {
       params.appId = appId;
     }
-    if (maxEntityCallCount) {
-      params.maxEntityCallCount = maxEntityCallCount;
-    }
-    if (maxEntitySize) {
-      params.maxEntitySize = maxEntitySize;
-    }
-    if (maxLogCallCount) {
-      params.maxLogCallCount = maxLogCallCount;
-    }
-    if (maxLogSize) {
-      params.maxLogSize = maxLogSize;
-    }
-    if (maxContractCallCount) {
-      params.maxContractCallCount = maxContractCallCount;
-    }
-    if (appFullPodRequestCpuCore) {
-      params.appFullPodRequestCpuCore = appFullPodRequestCpuCore;
-    }
-    if (appFullPodRequestMemory) {
-      params.appFullPodRequestMemory = appFullPodRequestMemory;
-    }
-    if (appQueryPodRequestCpuCore) {
-      params.appQueryPodRequestCpuCore = appQueryPodRequestCpuCore;
-    }
-    if (appQueryPodRequestMemory) {
-      params.appQueryPodRequestMemory = appQueryPodRequestMemory;
-    }
-    if (appPodReplicas) {
-      params.appPodReplicas = appPodReplicas;
-    }
-    if (maxAppCodeSize) {
-      params.maxAppCodeSize = maxAppCodeSize;
-    }
-    if (maxAppAttachmentSize) {
-      params.maxAppAttachmentSize = maxAppAttachmentSize;
-    }
-    if (enableMultipleInstances) {
-      if (
-        enableMultipleInstances !== 'true' &&
-        enableMultipleInstances !== 'false'
-      ) {
-        message.info('Enter Enable Multiple Instances: true or false');
-        return;
-      }
-      params.enableMultipleInstances = enableMultipleInstances === 'true';
-    }
-    setLoading(true);
-    let res = null;
-    if (updateType === 'batch') {
-      res = await batchSetAppLimit(params);
-    }
-    if (updateType === 'single') {
-      res = await setAppLimit(params as SetAppLimitRequestType);
-    }
-    if (res) {
-      message.success('UpdateSetting Success');
-      setNeedRefresh(!needRefresh);
-    }
-    setLoading(false);
-    handleCancel();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // Remove keys with empty string values
+    return Object.fromEntries(
+      Object.entries(params).filter(([_, value]) => value !== '')
+    );
   }, [
     maxEntityCallCount,
     maxEntitySize,
     maxLogCallCount,
     maxLogSize,
     maxContractCallCount,
+    appFullPodLimitCpuCore,
+    appFullPodLimitMemory,
     appFullPodRequestCpuCore,
     appFullPodRequestMemory,
     appQueryPodRequestCpuCore,
@@ -150,8 +115,29 @@ export default function UpdateSettingDrawer({
     updateType,
     appId,
     appIds,
-    handleCancel,
   ]);
+
+  const handleUpdateSetting = useCallback(async () => {
+    const params = prepareParams() ?? {};
+
+    setLoading(true);
+    let res = null;
+    if (updateType === 'batch') {
+      res = await batchSetAppLimit(params);
+    }
+    if (updateType === 'single') {
+      res = await setAppLimit(params as SetAppLimitRequestType);
+    }
+    if (res) {
+      message.success('UpdateSetting Success');
+    }
+
+    setTimeout(() => {
+      setLoading(false);
+      handleCancel();
+    }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updateType, handleCancel, prepareParams]);
 
   return (
     <Drawer
@@ -236,6 +222,30 @@ export default function UpdateSettingDrawer({
             onChange={(e) => setAppPodReplicas(Number(e.target.value))}
             className='border-gray-E0 w-full rounded-[8px]'
             type='number'
+          />
+        </div>
+      </div>
+      <div className='mb-[24px] flex items-center justify-between'>
+        <div className='w-[49%]'>
+          <div className='text-dark-normal mb-[8px] text-[16px]'>
+            AeIndexer Full Pod Limit CPU Core
+          </div>
+          <Input
+            placeholder='Enter AeIndexer Full Pod Limit CPU Core'
+            value={appFullPodLimitCpuCore}
+            onChange={(e) => setAppFullPodLimitCpuCore(e.target.value)}
+            className='border-gray-E0 w-full rounded-[8px]'
+          />
+        </div>
+        <div className='w-[49%]'>
+          <div className='text-dark-normal mb-[8px] text-[16px]'>
+            AeIndexer Full Pod Limit Memory
+          </div>
+          <Input
+            placeholder='Enter AeIndexer Full Pod Limit Memory'
+            value={appFullPodLimitMemory}
+            onChange={(e) => setAppFullPodLimitMemory(e.target.value)}
+            className='border-gray-E0 w-full rounded-[8px]'
           />
         </div>
       </div>

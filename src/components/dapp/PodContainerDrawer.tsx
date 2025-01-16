@@ -5,10 +5,10 @@ import Copy from '@/components/Copy';
 import { ContainersType } from '@/types/appType';
 
 type PodContainerDrawerProps = {
-  isShowContainerDrawer: boolean;
-  setIsShowContainerDrawer: (isShowContainerDrawer: boolean) => void;
-  tempContainer: ContainersType[];
-  setTempContainer: (tempContainer: ContainersType[]) => void;
+  readonly isShowContainerDrawer: boolean;
+  readonly setIsShowContainerDrawer: (isShowContainerDrawer: boolean) => void;
+  readonly tempContainer: ContainersType[];
+  readonly setTempContainer: (tempContainer: ContainersType[]) => void;
 };
 
 export default function PodContainerDrawer({
