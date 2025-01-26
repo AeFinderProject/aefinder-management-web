@@ -15,8 +15,6 @@ type UpdateSettingDrawerProps = {
   readonly appIds?: string[];
   readonly isShowUpdateDrawer: boolean;
   readonly setIsShowUpdateDrawer: (params: boolean) => void;
-  readonly needRefresh: boolean;
-  readonly setNeedRefresh: (needRefresh: boolean) => void;
 };
 
 const Option = Select.Option;

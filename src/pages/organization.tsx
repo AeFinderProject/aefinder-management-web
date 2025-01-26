@@ -1,8 +1,8 @@
 'use client';
 
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, HistoryOutlined } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
-import { Table } from 'antd';
+import { message, Popconfirm, Table } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 
 import { useDebounceCallback } from '@/lib/utils';
@@ -13,12 +13,13 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setOrganizationsList } from '@/store/slices/appSlice';
 
 import { queryAuthToken } from '@/api/apiUtils';
-import { getOrganizations } from '@/api/requestApp';
+import { getOrganizations, unfreeze } from '@/api/requestApp';
 
 import { OrganizationsItem } from '@/types/appType';
 
 export default function List() {
   const dispatch = useAppDispatch();
+  const [messageApi, contextHolder] = message.useMessage();
   const [skipCount, setSkipCount] = useState(1);
   const [maxResultCount, setMaxResultCount] = useState(10);
   const [loading, setLoading] = useState(false);
@@ -32,6 +33,33 @@ export default function List() {
   );
   const isMobile = window?.innerWidth < 640;
 
+  const handleConfirm = useCallback(
+    async (orgId: string) => {
+      try {
+        setLoading(true);
+        const res = await unfreeze({
+          organizationId: orgId,
+        });
+        if (res) {
+          messageApi.success({
+            content: 'Unfreeze success',
+            key: 'Unfreeze',
+          });
+          setNeedRefresh(!needRefresh);
+          setCurrentOrgId('');
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    [needRefresh, setNeedRefresh, messageApi]
+  );
+
+  const handleCancel = useCallback(() => {
+    setLoading(false);
+    setCurrentOrgId('');
+  }, []);
+
   const columns: TableColumnsType<OrganizationsItem> = [
     {
       title: 'OrganizationName',
@@ -42,6 +70,14 @@ export default function List() {
       title: 'OrganizationId',
       dataIndex: 'organizationId',
       key: 'organizationId',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (text) => {
+        return <>{text === 0 ? 'Active' : 'UnActive'}</>;
+      },
     },
     {
       title: 'MaxAppCount',
@@ -61,6 +97,17 @@ export default function List() {
               setIsShowChangeAppCountDrawer(true);
             }}
           />
+          <Popconfirm
+            title='Unfreeze the organization'
+            description='Are you sure to unfreeze this organization?'
+            onConfirm={() => handleConfirm(record.organizationId)}
+            onCancel={handleCancel}
+            okText='Yes'
+            cancelText='No'
+            placement='topRight'
+          >
+            <HistoryOutlined className='text-blue-link ml-[8px] cursor-pointer text-[16px]' />
+          </Popconfirm>
         </div>
       ),
     },
@@ -98,6 +145,7 @@ export default function List() {
 
   return (
     <div className='px-[16px] pb-[28px] pt-[48px]'>
+      {contextHolder}
       <Table
         rowKey='organizationId'
         columns={columns}
