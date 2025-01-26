@@ -150,3 +150,21 @@ export const formatDuration = (seconds: number) => {
     return `${minutes}m`;
   }
 };
+
+export function displayUnit(chargeType: number, type: number, unit: string) {
+  if (chargeType === 1) {
+    return unit;
+  }
+  if (chargeType === 0) {
+    if (type === 0) {
+      return unit;
+    }
+    if (type === 1) {
+      return 'hr';
+    }
+    if (type === 2) {
+      return 'GB-hour';
+    }
+  }
+  return unit;
+}

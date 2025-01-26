@@ -226,3 +226,156 @@ export type DeployPodsResponseType = {
   continueToken: string;
   podInfos: PodInfosType[];
 };
+
+export type GetMerchandisesRequestType = {
+  type?: number | null;
+  category?: number | null;
+};
+
+export enum MerchandiseTypeEnum {
+  ApiQuery = 0,
+  Processor = 1,
+  Storage = 2,
+}
+
+export enum MerchandiseCategoryEnum {
+  ApiQuery = 0,
+  ProcessorOrStorage = 1,
+}
+
+export enum ChargeTypeEnum {
+  Periodic = 0,
+  OneTime = 1,
+}
+
+export enum MerchandiseStatusEnum {
+  Unpublish = 0,
+  Publish = 1,
+}
+
+export type MerchandisesItemType = {
+  id?: string;
+  name: string;
+  description: string;
+  unit: string;
+  price: number;
+  chargeType: ChargeTypeEnum;
+  type: MerchandiseTypeEnum;
+  category: MerchandiseCategoryEnum;
+  specification: string;
+  sortWeight?: number;
+  status: MerchandiseStatusEnum;
+};
+
+export type GetMerchandisesResponseType = {
+  items: MerchandisesItemType[];
+};
+
+export type UnfreezeRequestType = {
+  organizationId: string;
+  billingId?: string;
+};
+
+export enum BillingEnum {
+  SettledBill = 0,
+  PreDeductedBill = 1,
+}
+
+export enum SortEnum {
+  Asc = 0,
+  Desc = 1,
+}
+
+export type GetBillingsListRequest = {
+  startTime?: string;
+  endTime?: string;
+  type?: BillingEnum;
+  sortType: SortEnum;
+  skipCount: number;
+  maxResultCount: number;
+  organizationId?: string;
+};
+
+export enum MerchandisesEnum {
+  ApiQuery = 0,
+  Processor = 1,
+  Storage = 2,
+}
+
+export enum CategoryEnum {
+  ApiQuery = 0,
+  ProcessorStorage = 1,
+}
+
+export type MerchandisesItem = {
+  id: string;
+  name: string;
+  description: string;
+  specification: string;
+  unit: string;
+  price: number;
+  chargeType: number;
+  type: MerchandisesEnum;
+  category: CategoryEnum;
+};
+
+export type AssetsItem = {
+  id: string;
+  organizationId: string;
+  merchandise: MerchandisesItem;
+  paidAmount: number;
+  quantity: number;
+  replicas: number;
+  freeQuantity: number;
+  freeReplicas: number;
+  beginTime: string;
+  startTime: string;
+  endTime: string;
+  status: number;
+  appId: string;
+  isLocked: boolean;
+};
+
+export type BillingDetailsItem = {
+  name: string;
+  appId: string;
+  type: number;
+  unit: string;
+  price: number;
+  quantity: number;
+  replicas: number;
+  refundAmount: number;
+  paidAmount: number;
+  merchandise: MerchandisesItem;
+  asset: AssetsItem;
+};
+
+export enum BillingType {
+  APIQuery = 0,
+  Processor = 1,
+  Storage = 2,
+}
+
+export type BillingItem = {
+  id: string;
+  organizationId: string;
+  beginTime: string;
+  endTime: string;
+  type: BillingType;
+  details: BillingDetailsItem[];
+  refundAmount: number;
+  paidAmount: number;
+  status: number;
+  transactionId: string;
+  createTime: string;
+  paymentTime: string;
+};
+
+export type GetBillingsListResponse = {
+  items: BillingItem[];
+  totalCount: number;
+};
+
+export type GetBillingsDetailRequest = {
+  id: string;
+};

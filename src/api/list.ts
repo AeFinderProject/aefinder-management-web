@@ -100,6 +100,28 @@ export const AppList = {
     target: `${AeFinderHost}/api/app-deploy/pods`,
     baseConfig: { method: 'GET' },
   },
+  getMerchandisesList: {
+    target: `${AeFinderHost}/api/merchandises/all`,
+    baseConfig: { method: 'GET' },
+  },
+  createMerchandise: {
+    target: `${AeFinderHost}/api/merchandises`,
+    baseConfig: { method: 'POST' },
+  },
+  modifyMerchandise: {
+    target: `${AeFinderHost}/api/merchandises`,
+    baseConfig: { method: 'PUT' },
+  },
+  unfreeze: {
+    target: `${AeFinderHost}/api/app-deploy/unfreeze`,
+    baseConfig: { method: 'POST' },
+  },
+  repay: {
+    target: `${AeFinderHost}/api/billing/payment/repay`,
+    baseConfig: { method: 'POST' },
+  },
+  getBillingsList: `${AeFinderHost}/api/billings`,
+  getBillingsDetail: `${AeFinderHost}/api/billings`,
 };
 
 /**
