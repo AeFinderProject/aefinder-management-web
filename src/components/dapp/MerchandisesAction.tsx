@@ -98,10 +98,6 @@ export default function MerchandisesAction({
       messageApi.warning('please enter price greater than 0');
       return;
     }
-    if (!specification) {
-      messageApi.warning('please enter specification');
-      return;
-    }
 
     try {
       setLoading(true);
