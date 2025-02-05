@@ -165,7 +165,7 @@ export default function MerchandisesAction({
       <div>
         <div className='text-dark-normal mb-[8px] text-[16px]'>Name</div>
         <Input
-          placeholder='Enter Max AeIndexer Count'
+          placeholder='Enter merchandises name'
           value={name}
           onChange={(e) => setName(e.target.value)}
           className='border-gray-E0 w-full rounded-[8px]'
@@ -174,7 +174,7 @@ export default function MerchandisesAction({
           Description
         </div>
         <Input
-          placeholder='Enter Max AeIndexer Count'
+          placeholder='Enter merchandises description'
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           className='border-gray-E0 w-full rounded-[8px]'
@@ -183,7 +183,7 @@ export default function MerchandisesAction({
           Unit
         </div>
         <Input
-          placeholder='Enter Max AeIndexer Count'
+          placeholder='Enter merchandises unit'
           value={unit}
           onChange={(e) => setUnit(e.target.value)}
           className='border-gray-E0 w-full rounded-[8px]'
@@ -192,7 +192,7 @@ export default function MerchandisesAction({
           Price
         </div>
         <InputNumber
-          placeholder='Enter Max AeIndexer Count'
+          placeholder='Enter merchandises price'
           value={price}
           onChange={(value) => setPrice(value || 0)}
           className='border-gray-E0 w-full rounded-[8px]'
@@ -211,7 +211,7 @@ export default function MerchandisesAction({
           ChargeType
         </div>
         <Select
-          defaultValue={chargeType}
+          value={chargeType}
           onChange={(value) => {
             setChargeType(value);
           }}
@@ -225,7 +225,7 @@ export default function MerchandisesAction({
           Type
         </div>
         <Select
-          defaultValue={type}
+          value={type}
           onChange={(value) => {
             setType(value);
           }}
@@ -240,7 +240,7 @@ export default function MerchandisesAction({
           Category
         </div>
         <Select
-          defaultValue={category}
+          value={category}
           onChange={(value) => {
             setCategory(value);
           }}
@@ -254,7 +254,7 @@ export default function MerchandisesAction({
           Status
         </div>
         <Select
-          defaultValue={status}
+          value={status}
           onChange={(value) => {
             setStatus(value);
           }}
