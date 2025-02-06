@@ -2,6 +2,8 @@ import {
   ApiOutlined,
   AppstoreOutlined,
   DashboardOutlined,
+  FileDoneOutlined,
+  GiftOutlined,
   PartitionOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
@@ -16,6 +18,8 @@ const items: MenuItem[] = [
   { key: 'dapp', icon: <AppstoreOutlined />, label: 'AeIndexer' },
   { key: 'limit', icon: <DashboardOutlined />, label: 'Limit' },
   { key: 'organization', icon: <PartitionOutlined />, label: 'Organization' },
+  { key: 'merchandises', icon: <GiftOutlined />, label: 'Merchandises' },
+  { key: 'billing', icon: <FileDoneOutlined />, label: 'Billing' },
   { key: 'pod', icon: <ApiOutlined />, label: 'Pod' },
 ];
 
@@ -39,7 +43,7 @@ export default function MyMenu() {
     <Menu
       className={clsx(
         pathname !== '/login' && pathname !== '/'
-          ? 'm-w-[170px] hidden w-[170px] border-none pt-[48px] font-medium sm:block'
+          ? 'm-w-[180px] hidden w-[180px] border-none pt-[48px] font-medium sm:block'
           : 'hidden'
       )}
       selectedKeys={[currentRoute]}
