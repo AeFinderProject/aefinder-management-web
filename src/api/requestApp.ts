@@ -9,6 +9,7 @@ import {
   BatchActionRequestType,
   BatchDeployRequestType,
   BatchLimitItemRequestType,
+  BillingItem,
   DeployAppRequestType,
   DeployPodsQuestType,
   DeployPodsResponseType,
@@ -17,13 +18,20 @@ import {
   GetAppResourceLimitResponse,
   GetAppResponseItem,
   GetAppResponseType,
+  GetBillingsDetailRequest,
+  GetBillingsListRequest,
+  GetBillingsListResponse,
+  GetMerchandisesRequestType,
+  GetMerchandisesResponseType,
   GetResourcesResponse,
   GetSubscriptionResponse,
   LimitItemType,
+  MerchandisesItemType,
   OrganizationsQuestType,
   OrganizationsResponseType,
   SetAppLimitRequestType,
   SetMaxAppCountQuestType,
+  UnfreezeRequestType,
 } from '@/types/appType';
 export const getOrganizations = async (
   params: OrganizationsQuestType
@@ -278,5 +286,93 @@ export const getDeployPodsList = async (
     return res;
   } catch (error) {
     throw new Error(handleErrorMessage(error, 'deployPodsList error'));
+  }
+};
+
+/**
+ * getAppList
+ * @param params GetAppRequestType
+ * @returns GetAppResponseType
+ */
+export const getMerchandisesList = async (
+  params: GetMerchandisesRequestType
+): Promise<GetMerchandisesResponseType> => {
+  try {
+    const res = await request.app.getMerchandisesList({ params });
+    return res;
+  } catch (error) {
+    throw new Error(handleErrorMessage(error, 'getMerchandisesList error'));
+  }
+};
+
+export const createMerchandise = async (
+  params: MerchandisesItemType
+): Promise<MerchandisesItemType> => {
+  try {
+    const res = await request.app.createMerchandise({ data: params });
+    return res;
+  } catch (error) {
+    throw new Error(handleErrorMessage(error, 'createMerchandise error'));
+  }
+};
+
+export const modifyMerchandise = async (
+  params: MerchandisesItemType
+): Promise<MerchandisesItemType> => {
+  try {
+    const res = await request.app.modifyMerchandise({
+      url: `${AppList.modifyMerchandise.target}/${params?.id}`,
+      data: params,
+    });
+    return res;
+  } catch (error) {
+    throw new Error(handleErrorMessage(error, 'modifyMerchandise error'));
+  }
+};
+
+export const unfreeze = async (
+  params: UnfreezeRequestType
+): Promise<boolean> => {
+  try {
+    await request.app.unfreeze({
+      url: `${AppList.unfreeze.target}/${params?.organizationId}/assets`,
+      data: params,
+    });
+    return true;
+  } catch (error) {
+    throw new Error(handleErrorMessage(error, 'unfreeze error'));
+  }
+};
+
+export const repay = async (params: UnfreezeRequestType): Promise<boolean> => {
+  try {
+    await request.app.repay({
+      data: params,
+    });
+    return true;
+  } catch (error) {
+    throw new Error(handleErrorMessage(error, 'repay error'));
+  }
+};
+
+export const getBillingsList = async (
+  params: GetBillingsListRequest
+): Promise<GetBillingsListResponse> => {
+  try {
+    const res = await request.app.getBillingsList({ params });
+    return res;
+  } catch (error) {
+    throw new Error(handleErrorMessage(error, 'getBillingsList error'));
+  }
+};
+
+export const getBillingsDetail = async (
+  params: GetBillingsDetailRequest
+): Promise<BillingItem> => {
+  try {
+    const res = await request.app.getBillingsDetail({ query: params?.id });
+    return res;
+  } catch (error) {
+    throw new Error(handleErrorMessage(error, 'getBillingsDetail error'));
   }
 };

@@ -142,7 +142,6 @@ export default function Limit() {
   >([]);
   const [totalCountItems, setTotalCountItems] = useState(0);
   const [isShowUpdateDrawer, setIsShowUpdateDrawer] = useState(false);
-  const [needRefresh, setNeedRefresh] = useState(false);
   const appLimitList = useAppSelector((state) => state.app.appLimitList);
   const organizationsCommon = useAppSelector(
     (state) => state.common.organizationsCommon
@@ -331,8 +330,6 @@ export default function Limit() {
         appIds={rowSelection?.map((item) => item.appId)}
         isShowUpdateDrawer={isShowUpdateDrawer}
         setIsShowUpdateDrawer={setIsShowUpdateDrawer}
-        needRefresh={needRefresh}
-        setNeedRefresh={setNeedRefresh}
       />
     </div>
   );
