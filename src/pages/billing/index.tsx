@@ -111,13 +111,24 @@ export default function Billing() {
       dataIndex: 'beginTime',
       key: 'beginTime',
       render: (text: string) => (
-        <div>{dayjs(text).format('YYYY/MM/DD HH:mm:ss')}</div>
+        <div>
+          {text !== '0001-01-01T00:00:00Z'
+            ? dayjs(text).format('YYYY/MM/DD HH:mm:ss')
+            : ''}
+        </div>
       ),
     },
     {
       title: 'End Time',
       dataIndex: 'endTime',
       key: 'endTime',
+      render: (text: string) => (
+        <div>
+          {text !== '0001-01-01T00:00:00Z'
+            ? dayjs(text).format('YYYY/MM/DD HH:mm:ss')
+            : ''}
+        </div>
+      ),
     },
     {
       title: 'Type',
@@ -173,7 +184,11 @@ export default function Billing() {
       key: 'transactionId',
       render: (text: string) => (
         <div>
-          <Copy label='' content={text} isShowCopy={true} showLittle={true} />
+          {text ? (
+            <Copy label='' content={text} isShowCopy={true} showLittle={true} />
+          ) : (
+            '--'
+          )}
         </div>
       ),
     },
@@ -182,7 +197,11 @@ export default function Billing() {
       dataIndex: 'createTime',
       key: 'createTime',
       render: (text: string) => (
-        <div>{dayjs(text).format('YYYY/MM/DD HH:mm:ss')}</div>
+        <div>
+          {text !== '0001-01-01T00:00:00Z'
+            ? dayjs(text).format('YYYY/MM/DD HH:mm:ss')
+            : '--'}
+        </div>
       ),
     },
     {
@@ -190,7 +209,11 @@ export default function Billing() {
       dataIndex: 'paymentTime',
       key: 'paymentTime',
       render: (text: string) => (
-        <div>{dayjs(text).format('YYYY/MM/DD HH:mm:ss')}</div>
+        <div>
+          {text !== '0001-01-01T00:00:00Z'
+            ? dayjs(text).format('YYYY/MM/DD HH:mm:ss')
+            : '--'}
+        </div>
       ),
     },
     {
