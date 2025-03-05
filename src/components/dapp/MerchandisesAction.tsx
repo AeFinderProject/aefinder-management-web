@@ -60,6 +60,9 @@ export default function MerchandisesAction({
   const [status, setStatus] = useState<MerchandiseStatusEnum>(
     currentMerchandisesItem?.status ?? 0
   );
+  const [sortWeight, setSortWeight] = useState<number>(
+    currentMerchandisesItem?.sortWeight ?? 0
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -73,6 +76,7 @@ export default function MerchandisesAction({
       setType(currentMerchandisesItem?.type);
       setCategory(currentMerchandisesItem?.category);
       setStatus(currentMerchandisesItem?.status);
+      setSortWeight(currentMerchandisesItem?.sortWeight || 0);
     }
   }, [currentMerchandisesItem]);
 
@@ -87,6 +91,7 @@ export default function MerchandisesAction({
     setType(MerchandiseTypeEnum.ApiQuery);
     setCategory(MerchandiseCategoryEnum.ApiQuery);
     setStatus(0);
+    setSortWeight(0);
   }, [setIsShowActionDrawer]);
 
   const handleAction = useDebounceCallback(async () => {
@@ -111,6 +116,7 @@ export default function MerchandisesAction({
         type,
         category,
         status,
+        sortWeight,
       };
       let res;
       if (currentAction === 'Create') {
@@ -260,6 +266,18 @@ export default function MerchandisesAction({
           <Option value={0}>{MerchandiseStatusEnum[0]}</Option>
           <Option value={1}>{MerchandiseStatusEnum[1]}</Option>
         </Select>
+        <div className='text-dark-normal mb-[8px] mt-[16px] text-[16px]'>
+          SortWeight
+        </div>
+        <InputNumber
+          placeholder='Enter merchandises sortWeight'
+          value={sortWeight}
+          onChange={(value) => setSortWeight(value || 0)}
+          className='border-gray-E0 w-full rounded-[8px]'
+          min={0}
+          step={1}
+          precision={0}
+        />
         <Divider />
         <div className='flex w-full justify-between'>
           <Button
