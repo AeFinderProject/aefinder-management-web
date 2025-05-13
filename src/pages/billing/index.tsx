@@ -40,7 +40,7 @@ export default function Billing() {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch]);
+  }, [dispatch, skipCount, maxResultCount]);
 
   useEffect(() => {
     getBillingsListTemp();
